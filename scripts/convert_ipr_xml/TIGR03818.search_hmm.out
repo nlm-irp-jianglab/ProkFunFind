@@ -1,0 +1,51 @@
+# hmmsearch :: search profile(s) against a sequence database
+# HMMER 3.2.1 (June 2018); http://hmmer.org/
+# Copyright (C) 2018 Howard Hughes Medical Institute.
+# Freely distributed under the BSD open source license.
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# query HMM file:                  models/profiles/TIGR03818.hmm
+# target sequence database:        /gpfs/gsfs10/users/jiangx6/test/GutFunctionalProfile/test_macsfinder/faa/MGYG-HGUT-00978.faa
+# output directed to file:         MGYG/MGYG-HGUT-00978/hmmer_results/TIGR03818.search_hmm.out
+# sequence reporting threshold:    E-value <= 1
+# number of worker threads:        0
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+Query:       TIGR03818  [M=282]
+Accession:   TIGR03818
+Description: MotA1: flagellar motor stator protein MotA
+Scores for complete sequences (score includes all domains):
+   --- full sequence ---   --- best 1 domain ---    -#dom-
+    E-value  score  bias    E-value  score  bias    exp  N  Sequence               Description
+    ------- ------ -----    ------- ------ -----   ---- --  --------               -----------
+     0.0018   13.5   0.2     0.0021   13.3   0.2    1.1  1  GUT_GENOME058339_01140  hypothetical protein
+
+
+Domain annotation for each sequence (and alignments):
+>> GUT_GENOME058339_01140  hypothetical protein
+   #    score  bias  c-Evalue  i-Evalue hmmfrom  hmm to    alifrom  ali to    envfrom  env to     acc
+ ---   ------ ----- --------- --------- ------- -------    ------- -------    ------- -------    ----
+   1 !   13.3   0.2   1.8e-06    0.0021      31     102 ..       3      80 ..       1      87 [. 0.69
+
+  Alignments for each domain:
+  == domain 1  score: 13.3 bits;  conditional E-value: 1.8e-06
+               TIGR03818  31 PaElliilGaalGallvanpkkvlkevlkqlk...kvfkgskykkedylellallyellekvrke...gllaleedie 102
+                                ll+ +Gaa+G+ lv+++++v+++ + +++   +++k++    ++ l+++  + el+++ +++    ++ le+di+
+  GUT_GENOME058339_01140   3 LSNLLLFAGAAAGSYLVTKNRQVITDEVLNTTdrvQAIKDDVDIIQNSLQIIDQQKELIKEYQEDltyKFKVLEKDIQ 80 
+                             5678999***********999999875555440114455555556666677777788999888752225667888886 PP
+
+
+
+Internal pipeline statistics summary:
+-------------------------------------
+Query model(s):                            1  (282 nodes)
+Target sequences:                       1172  (346994 residues searched)
+Passed MSV filter:                        80  (0.0682594); expected 23.4 (0.02)
+Passed bias filter:                       48  (0.0409556); expected 23.4 (0.02)
+Passed Vit filter:                         3  (0.00255973); expected 1.2 (0.001)
+Passed Fwd filter:                         1  (0.000853242); expected 0.0 (1e-05)
+Initial search space (Z):               1172  [actual number of targets]
+Domain search space  (domZ):               1  [number of targets reported over threshold]
+# CPU time: 0.01u 0.00s 00:00:00.01 Elapsed: 00:00:00.01
+# Mc/sec: 7282.89
+//
+[ok]
