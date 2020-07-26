@@ -1,0 +1,46 @@
+{
+    "name": "A",
+    "componets": [
+        {
+            "name": "B1",
+            "presence": "mandatory",
+            "componets": [
+                {
+                    "orthoID": "g1",
+                    "presence": "mandatory"
+                },
+                {
+                    "orthoID": "g2",
+                    "presence": "mandatory"
+                }
+            ],
+            "analogs": {
+                "name": "B2",
+                "componets": [
+                    {
+                        "orthoID": "g3",
+                        "presence": "mandatory"
+                    },
+                    {
+                        "orthoID": "g4",
+                        "presence": "accessory"
+                    }
+                ]
+            }
+        },
+        {
+            "name": "C",
+            "presence": "accessory",
+            "componets": [
+                {
+                    "orthoID": "g5",
+                    "presence": "mandatory"
+                },
+                {
+                    "orthoID": "g6",
+                    "presence": "accessory"
+                }
+            ]
+        }
+    ]
+}

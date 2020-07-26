@@ -1,0 +1,10 @@
+usage: run_GutFunFind.py [-h] -g  -b  -f  -o
+
+Identify genes related function of interest in genome
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -g , --genomeprefix   The prefix of genome
+  -b , --databasedir    The base dir of function
+  -f , --function       Name of the function
+  -o , --outputprefix   The output prefix
