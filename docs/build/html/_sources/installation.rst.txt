@@ -27,7 +27,7 @@ Installation procedure
 
 
 Archive overview
-================
+=================
   
   Fold structure in GutFunFind package:
   
@@ -76,14 +76,16 @@ Download GutFunFind
   .. code-block:: bash
   
      git clone git@github.com:XiaofangJ/GutFunFind.git
-     cd GutFunFind 
 
 
 Install GutFunFind
 """"""""""""""""""""
 
   .. code-block:: bash
-  
+
+     conda create -n GutFun python=3
+     conda activate GutFun
+     cd GutFunFind 
      python setup.py install
 
 Test GutFunFind

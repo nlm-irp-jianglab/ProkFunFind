@@ -37,7 +37,7 @@ def module_name(arg: str) -> str:
 
 
 # Write a funtion pipeline for function of interest
-def retrieve_function_pipeline(database:str,fun_name: str) -> Callable:
+def retrieve_function_pipeline(database: str, fun_name: str) -> Callable:
 
     # 1. Obtain the configuration and check the exec as well as the database
     # required
@@ -113,26 +113,53 @@ def retrieve_function_pipeline(database:str,fun_name: str) -> Callable:
     return function_analysis
 
 
-#if __name__ == "__main__":
+# if __name__ == "__main__":
 
 def main():
     from argparse import ArgumentParser
 
-    parser = ArgumentParser(description='Identify genes related function of interest in genome')
-    parser.add_argument('-g', '--genomeprefix', help='The prefix of genome', required=True,dest='genome_prefix',metavar='')
-    parser.add_argument('-b', '--databasedir', help='The base dir of function', required=True,dest='database',metavar='')
-    parser.add_argument('-f', '--function', help='Name of the function', required=True,dest='fun_name',metavar='')
-    parser.add_argument('-o', '--outputprefix', help='The output prefix', required=True,dest='outprefix',metavar='')
+    parser = ArgumentParser(
+        description='Identify genes related function of interest in genome')
+    parser.add_argument(
+        '-g',
+        '--genomeprefix',
+        help='The prefix of genome',
+        required=True,
+        dest='genome_prefix',
+        metavar='')
+    parser.add_argument(
+        '-b',
+        '--databasedir',
+        help='The base dir of function',
+        required=True,
+        dest='database',
+        metavar='')
+    parser.add_argument(
+        '-f',
+        '--function',
+        help='Name of the function',
+        required=True,
+        dest='fun_name',
+        metavar='')
+    parser.add_argument(
+        '-o',
+        '--outputprefix',
+        help='The output prefix',
+        required=True,
+        dest='outprefix',
+        metavar='')
 
     args = parser.parse_args()
 
     #database = "/home/jiangx6/data/10.GutFun/01.GutFunFind/GutFunFind/data/"
     #fun_name = "Mucic_and_Saccharic_Acid"
-    detect_fun = retrieve_function_pipeline(database=args.database,fun_name=args.fun_name)
+    detect_fun = retrieve_function_pipeline(
+        database=args.database, fun_name=args.fun_name)
 
     #genome_prefix = "/home/jiangx6/data/10.GutFun/01.GutFunFind/GutFunFind/test/MGYG-HGUT-03390"
     #outprefix = "/home/jiangx6/data/10.GutFun/01.GutFunFind/GutFunFind/test/output"
-    (system_dict, status, genomeObj) = detect_fun(genome_prefix=args.genome_prefix, outprefix=args.outprefix)
+    (system_dict, status, genomeObj) = detect_fun(
+        genome_prefix=args.genome_prefix, outprefix=args.outprefix)
 
     if status:
         print(

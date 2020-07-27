@@ -1,5 +1,6 @@
 # License: GNU Affero General Public License v3 or later
-# A copy of GNU AGPL v3 should have been included in this software package in LICENSE.txt.
+# A copy of GNU AGPL v3 should have been included in this software package
+# in LICENSE.txt.
 
 """ A collection of functions and related classes for executing generic external
     commands from within antismash.
@@ -16,18 +17,24 @@ from distutils.spawn import find_executable
 
 
 from configparser import ConfigParser
-def read_config(config_file:str) -> ConfigParser:
+
+
+def read_config(config_file: str) -> ConfigParser:
     config = ConfigParser()
     config.read(config_file)
     return(config)
 
+
 # Don't display the SearchIO experimental warning, we know this.
 with warnings.catch_warnings():
     warnings.simplefilter("ignore")
-    from Bio import SearchIO  # for import by others without wrapping, pylint: disable=unused-import
+    # for import by others without wrapping, pylint: disable=unused-import
+    from Bio import SearchIO
+
 
 class RunResult:
     """ A container for simplifying the results of running a command """
+
     def __init__(self, command: List[str], stdout: bytes, stderr: bytes,
                  return_code: int, piped_out: bool, piped_err: bool) -> None:
         self.command = command
@@ -55,8 +62,15 @@ class RunResult:
         return " ".join(self.command)
 
 
-def execute(commands: List[str], stdin: Optional[str] = None, stdout: Union[int, IO[Any], None] = PIPE,
-            stderr: Union[int, IO[Any], None] = PIPE, timeout: int = None) -> RunResult:
+def execute(commands: List[str],
+            stdin: Optional[str] = None,
+            stdout: Union[int,
+                          IO[Any],
+                          None] = PIPE,
+            stderr: Union[int,
+                          IO[Any],
+                          None] = PIPE,
+            timeout: int = None) -> RunResult:
     """ Executes commands in a system-independent manner via a child process.
 
         By default, both stderr and stdout will be piped and the outputs
@@ -79,8 +93,9 @@ def execute(commands: List[str], stdin: Optional[str] = None, stdout: Union[int,
     if find_executable(commands[0]):
         commands[0] = find_executable(commands[0])
     else:
-        raise ValueError("unrecognised executable name: {}".format(commands[0]))
-
+        raise ValueError(
+            "unrecognised executable name: {}".format(
+                commands[0]))
 
     if stdin is not None:
         stdin_redir = PIPE  # type: Optional[int]
@@ -96,7 +111,7 @@ def execute(commands: List[str], stdin: Optional[str] = None, stdout: Union[int,
         proc.kill()
         assert isinstance(timeout, int)
         raise RuntimeError("Child process '%s' timed out after %d seconds" % (
-                commands, timeout))
+            commands, timeout))
 
     return RunResult(commands, out, err, proc.returncode, stdout == PIPE,
                      stderr == PIPE)
@@ -122,7 +137,8 @@ def parallel_function(function: Callable, args: Iterable[List[Any]],
             A list of return values of the target function.
             """
 
-    # if only 1 core is to be used, don't fork to run it... this ignores timeout
+    # if only 1 core is to be used, don't fork to run it... this ignores
+    # timeout
     if cpus == 1:
         # list() to handle generators, * to expand the list of args
         return [function(*argset) for argset in args]
@@ -153,7 +169,8 @@ def child_process(command: List[str]) -> int:
             print(result.stderr, file=sys.stderr)
         return result.return_code
     except KeyboardInterrupt:
-        #  Need to raise some runtime error that is not KeyboardInterrupt, because Python has a bug there
+        # Need to raise some runtime error that is not KeyboardInterrupt,
+        # because Python has a bug there
         raise RuntimeError("Killed by keyboard interrupt")
     return -1
 
@@ -164,8 +181,10 @@ def verbose_child_process(command: List[str]) -> int:
     return child_process(command)
 
 
-def parallel_execute(commands: List[List[str]], cpus: Optional[int] = 2,
-                     timeout: Optional[int] = None, verbose: bool = True) -> List[int]:
+def parallel_execute(commands: List[List[str]],
+                     cpus: Optional[int] = 2,
+                     timeout: Optional[int] = None,
+                     verbose: bool = True) -> List[int]:
     """ Limited return vals, only returns return codes
     """
     if verbose:
@@ -182,8 +201,9 @@ def parallel_execute(commands: List[List[str]], cpus: Optional[int] = 2,
     except multiprocessing.TimeoutError:
         pool.terminate()
         assert isinstance(timeout, int)
-        raise RuntimeError("One of %d child processes timed out after %d seconds" % (
-                cpus, timeout))
+        raise RuntimeError(
+            "One of %d child processes timed out after %d seconds" %
+            (cpus, timeout))
 
     except KeyboardInterrupt:
         logging.error("Interrupted by user")

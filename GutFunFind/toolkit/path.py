@@ -1,5 +1,6 @@
 # License: GNU Affero General Public License v3 or later
-# A copy of GNU AGPL v3 should have been included in this software package in LICENSE.txt.
+# A copy of GNU AGPL v3 should have been included in this software package
+# in LICENSE.txt.
 
 """
     Common functions for path manipulation and use
@@ -51,4 +52,3 @@ def locate_file(path: str, silent: bool = False) -> Optional[str]:
                 logging.debug("Found file %r", path)
             return path
     return None
-

@@ -1,5 +1,6 @@
 # License: GNU Affero General Public License v3 or later
-# A copy of GNU AGPL v3 should have been included in this software package in LICENSE.txt.
+# A copy of GNU AGPL v3 should have been included in this software package
+# in LICENSE.txt.
 
 """ Covers the alternative executable name and run-specific executable path for
     external dependencies
@@ -28,15 +29,27 @@ _ALTERNATE_EXECUTABLE_NAMES = {
     ],
 }
 
-_NO_KNOWN_ALTS = ["hmmsearch", "hmmpress", "hmmscan", "meme", "fimo", "glimmerhmm",
-                  "prodigal", "muscle", "java", "blastp", "makeblastdb"]
+_NO_KNOWN_ALTS = [
+    "hmmsearch",
+    "hmmpress",
+    "hmmscan",
+    "meme",
+    "fimo",
+    "glimmerhmm",
+    "prodigal",
+    "muscle",
+    "java",
+    "blastp",
+    "makeblastdb"]
 for _binary in _NO_KNOWN_ALTS:
     assert _binary not in _ALTERNATE_EXECUTABLE_NAMES, _binary
     _ALTERNATE_EXECUTABLE_NAMES[_binary] = [_binary]
 
 
-class AlternateExecutablesAction(argparse.Action):  # pylint: disable=too-few-public-methods
+class AlternateExecutablesAction(
+        argparse.Action):  # pylint: disable=too-few-public-methods
     """ An argparse.Action to contain multiple executables with alternate names/paths. """
+
     def __call__(self, parser: argparse.ArgumentParser, namespace: argparse.Namespace,  # type: ignore
                  values: AnyStr, option_string: str = None) -> None:
         if not isinstance(getattr(namespace, self.dest), argparse.Namespace):
@@ -97,7 +110,9 @@ def get_executable_paths(binaries_arg: str) -> Dict[str, str]:
             if not full_path:
                 raise ValueError("cannot find executable: %s" % path)
         if full_path != binaries.get(name, full_path):
-            raise ValueError("multiple paths specified for executable: %s" % name)
+            raise ValueError(
+                "multiple paths specified for executable: %s" %
+                name)
         assert full_path
         binaries[name] = full_path
     return binaries

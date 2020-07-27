@@ -34,6 +34,7 @@ Welcome to GutFunFind's documentation!
    quickstart
    inputs
    outputs
+   todo
 
 
 Indices and tables
