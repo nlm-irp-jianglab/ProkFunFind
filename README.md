@@ -14,6 +14,7 @@
 
 ```
 conda create -n GutFun python=3
+conda activate GutFun
 git clone git@github.com:XiaofangJ/GutFunFind.git
 cd GutFunFind && python setup.py install
 ```
