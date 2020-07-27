@@ -1,10 +1,10 @@
 {
     "name": "A",
-    "componets": [
+    "components": [
         {
             "name": "B1",
             "presence": "mandatory",
-            "componets": [
+            "components": [
                 {
                     "orthoID": "g1",
                     "presence": "mandatory"
@@ -16,7 +16,7 @@
             ],
             "analogs": {
                 "name": "B2",
-                "componets": [
+                "components": [
                     {
                         "orthoID": "g3",
                         "presence": "mandatory"
@@ -31,7 +31,7 @@
         {
             "name": "C",
             "presence": "accessory",
-            "componets": [
+            "components": [
                 {
                     "orthoID": "g5",
                     "presence": "mandatory"

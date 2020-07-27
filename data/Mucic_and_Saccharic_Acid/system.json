@@ -1,0 +1,45 @@
+{
+    "name": "Mucic_and_Saccharic_Acid",
+    "components": [
+        {
+            "orthoID": "garD",
+            "presence": "mandatory"
+        },
+        {
+            "orthoID": "garL",
+            "presence": "mandatory"
+        },
+        {
+            "orthoID": "garR",
+            "presence": "mandatory"
+        },
+        {
+            "orthoID": "gudD",
+            "presence": "mandatory"
+        },
+        {
+            "orthoID": "garK",
+            "presence": "accessory"
+        },
+        {
+            "orthoID": "garP",
+            "presence": "accessory"
+        },
+        {
+            "orthoID": "gudA",
+            "presence": "accessory"
+        },
+        {
+            "orthoID": "gudB",
+            "presence": "accessory"
+        },
+        {
+            "orthoID": "gudC",
+            "presence": "accessory"
+        },
+        {
+            "orthoID": "gudP",
+            "presence": "accessory"
+        }
+    ]
+}

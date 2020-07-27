@@ -1,0 +1,347 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Output dataset &mdash; GutFunFind 0.1 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Input dataset" href="inputs.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> GutFunFind
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quick Start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="inputs.html">Input dataset</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Output dataset</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#output-files-overview">Output files overview</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#blast-m6">blast.m6</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#annot-gff">annot.gff</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#json">json</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#tsv">tsv</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pkl">pkl</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#what-to-do-next">What to do next?</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">GutFunFind</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>Output dataset</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="_sources/outputs.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="output-dataset">
+<span id="outputs"></span><h1>Output dataset<a class="headerlink" href="#output-dataset" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="output-files-overview">
+<h2>Output files overview<a class="headerlink" href="#output-files-overview" title="Permalink to this headline">¶</a></h2>
+<blockquote>
+<div><p>GutFunFind will output five files and they are have the same prefix.</p>
+</div></blockquote>
+<div class="section" id="blast-m6">
+<h3>blast.m6<a class="headerlink" href="#blast-m6" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>The blast output: query is protein sequences of genomes; database is the bait sequences; format is <code class="docutils literal notranslate"><span class="pre">-m</span> <span class="pre">6</span></code></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ cat output.prefix.blast.m6
+&gt; GUT_GENOME143137_00182    ecoli_garR      52.203  295     134     3       2       292     3       294     3.80e-104       297
+&gt; GUT_GENOME143137_00182    cclostridioforme_GarR   51.890  291     139     1       2       291     3       293     6.49e-104       296
+&gt; GUT_GENOME143137_00419    ecoli_garD      30.208  384     244     7       5       368     122     501     2.39e-52        173
+&gt; GUT_GENOME143137_00419    cclostridioforme_GarD   33.113  302     195     4       68      368     188     483     5.51e-51        169
+&gt; GUT_GENOME143137_00648    cclostridioforme_gudA   28.041  296     205     3       82      372     46      338     1.34e-36        126
+&gt; GUT_GENOME143137_00649    cclostridioforme_gudC   27.273  154     98      4       4       145     8       159     3.05e-06        35.0
+&gt; GUT_GENOME143137_00650    cclostridioforme_gudB   41.837  490     277     4       13      497     17      503     3.93e-117       345
+&gt; GUT_GENOME143137_00901    cclostridioforme_gudA   25.200  250     143     6       72      301     46      271     1.78e-12        57.4
+&gt; GUT_GENOME143137_00903    cclostridioforme_gudB   34.647  482     311     3       17      496     19      498     2.31e-92        281
+&gt; GUT_GENOME143137_00918    cclostridioforme_GarL   22.378  286     216     4       3       284     6       289     4.03e-21        81.3
+</pre></div>
+</div>
+</div></blockquote>
+</div>
+<div class="section" id="annot-gff">
+<h3>annot.gff<a class="headerlink" href="#annot-gff" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>The annotated gff file: genes matched with bait sequences and passed filter criteria were annotated with the first blast hit.
+This file can be imported to Geneious to manually curate.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ cat output.prefix.annot.gff
+&gt; GUT_GENOME143137_1        GuFunFind       CDS     187675  188575  .       -       .       ID=GUT_GENOME143137_00182;Name=garR;Parent=Cl_0;Target=ecoli_garR 2 294;pct_identity=52.203;evalue=3.8e-104
+&gt; GUT_GENOME143137_2        GuFunFind       CDS     38455   39622   .       +       .       ID=GUT_GENOME143137_00419;Name=garD;Parent=Cl_0;Target=ecoli_garD 121 501;pct_identity=30.208;evalue=2.39e-52
+&gt; GUT_GENOME143137_2        GuFunFind       CDS     296187  297321  .       +       .       ID=GUT_GENOME143137_00648;Name=gudA;Parent=Cl_1;Target=cclostridioforme_gudA 45 338;pct_identity=28.041;evalue=1.34e-36
+&gt; GUT_GENOME143137_2        GuFunFind       CDS     297794  299288  .       +       .       ID=GUT_GENOME143137_00650;Name=gudB;Parent=Cl_1;Target=cclostridioforme_gudB 16 503;pct_identity=41.837;evalue=3.93e-117
+&gt; GUT_GENOME143137_3        GuFunFind       CDS     239793  240903  .       +       .       ID=GUT_GENOME143137_00901;Name=gudA;Parent=Cl_0;Target=cclostridioforme_gudA 45 271;pct_identity=25.2;evalue=1.78e-12
+&gt; GUT_GENOME143137_3        GuFunFind       CDS     241398  242916  .       +       .       ID=GUT_GENOME143137_00903;Name=gudB;Parent=Cl_0;Target=cclostridioforme_gudB 18 498;pct_identity=34.647;evalue=2.31e-92
+&gt; GUT_GENOME143137_3        GuFunFind       CDS     262245  263112  .       +       .       ID=GUT_GENOME143137_00918;Name=garL;Parent=Cl_1;Target=cclostridioforme_GarL 5 289;pct_identity=22.378;evalue=4.03e-21
+&gt; GUT_GENOME143137_4        GuFunFind       CDS     87018   88551   .       -       .       ID=GUT_GENOME143137_01073;Name=gudB;Parent=Cl_0;Target=cclostridioforme_gudB 18 507;pct_identity=36.531;evalue=6.07e-95
+&gt; GUT_GENOME143137_4        GuFunFind       CDS     89063   90152   .       -       .       ID=GUT_GENOME143137_01075;Name=gudA;Parent=Cl_0;Target=cclostridioforme_gudA 47 301;pct_identity=26.515;evalue=1.06e-15
+&gt; GUT_GENOME143137_5        GuFunFind       CDS     36139   37639   .       -       .       ID=GUT_GENOME143137_01304;Name=gudB;Parent=Cl_0;Target=cclostridioforme_gudB 3 480;pct_identity=40.167;evalue=3.42e-120
+</pre></div>
+</div>
+</div></blockquote>
+</div>
+<div class="section" id="json">
+<h3>json<a class="headerlink" href="#json" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>The json file is similar to the input <code class="docutils literal notranslate"><span class="pre">system.json</span></code> file with the “genes” added and the “completeness” of each subsystem.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ cat output.prefix.json
+&gt; {
+&gt;     &quot;name&quot;: &quot;Mucic_and_Saccharic_Acid&quot;,
+&gt;     &quot;components&quot;: [
+&gt;         {
+&gt;             &quot;orthoID&quot;: &quot;garD&quot;,
+&gt;             &quot;presence&quot;: &quot;mandatory&quot;,
+&gt;             &quot;genes&quot;: [
+&gt;                 &quot;GUT_GENOME143137_00419&quot;,
+&gt;                 &quot;GUT_GENOME143137_02123&quot;,
+&gt;                 &quot;GUT_GENOME143137_02124&quot;,
+</pre></div>
+</div>
+</div></blockquote>
+</div>
+<div class="section" id="tsv">
+<h3>tsv<a class="headerlink" href="#tsv" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>A tab separated file with three columns.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ cat output.prefix.tsv
+&gt; Gene_Name Cluster_ID      Functions
+&gt; GUT_GENOME143137_00182    GUT_GENOME143137_1:Cl_0 Mucic_and_Saccharic_Acid/garR
+&gt; GUT_GENOME143137_00419    GUT_GENOME143137_2:Cl_0 Mucic_and_Saccharic_Acid/garD
+&gt; GUT_GENOME143137_00648    GUT_GENOME143137_2:Cl_1 Mucic_and_Saccharic_Acid/gudA
+&gt; GUT_GENOME143137_00650    GUT_GENOME143137_2:Cl_1 Mucic_and_Saccharic_Acid/gudB
+&gt; GUT_GENOME143137_00901    GUT_GENOME143137_3:Cl_0 Mucic_and_Saccharic_Acid/gudA
+&gt; GUT_GENOME143137_00903    GUT_GENOME143137_3:Cl_0 Mucic_and_Saccharic_Acid/gudB
+&gt; GUT_GENOME143137_00918    GUT_GENOME143137_3:Cl_1 Mucic_and_Saccharic_Acid/garL
+&gt; GUT_GENOME143137_01073    GUT_GENOME143137_4:Cl_0 Mucic_and_Saccharic_Acid/gudB
+&gt; GUT_GENOME143137_01075    GUT_GENOME143137_4:Cl_0 Mucic_and_Saccharic_Acid/gudA
+</pre></div>
+</div>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 18%" />
+<col style="width: 83%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Name</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Gene_Name</p></td>
+<td><p>The name of gene</p></td>
+</tr>
+<tr class="row-odd"><td><p>Cluster_ID</p></td>
+<td><p>Genes with the same Cluster_ID are within the same neighborhood</p></td>
+</tr>
+<tr class="row-even"><td><p>Functions</p></td>
+<td><p>The function in the system</p></td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+</div>
+<div class="section" id="pkl">
+<h3>pkl<a class="headerlink" href="#pkl" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p><a class="reference external" href="https://docs.python.org/3/library/pickle.html">pickle</a> object of the output Genome object, which can be loaded to python for further analysis.</p>
+</div></blockquote>
+</div>
+</div>
+<div class="section" id="what-to-do-next">
+<h2>What to do next?<a class="headerlink" href="#what-to-do-next" title="Permalink to this headline">¶</a></h2>
+<blockquote>
+<div><ol class="arabic simple">
+<li><p>Import the <code class="docutils literal notranslate"><span class="pre">prefix.annot.gff</span></code> to Geneious software and start the manually curation process</p></li>
+<li><p>Based on the curated result to change different parameters in <code class="docutils literal notranslate"><span class="pre">detect.ini</span></code>, <code class="docutils literal notranslate"><span class="pre">filter.ini</span></code> and <code class="docutils literal notranslate"><span class="pre">cluster.ini</span></code></p></li>
+<li><p>Re-run <code class="docutils literal notranslate"><span class="pre">run_GutFunFind.py</span></code> to test if the change parameters can improve annotation</p></li>
+</ol>
+</div></blockquote>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+      
+        <a href="inputs.html" class="btn btn-neutral float-left" title="Input dataset" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2020, Xiaofang Jiang
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
