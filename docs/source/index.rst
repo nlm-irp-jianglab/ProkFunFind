@@ -35,6 +35,7 @@ Welcome to GutFunFind's documentation!
    inputs
    outputs
    todo
+   run_parallel
 
 
 Indices and tables
