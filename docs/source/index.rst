@@ -34,8 +34,8 @@ Welcome to GutFunFind's documentation!
    quickstart
    inputs
    outputs
-   todo
    run_parallel
+   todo
 
 
 Indices and tables
