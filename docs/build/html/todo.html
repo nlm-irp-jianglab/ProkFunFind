@@ -1,0 +1,262 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Todo list &mdash; GutFunFind 0.1 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Batch processing" href="run_parallel.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> GutFunFind
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quick Start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="inputs.html">Input dataset</a></li>
+<li class="toctree-l1"><a class="reference internal" href="outputs.html">Output dataset</a></li>
+<li class="toctree-l1"><a class="reference internal" href="run_parallel.html">Batch processing</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Todo list</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#system-wide-todo-list">System-wide todo list</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-specific-todo-list">Module-specific todo list</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#report-result-todo-list">Report result todo list</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">GutFunFind</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>Todo list</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="_sources/todo.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="todo-list">
+<span id="todolist"></span><h1>Todo list<a class="headerlink" href="#todo-list" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="system-wide-todo-list">
+<h2>System-wide todo list<a class="headerlink" href="#system-wide-todo-list" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>Have a default option that can pass to all modules and overwrite it</p>
+<ul>
+<li><p>CPUs</p></li>
+<li><p>read environment variable</p></li>
+<li><p>have a default data folder</p></li>
+<li><p>Temp folder</p></li>
+</ul>
+</li>
+<li><p>Figure out how to test the module</p></li>
+<li><p>How to pass default data folder to module</p></li>
+<li><p>API based readthedoc</p></li>
+</ul>
+</div>
+<div class="section" id="module-specific-todo-list">
+<h2>Module-specific todo list<a class="headerlink" href="#module-specific-todo-list" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>Add more detect modules</p>
+<ul>
+<li><p>Hmmer</p></li>
+<li><p>Interproscan</p></li>
+<li><p>…</p></li>
+</ul>
+</li>
+<li><p>How to implement filter method</p>
+<ul>
+<li><p>global</p></li>
+<li><p>local: on individual gene</p></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="report-result-todo-list">
+<h2>Report result todo list<a class="headerlink" href="#report-result-todo-list" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>Javascript to show the components in the system</p></li>
+</ul>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+      
+        <a href="run_parallel.html" class="btn btn-neutral float-left" title="Batch processing" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2020, Xiaofang Jiang
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
