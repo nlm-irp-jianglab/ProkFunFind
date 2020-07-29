@@ -6,10 +6,16 @@
 Batch processing
 *****************
 
-Once the configuration files in the data/function_name is settled. 
+Once the configuration files in the data/function_name are made you can run GutFunFind on every species in UHGG, a comprehensive database of gut microbiome genomes. 
 
-You can start to run GutFunFind on all genomes in your dataset in parallel. 
-All you need to do is to create a file contain the command line you need to run.
+At the NIH, UHGG is located here 
+``Path to UHGG``
+
+At UMD, UHGG is located here 
+``Path to UHGG``
+
+
+
 
 for example, if you are using the UHGG genomes, you will generate a file like below (let's name it ``cmd.list``):
 

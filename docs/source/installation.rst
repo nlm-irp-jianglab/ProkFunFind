@@ -46,8 +46,13 @@ Install programs
 """""""""""""""""
   Each different detection method rely on different programs. Make sure the program is installed.
 
+  .. Attention::
+
+     Currently we only support blast_search and the only dependence is blast+
+
 Install python package
 """""""""""""""""""""""
+
   * bcbio-gff_
   * biopython_
   * scikit-learn_
