@@ -1,0 +1,25 @@
+dist: xenial # needed to use python 3.7
+language: python
+branches:
+  only:
+    - master
+python:
+  - 3.7
+install:
+  - pip install -U pip
+  - pip install Sphinx
+script:
+  # Use Sphinx to make the html docs
+  - make clean
+  - make html
+  # Tell GitHub not to use jekyll to compile the docs
+  - touch build/html/.nojekyll
+
+deploy:
+  provider: pages
+  skip_cleanup: true
+  github_token: $GITHUB_TOKEN  # Set in travis-ci.org dashboard, marked secure
+  keep-history: true
+  on:
+    branch: master
+  local_dir: build/html/
