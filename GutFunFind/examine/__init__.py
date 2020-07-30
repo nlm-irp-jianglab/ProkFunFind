@@ -32,10 +32,10 @@ def check_gene_in_subsystem(
     """
     fun_list = fun_string.copy()
     completeness = {
-        "mandatory": 0,
-        "accessory": 0,
-        "mandatory_presence": 0,
-        "accessory_presence": 0}
+        "essential": 0,
+        "nonessential": 0,
+        "essential_presence": 0,
+        "nonessential_presence": 0}
     if "analogs" in system_dict:
         _, analogs_status = check_gene_in_subsystem(
             system_dict["analogs"], genomeObject, detect_tool, fun_string=fun_list)
@@ -70,7 +70,7 @@ def check_gene_in_subsystem(
         fun_list.pop()
 
     status = 0
-    if completeness["mandatory"] == completeness["mandatory_presence"] and completeness["mandatory"] > 0:
+    if completeness["essential"] == completeness["essential_presence"] and completeness["essential"] > 0:
         status = 1
     elif analogs_status:
         status = 1
