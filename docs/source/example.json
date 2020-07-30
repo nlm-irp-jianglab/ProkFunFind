@@ -3,15 +3,15 @@
     "components": [
         {
             "name": "B1",
-            "presence": "mandatory",
+            "presence": "essential",
             "components": [
                 {
                     "orthoID": "g1",
-                    "presence": "mandatory"
+                    "presence": "essential"
                 },
                 {
                     "orthoID": "g2",
-                    "presence": "mandatory"
+                    "presence": "essential"
                 }
             ],
             "analogs": {
@@ -19,26 +19,26 @@
                 "components": [
                     {
                         "orthoID": "g3",
-                        "presence": "mandatory"
+                        "presence": "essential"
                     },
                     {
                         "orthoID": "g4",
-                        "presence": "accessory"
+                        "presence": "nonessential"
                     }
                 ]
             }
         },
         {
             "name": "C",
-            "presence": "accessory",
+            "presence": "nonessential",
             "components": [
                 {
                     "orthoID": "g5",
-                    "presence": "mandatory"
+                    "presence": "essential"
                 },
                 {
                     "orthoID": "g6",
-                    "presence": "accessory"
+                    "presence": "nonessential"
                 }
             ]
         }

@@ -238,7 +238,7 @@ system.json
   ----------------------  --------------------------------------------------------
   components:(*list*)      The list of subcomponents
   ----------------------  --------------------------------------------------------
-  presence:(*option*)     "mandatory", "accessory" or ([TODO]_) "forbidden"
+  presence:(*option*)     "essential", "nonessential" or ([TODO]_) "forbidden"
   ----------------------  --------------------------------------------------------
   analogs:(*dict*)        Followed an equivalent component
   ======================  ========================================================

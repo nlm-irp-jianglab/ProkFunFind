@@ -163,19 +163,19 @@ def main():
 
     if status:
         print(
-            "Detect function:{fun_name} in genome {genome_prefix}\n{mp} out of {m} mandatory components present\n{ap} out of {a} accessory components present ".format(
+            "Detect function:{fun_name} in genome {genome_prefix}\n{mp} out of {m} essential components present\n{ap} out of {a} nonessential components present ".format(
                 genome_prefix=args.genome_prefix,
                 fun_name=system_dict["name"],
-                mp=system_dict["completeness"]["mandatory_presence"],
-                m=system_dict["completeness"]["mandatory"],
-                ap=system_dict["completeness"]["accessory_presence"],
-                a=system_dict["completeness"]["accessory"]))
+                mp=system_dict["completeness"]["essential_presence"],
+                m=system_dict["completeness"]["essential"],
+                ap=system_dict["completeness"]["nonessential_presence"],
+                a=system_dict["completeness"]["nonessential"]))
     else:
         print(
-            "Failed to detect function:{fun_name} in genome {genome_prefix}\n{mp} out of {m} mandatory components present\n{ap} out of {a} accessory components present ".format(
+            "Failed to detect function:{fun_name} in genome {genome_prefix}\n{mp} out of {m} essential components present\n{ap} out of {a} nonessential components present ".format(
                 genome_prefix=args.genome_prefix,
                 fun_name=system_dict["name"],
-                mp=system_dict["completeness"]["mandatory_presence"],
-                m=system_dict["completeness"]["mandatory"],
-                ap=system_dict["completeness"]["accessory_presence"],
-                a=system_dict["completeness"]["accessory"]))
+                mp=system_dict["completeness"]["essential_presence"],
+                m=system_dict["completeness"]["essential"],
+                ap=system_dict["completeness"]["nonessential_presence"],
+                a=system_dict["completeness"]["nonessential"]))
