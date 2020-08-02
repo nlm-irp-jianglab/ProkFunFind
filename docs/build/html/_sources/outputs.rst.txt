@@ -65,7 +65,7 @@ json
     >     "components": [
     >         {
     >             "orthoID": "garD",
-    >             "presence": "mandatory",
+    >             "presence": "essential",
     >             "genes": [
     >                 "GUT_GENOME143137_00419",
     >                 "GUT_GENOME143137_02123",

@@ -3,43 +3,43 @@
     "components": [
         {
             "orthoID": "garD",
-            "presence": "mandatory"
+            "presence": "essential"
         },
         {
             "orthoID": "garL",
-            "presence": "mandatory"
+            "presence": "essential"
         },
         {
             "orthoID": "garR",
-            "presence": "mandatory"
+            "presence": "essential"
         },
         {
             "orthoID": "gudD",
-            "presence": "mandatory"
+            "presence": "essential"
         },
         {
             "orthoID": "garK",
-            "presence": "accessory"
+            "presence": "nonessential"
         },
         {
             "orthoID": "garP",
-            "presence": "accessory"
+            "presence": "nonessential"
         },
         {
             "orthoID": "gudA",
-            "presence": "accessory"
+            "presence": "nonessential"
         },
         {
             "orthoID": "gudB",
-            "presence": "accessory"
+            "presence": "nonessential"
         },
         {
             "orthoID": "gudC",
-            "presence": "accessory"
+            "presence": "nonessential"
         },
         {
             "orthoID": "gudP",
-            "presence": "accessory"
+            "presence": "nonessential"
         }
     ]
 }

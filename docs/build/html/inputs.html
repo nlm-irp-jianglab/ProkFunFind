@@ -462,15 +462,15 @@ option:</p>
     <span class="nt">&quot;components&quot;</span><span class="p">:</span> <span class="p">[</span>
         <span class="p">{</span>
             <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;B1&quot;</span><span class="p">,</span>
-            <span class="nt">&quot;presence&quot;</span><span class="p">:</span> <span class="s2">&quot;mandatory&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;presence&quot;</span><span class="p">:</span> <span class="s2">&quot;essential&quot;</span><span class="p">,</span>
             <span class="nt">&quot;components&quot;</span><span class="p">:</span> <span class="p">[</span>
                 <span class="p">{</span>
                     <span class="nt">&quot;orthoID&quot;</span><span class="p">:</span> <span class="s2">&quot;g1&quot;</span><span class="p">,</span>
-                    <span class="nt">&quot;presence&quot;</span><span class="p">:</span> <span class="s2">&quot;mandatory&quot;</span>
+                    <span class="nt">&quot;presence&quot;</span><span class="p">:</span> <span class="s2">&quot;essential&quot;</span>
                 <span class="p">},</span>
                 <span class="p">{</span>
                     <span class="nt">&quot;orthoID&quot;</span><span class="p">:</span> <span class="s2">&quot;g2&quot;</span><span class="p">,</span>
-                    <span class="nt">&quot;presence&quot;</span><span class="p">:</span> <span class="s2">&quot;mandatory&quot;</span>
+                    <span class="nt">&quot;presence&quot;</span><span class="p">:</span> <span class="s2">&quot;essential&quot;</span>
                 <span class="p">}</span>
             <span class="p">],</span>
             <span class="nt">&quot;analogs&quot;</span><span class="p">:</span> <span class="p">{</span>
@@ -478,26 +478,26 @@ option:</p>
                 <span class="nt">&quot;components&quot;</span><span class="p">:</span> <span class="p">[</span>
                     <span class="p">{</span>
                         <span class="nt">&quot;orthoID&quot;</span><span class="p">:</span> <span class="s2">&quot;g3&quot;</span><span class="p">,</span>
-                        <span class="nt">&quot;presence&quot;</span><span class="p">:</span> <span class="s2">&quot;mandatory&quot;</span>
+                        <span class="nt">&quot;presence&quot;</span><span class="p">:</span> <span class="s2">&quot;essential&quot;</span>
                     <span class="p">},</span>
                     <span class="p">{</span>
                         <span class="nt">&quot;orthoID&quot;</span><span class="p">:</span> <span class="s2">&quot;g4&quot;</span><span class="p">,</span>
-                        <span class="nt">&quot;presence&quot;</span><span class="p">:</span> <span class="s2">&quot;accessory&quot;</span>
+                        <span class="nt">&quot;presence&quot;</span><span class="p">:</span> <span class="s2">&quot;nonessential&quot;</span>
                     <span class="p">}</span>
                 <span class="p">]</span>
             <span class="p">}</span>
         <span class="p">},</span>
         <span class="p">{</span>
             <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;C&quot;</span><span class="p">,</span>
-            <span class="nt">&quot;presence&quot;</span><span class="p">:</span> <span class="s2">&quot;accessory&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;presence&quot;</span><span class="p">:</span> <span class="s2">&quot;nonessential&quot;</span><span class="p">,</span>
             <span class="nt">&quot;components&quot;</span><span class="p">:</span> <span class="p">[</span>
                 <span class="p">{</span>
                     <span class="nt">&quot;orthoID&quot;</span><span class="p">:</span> <span class="s2">&quot;g5&quot;</span><span class="p">,</span>
-                    <span class="nt">&quot;presence&quot;</span><span class="p">:</span> <span class="s2">&quot;mandatory&quot;</span>
+                    <span class="nt">&quot;presence&quot;</span><span class="p">:</span> <span class="s2">&quot;essential&quot;</span>
                 <span class="p">},</span>
                 <span class="p">{</span>
                     <span class="nt">&quot;orthoID&quot;</span><span class="p">:</span> <span class="s2">&quot;g6&quot;</span><span class="p">,</span>
-                    <span class="nt">&quot;presence&quot;</span><span class="p">:</span> <span class="s2">&quot;accessory&quot;</span>
+                    <span class="nt">&quot;presence&quot;</span><span class="p">:</span> <span class="s2">&quot;nonessential&quot;</span>
                 <span class="p">}</span>
             <span class="p">]</span>
         <span class="p">}</span>
@@ -527,7 +527,7 @@ option:</p>
 <td><p>The list of subcomponents</p></td>
 </tr>
 <tr class="row-even"><td><p>presence:(<em>option</em>)</p></td>
-<td><p>“mandatory”, “accessory” or (<a class="reference internal" href="#todo" id="id7"><span>[TODO]</span></a>) “forbidden”</p></td>
+<td><p>“essential”, “nonessential” or (<a class="reference internal" href="#todo" id="id7"><span>[TODO]</span></a>) “forbidden”</p></td>
 </tr>
 <tr class="row-odd"><td><p>analogs:(<em>dict</em>)</p></td>
 <td><p>Followed an equivalent component</p></td>
