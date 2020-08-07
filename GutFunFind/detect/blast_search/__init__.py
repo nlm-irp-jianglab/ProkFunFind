@@ -6,10 +6,8 @@ from .blast_filter import blast_filter, blast_ortho
 from GutFunFind.toolkit.base import *
 
 
-def pipeline(config_file: Union[str,
-                                IO],
-             protein_file: Union[str,
-                                 IO],
+def pipeline(config_file: Union[str, IO],
+             protein_file: Union[str, IO],
              outprefix: str) -> List[QueryResult]:
     # 1. Read the configuration file into configuration object
     cf = read_config(config_file)["blast"]
