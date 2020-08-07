@@ -137,7 +137,7 @@ detect.ini
   ---------------  --------------------------------------------------------------------------------------------------------------------------------
   map.ortho_pair    The path to the file that specify how the name(unique) of sequence in ``blast.query`` corrspond to  *orthoID*
   
-                    An example of the map.ortho_query_pair files:
+                    An example of the map.ortho_query_pair files(separated by tab):
                    
                     ::
                    
@@ -167,20 +167,41 @@ filter.ini
   
      [filter.global]
      evalue = 1e-6
-     bitscore = 
-  
+     ident_pct = 30
+
      [filter.local]
+     filter_file = absolute-path-to/hit_filter.tab
   
   ====================  =================================================================================================================
   Name                  Description
   ====================  =================================================================================================================
-  ``[filter.global]``    Use to specify filter criteria that will apply to all orthoID group
+  ``[filter.global]``    Use to specify filter criteria that will apply to all hits
   --------------------  -----------------------------------------------------------------------------------------------------------------
-   evalue                Use to specify filter evalue criteria that will apply to all orthoID group
+   evalue                Use to specify filter evalue(maximal) criteria that will apply to all hits
   --------------------  -----------------------------------------------------------------------------------------------------------------
-   bitscore              [TODO]_: Use to specify filter bitscore criteria that will apply to all orthoID group 
+   ident_pct             Use to specify filter identity(minimal) criteria that will apply to all hits
   --------------------  -----------------------------------------------------------------------------------------------------------------
-  ``[filter.local]``     [TODO]_: Use to specify filter criteria for individual orthoID
+  ``[filter.local]``     Use to specify filter criteria for individual hit
+  --------------------  -----------------------------------------------------------------------------------------------------------------
+   filter_file           The absolute path the the file containing filter information for individual hit
+
+
+                         All the four columns:
+
+                         1. hit_name(should be the same as access name of bait.fa) 
+                         2. Attributes that can be used as criteria:
+                            ``ident_pct/hit_start/hit_end/bitscore``
+                         3. operator:">", "<", ">=", "<=", "==","!="
+                         4. value that will beused as cutoff
+
+                         An example of the filter_file file(separated by tab):
+
+                         :: 
+                          
+                            $ cat hit_filter.tab
+                            > cclostridioforme_GarR	evalue	<=	1e-110
+                            > cclostridioforme_GarR	ident_pct	>=	50
+
   ====================  =================================================================================================================
 
   .. Attention::
