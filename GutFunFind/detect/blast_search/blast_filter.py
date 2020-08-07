@@ -1,22 +1,53 @@
 from configparser import ConfigParser
 import csv
+from collections import defaultdict
 from typing import Dict, IO, List, Set, OrderedDict, Callable
 from Bio.SearchIO._model.query import QueryResult
 
 
 def blast_filter(config: ConfigParser, qres: QueryResult) -> QueryResult:
+
     cf = config
+
+    global_evalue = cf["filter.global"]["evalue"]
+    global_ident = cf["filter.global"]["ident_pct"]
 
     ##################################################################
     #  User can customize the filter function to remove QueryResult  #
     ##################################################################
-    global_evalue = cf["filter.global"]["evalue"]
-    if global_evalue:
-        def hsp_filter_func(hsp): return hsp.evalue < float(global_evalue)
-        # hit_filter_func
-        return qres.hsp_filter(hsp_filter_func)
-    else:
-        return qres
+    import operator
+    ops = {
+            "<=" : operator.le,
+            ">=" : operator.ge,
+            ">"  : operator.gt,
+            "<"  : operator.lt,
+            "==" : operator.eq,
+            "!=" : operator.ne
+            }
+
+    hit_filter_file = cf["filter.local"]["filter_file"]
+    # check if file exist or empty
+    filter_dict = defaultdict(list)
+    with open(hit_filter_file) as filter_file:
+        for row in csv.reader(filter_file, delimiter='\t'):
+            filter_dict[row[0]].append({"attr":row[1],"cpfun":ops[row[2]],"value":float(row[3])})
+
+
+    def hsp_filter_func(hsp):
+        status = True
+        if hsp.hit_id in filter_dict:
+            for one in filter_dict[hsp.hit_id]:
+                if one["cpfun"](getattr(hsp, one['attr']),one["value"]):
+                    pass
+                else:
+                    status = False
+                    break
+        else:
+            if hsp.evalue > float(global_evalue) or hsp.ident_pct < float(global_ident):
+                status = False
+        return status
+
+    return qres.hsp_filter(hsp_filter_func)
 
 
 def blast_ortho(qres: QueryResult, ortho_pair_file: str) -> QueryResult:
