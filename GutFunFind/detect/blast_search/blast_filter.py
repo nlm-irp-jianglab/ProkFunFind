@@ -52,11 +52,11 @@ def blast_filter(config: ConfigParser, qres: QueryResult) -> QueryResult:
 
 def blast_ortho(qres: QueryResult, ortho_pair_file: str) -> QueryResult:
 
-    # Create a dict of dict[bait][orthoID] = specificity
+    # Create a dict of dict[bait][orthoID] = precision
     from collections import defaultdict
     OrthScore_dict = defaultdict(dict)
     #############################################################
-    #  User can change the last column to indicate specificity  #
+    #  User can change the last column to indicate precision    #
     #############################################################
     with open(ortho_pair_file) as csv_file:
         csv_reader = csv.reader(csv_file, delimiter='\t')
@@ -67,7 +67,7 @@ def blast_ortho(qres: QueryResult, ortho_pair_file: str) -> QueryResult:
             for row in csv_reader:
                 OrthScore_dict[row[1]][row[0]] = 1
         else:
-            OrthScore_dict[header[1]][header[0]] = float(row[2])
+            OrthScore_dict[header[1]][header[0]] = float(header[2])
             for row in csv_reader:
                 OrthScore_dict[row[1]][row[0]] = float(row[2])
 
