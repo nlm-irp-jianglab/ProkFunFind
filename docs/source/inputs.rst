@@ -193,7 +193,7 @@ Blast Configuration
   
                            1. hit_name(should be the same as access name of bait.fa) 
                            2. Attributes that can be used as criteria:
-                              ``ident_pct/hit_start/hit_end/bitscore``
+                              ``evalue/ident_pct/hit_start/hit_end/bitscore``
                            3. operator:">", "<", ">=", "<=", "==","!="
                            4. value that will beused as cutoff
   
