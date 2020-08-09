@@ -18,7 +18,7 @@ Input genome data structure
 
   ``-g`` should be followed by the prefix of genome ``${prefix}``.
   
-  The folder should include: genome sequences(``${prefix}.fna``), protein sequences(``${prefix}.faa``) and annotation(``${prefix}.gff``).
+  The folder should include: genome sequences(``${prefix}.fna``), protein sequences(``${prefix}.faa``), annotation(``${prefix}.gff``) and Interproscan xml(``${prefix}.xml``: optional).
   
   In the example below:
   
@@ -28,6 +28,7 @@ Input genome data structure
     > MGYG-HGUT-03390.faa   # protein sequences
     > MGYG-HGUT-03390.fna   # genome sequences
     > MGYG-HGUT-03390.gff   # annotations
+    > MGYG-HGUT-03390.xml   # Interproscan xml output (only need for interproscan)
   
   The prefix should be ``input.folder/MGYG-HGUT-03390``
   
@@ -73,7 +74,7 @@ config.ini
   ::
   
     [main]
-    base.dir       = /home/jiangx6/data/10.GutFun/01.GutFunFind/GutFunFind/data/Mucic_and_Saccharic_Acid
+    base.dir       = /home/jiangx6/GutFunFind/data/Mucic_and_Saccharic_Acid/
     detect.tool    = blast
     detect.config  = %(base.dir)s/detect.ini
     cluster.tool   = DBSCAN
@@ -85,7 +86,7 @@ config.ini
   ===============  ==============================================================================
   Name              Description
   ===============  ==============================================================================
-  base.dir          The folder where all configuration file store([TODO]_: remove dependence later)
+  base.dir          The base folder of all configuration files([TODO]_: remove dependence later)
   ---------------  ------------------------------------------------------------------------------
   detect.tool       The method used to detect the genes
                     option:
@@ -108,10 +109,13 @@ config.ini
 detect.ini
 ==========
   
+Blast Configuration
+--------------------
+
   ::
   
      [blast]
-     base.dir       = /home/jiangx6/data/10.GutFun/01.GutFunFind/GutFunFind/data/Mucic_and_Saccharic_Acid
+     base.dir       = /home/jiangx6/GutFunFind/data/Mucic_and_Saccharic_Acid/
      blast.query    = %(base.dir)s/bait.fa
      blast.exec     = blastp
      blast.evalue   = 1e-4
@@ -136,7 +140,7 @@ detect.ini
   filter.config     The path to the configuration file that store the filter configuration ([TODO]_: optional)
   ---------------  --------------------------------------------------------------------------------------------------------------------------------
   map.ortho_pair    The path to the file that specify how the name(unique) of sequence in ``blast.query`` corrspond to  *orthoID*
-  
+
                     An example of the map.ortho_query_pair files(separated by tab):
                    
                     ::
@@ -160,54 +164,87 @@ detect.ini
   ===============  ================================================================================================================================
     
 
-filter.ini
-==========
-
-  ::
+**filter.ini**
   
-     [filter.global]
-     evalue = 1e-6
-     ident_pct = 30
-
-     [filter.local]
-     filter_file = absolute-path-to/hit_filter.tab
+    ::
+    
+       [filter.global]
+       evalue = 1e-6
+       ident_pct = 30
   
-  ====================  =================================================================================================================
-  Name                  Description
-  ====================  =================================================================================================================
-  ``[filter.global]``    Use to specify filter criteria that will apply to all hits
-  --------------------  -----------------------------------------------------------------------------------------------------------------
-   evalue                Use to specify filter evalue(maximal) criteria that will apply to all hits
-  --------------------  -----------------------------------------------------------------------------------------------------------------
-   ident_pct             Use to specify filter identity(minimal) criteria that will apply to all hits
-  --------------------  -----------------------------------------------------------------------------------------------------------------
-  ``[filter.local]``     Use to specify filter criteria for individual hit
-  --------------------  -----------------------------------------------------------------------------------------------------------------
-   filter_file           The absolute path the the file containing filter information for individual hit
-
-
-                         All the four columns:
-
-                         1. hit_name(should be the same as access name of bait.fa) 
-                         2. Attributes that can be used as criteria:
-                            ``ident_pct/hit_start/hit_end/bitscore``
-                         3. operator:">", "<", ">=", "<=", "==","!="
-                         4. value that will beused as cutoff
-
-                         An example of the filter_file file(separated by tab):
-
-                         :: 
-                          
-                            $ cat hit_filter.tab
-                            > cclostridioforme_GarR	evalue	<=	1e-110
-                            > cclostridioforme_GarR	ident_pct	>=	50
-
-  ====================  =================================================================================================================
-
+       [filter.local]
+       filter_file = absolute-path-to/hit_filter.tab
+    
+    ====================  =================================================================================================================
+    Name                  Description
+    ====================  =================================================================================================================
+    ``[filter.global]``    Use to specify filter criteria that will apply to all hits
+    --------------------  -----------------------------------------------------------------------------------------------------------------
+     evalue                Use to specify filter evalue(maximal) criteria that will apply to all hits
+    --------------------  -----------------------------------------------------------------------------------------------------------------
+     ident_pct             Use to specify filter identity(minimal) criteria that will apply to all hits
+    --------------------  -----------------------------------------------------------------------------------------------------------------
+    ``[filter.local]``     Use to specify filter criteria for individual hit
+    --------------------  -----------------------------------------------------------------------------------------------------------------
+     filter_file           The absolute path the the file containing filter information for individual hit
+  
+  
+                           All the four columns:
+  
+                           1. hit_name(should be the same as access name of bait.fa) 
+                           2. Attributes that can be used as criteria:
+                              ``ident_pct/hit_start/hit_end/bitscore``
+                           3. operator:">", "<", ">=", "<=", "==","!="
+                           4. value that will beused as cutoff
+  
+                           An example of the filter_file file(separated by tab):
+  
+                           :: 
+                            
+                              $ cat hit_filter.tab
+                              > cclostridioforme_GarR	evalue	<=	1e-110
+                              > cclostridioforme_GarR	ident_pct	>=	50
+  
+    ====================  =================================================================================================================
 
 .. Attention::
 
-   The parameters in ``detect.inc`` and ``filter.ini`` is detection method specific. Currently we only support blast, but we will work on Hmmer and Interproscan later.
+   The parameters in ``detect.inc`` and ``filter.ini`` is detection method specific.
+
+Interproscan Configuration
+---------------------------
+
+  ::
+  
+     [interproscan]
+     base.dir       = /home/xiaofang/GutFunFind/data/Flagellar/archaea.json
+     orthoID_domain_precision = %(base.dir)s/domain_precision.txt
+
+
+  ==========================  =================================================================================================================
+  Name                        Description
+  ==========================  =================================================================================================================
+  ``[Interproscan]``          The header of the detect configuration. Should be consistent with ``detect.tool`` in the ``config.ini`` file.
+  --------------------------  -----------------------------------------------------------------------------------------------------------------
+  base.dir                    The folder where all configuration file related to detection store([TODO]_: remove dependence later)
+  --------------------------  -----------------------------------------------------------------------------------------------------------------
+  orthoID_domain_precision    The path to the file that specify the precision of the domain corrspond to  *orthoID*
+
+                              An example(separated by tab):
+
+                              ::
+
+                                $ cat domain_precision.txt
+                                > K00575	G3DSA:1.10.155.10	0.908991
+                                > K00575	PF01739	0.705724
+                                > K00575	PF03705	0.704411
+                                > K00575	PIRSF000410	0.99
+                                > K00575	PR00996	0.708515
+                                > K00575	PS50123	0.706645
+                                > K00575	PTHR24422	0.634774
+                                > ...
+  ==========================  =================================================================================================================
+    
 
 cluster.ini
 ===========
@@ -231,7 +268,7 @@ cluster.ini
   
 .. Attention::
 
-   The parameters in ``cluster.inc`` is cluster method specific. Currently DBSCAN is the only detection method we are using.
+   The parameters in ``cluster.inc`` is cluster method specific. Currently DBSCAN is the only detection method supported.
   
 system.json
 ===========

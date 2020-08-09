@@ -30,15 +30,7 @@ Module-specific todo list
 * Add more detect modules
 
   * Hmmer
-  * Interproscan
   * ...
-
-* How to implement filter method
-
-  * global
-  * local: on individual gene
-
-
 
 ==========================
 Report result todo list

@@ -11,7 +11,8 @@ Output dataset
 Output files overview
 ======================
 
-  GutFunFind will output five files and they are have the same prefix. 
+  GutFunFind will output files with the same prefix. ``annot.gff``, ``json``, ``tsv``, ``pkl`` formatted files will be outputed every time.
+  Other formatted file will be reported based on detection method.
 
 
 blast.m6
