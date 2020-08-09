@@ -11,9 +11,11 @@ import logging
 import os
 from subprocess import Popen, PIPE, TimeoutExpired
 import sys
-from typing import Any, Callable, Iterable, IO, List, Optional, Union
+from typing import Dict, Any, Callable, Iterable, IO, List, Optional, Union
 import warnings
 from distutils.spawn import find_executable
+from collections import defaultdict
+import csv
 
 
 from configparser import ConfigParser
@@ -212,3 +214,28 @@ def parallel_execute(commands: List[List[str]],
 
     pool.close()
     return errors
+
+
+
+def read2orthoDict(ortho_pair_file: Union[str,IO]) -> Dict:
+
+    OrthScore_dict = defaultdict(dict)
+
+    #############################################################
+    #  User can change the last column to indicate precision    #
+    #############################################################
+
+    with open(ortho_pair_file) as csv_file:
+        csv_reader = csv.reader(csv_file, delimiter='\t')
+        header = next(csv_reader)
+        col_num = len(header)
+        if col_num == 2:
+            OrthScore_dict[header[1]] = {"orthoID":header[0],"precision": 1}
+            for row in csv_reader:
+                OrthScore_dict[row[1]] = {"orthoID":row[0], "precision":1}
+        else:
+            OrthScore_dict[header[1]] = {"orthoID":header[0],"precision": float(header[2])}
+            for row in csv_reader:
+                OrthScore_dict[row[1]] = {"orthoID":row[0],"precision": float(row[2])}
+
+    return(OrthScore_dict)
