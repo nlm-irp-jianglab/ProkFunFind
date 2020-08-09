@@ -23,3 +23,9 @@ cd GutFunFind && python setup.py install
 ```
 run_GutFunFind.py -b data.folder -f Mucic_and_Saccharic_Acid -g input.folder/MGYG-HGUT-02439 -o output.folder/prefix
 ```
+
+## Updates
+
+* v0.1.1
+    * add support for InterProScan
+    * fix bug in cluster label
