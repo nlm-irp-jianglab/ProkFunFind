@@ -46,6 +46,8 @@ def pipeline(config_file: str, genome_object, detect_tool: str) -> Genome:
                                min_samples=float(cf["cluster.min_samples"]))
 
             for gene, cl_label in zip(genelist, cl):
+                if cl_label == -1:
+                    cl_label = "NA"
                 setattr(gene, "DBSCAN", cl_label)
 
     return genome_object
