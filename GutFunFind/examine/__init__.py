@@ -51,7 +51,7 @@ def check_gene_in_subsystem(
         fun_list.append(system_dict["orthoID"])
         gene_list = find_gene_with_orthoID(
             system_dict["orthoID"], genomeObject, detect_tool)
-        status = 0
+        status = 0    # all essential components are present 
         if gene_list:
             system_dict["genes"] = gene_list
             status = 1

@@ -1,0 +1,438 @@
+{
+    "name": "Flagellar",
+    "components": [
+        {
+            "name": "Two component system proteins",
+            "presence": "nonessential",
+            "components": [
+                {
+                    "orthoID": "K03407",
+                    "description": "cheA; two-component system, chemotaxis family, sensor kinase CheA [EC:2.7.13.3]",
+                    "presence": "nonessential"
+                },
+                {
+                    "orthoID": "K03408",
+                    "description": "cheW; purine-binding chemotaxis protein CheW",
+                    "presence": "nonessential"
+                },
+                {
+                    "orthoID": "K03409",
+                    "description": "cheX; chemotaxis protein CheX",
+                    "presence": "nonessential"
+                },
+                {
+                    "orthoID": "K03410",
+                    "description": "cheC; chemotaxis protein CheC",
+                    "presence": "nonessential"
+                },
+                {
+                    "orthoID": "K03411",
+                    "description": "cheD; chemotaxis protein CheD [EC:3.5.1.44]",
+                    "presence": "nonessential"
+                },
+                {
+                    "orthoID": "K00575",
+                    "description": "cheR; chemotaxis protein methyltransferase CheR [EC:2.1.1.80]",
+                    "presence": "nonessential"
+                },
+                {
+                    "orthoID": "K03412",
+                    "description": "cheB; two-component system, chemotaxis family, protein-glutamate methylesterase/glutaminase [EC:3.1.1.61 3.5.1.44]",
+                    "presence": "nonessential"
+                },
+                {
+                    "orthoID": "K13924",
+                    "description": "cheBR; two-component system, chemotaxis family, CheB/CheR fusion protein [EC:2.1.1.80 3.1.1.61]",
+                    "presence": "nonessential"
+                },
+                {
+                    "orthoID": "K03413",
+                    "description": "cheY; two-component system, chemotaxis family, chemotaxis protein CheY",
+                    "presence": "nonessential"
+                },
+                {
+                    "orthoID": "K03414",
+                    "description": "cheZ; chemotaxis protein CheZ",
+                    "presence": "nonessential"
+                },
+                {
+                    "orthoID": "K03415",
+                    "description": "cheV; two-component system, chemotaxis family, chemotaxis protein CheV",
+                    "presence": "nonessential"
+                }
+            ]
+        },
+        {
+            "name": "MCPs",
+            "presence": "nonessential",
+            "components": [
+                {
+                    "orthoID": "K03406",
+                    "description": "mcp; methyl-accepting chemotaxis protein",
+                    "presence": "nonessential"
+                },
+                {
+                    "orthoID": "K05874",
+                    "description": "tsr; methyl-accepting chemotaxis protein I, serine sensor receptor",
+                    "presence": "nonessential"
+                },
+                {
+                    "orthoID": "K05875",
+                    "description": "tar; methyl-accepting chemotaxis protein II, aspartate sensor receptor",
+                    "presence": "nonessential"
+                },
+                {
+                    "orthoID": "K05876",
+                    "description": "trg; methyl-accepting chemotaxis protein III, ribose and galactose sensor receptor",
+                    "presence": "nonessential"
+                },
+                {
+                    "orthoID": "K05877",
+                    "description": "tap; methyl-accepting chemotaxis protein IV, peptide sensor receptor",
+                    "presence": "nonessential"
+                },
+                {
+                    "orthoID": "K03776",
+                    "description": "aer; aerotaxis receptor",
+                    "presence": "nonessential"
+                },
+                {
+                    "orthoID": "K06595",
+                    "description": "hemAT; heam-based aerotactic trancducer",
+                    "presence": "nonessential"
+                }
+            ]
+        },
+        {
+            "name": "Type-III secretion",
+            "presence": "essential",
+            "components": [
+                {
+                    "orthoID": "K02411",
+                    "description": "fliH; flagellar assembly protein FliH",
+                    "presence": "essential"
+                },
+                {
+                    "orthoID": "K02412",
+                    "description": "fliI; flagellum-specific ATP synthase [EC:7.4.2.8]",
+                    "presence": "essential"
+                },
+                {
+                    "orthoID": "K02418",
+                    "description": "fliOZ, fliO; flagellar protein FliO/FliZ",
+                    "presence": "nonessential"
+                },
+                {
+                    "orthoID": "K02419",
+                    "description": "fliP; flagellar biosynthetic protein FliP",
+                    "presence": "essential"
+                },
+                {
+                    "orthoID": "K02420",
+                    "description": "fliQ; flagellar biosynthetic protein FliQ",
+                    "presence": "essential"
+                },
+                {
+                    "orthoID": "K02421",
+                    "description": "fliR; flagellar biosynthetic protein FliR",
+                    "presence": "essential"
+                },
+                {
+                    "orthoID": "K02400",
+                    "description": "flhA; flagellar biosynthesis protein FlhA",
+                    "presence": "essential"
+                },
+                {
+                    "orthoID": "K02401",
+                    "description": "flhB; flagellar biosynthetic protein FlhB",
+                    "presence": "essential",
+                    "analogs": {
+                        "orthoID": "K13820",
+                        "description": "fliR-flhB; flagellar biosynthetic protein FliR/FlhB"
+                    }
+                },
+                {
+                    "orthoID": "K03516",
+                    "description": "flhE; flagellar protein FlhE",
+                    "presence": "nonessential"
+                }
+            ]
+        },
+        {
+            "name": "Motor/switch",
+            "presence": "essential",
+            "components": [
+                {
+                    "orthoID": "K02556",
+                    "description": "motA; chemotaxis protein MotA",
+                    "presence": "essential"
+                },
+                {
+                    "orthoID": "K02557",
+                    "description": "motB; chemotaxis protein MotB",
+                    "presence": "essential"
+                },
+                {
+                    "orthoID": "K10564",
+                    "description": "motC; chemotaxis protein MotC",
+                    "presence": "nonessential"
+                },
+                {
+                    "orthoID": "K10565",
+                    "description": "motD; chemotaxis protein MotD",
+                    "presence": "nonessential"
+                },
+                {
+                    "orthoID": "K21217",
+                    "description": "motX; sodium-type polar flagellar protein MotX",
+                    "presence": "nonessential"
+                },
+                {
+                    "orthoID": "K21218",
+                    "description": "motY; sodium-type flagellar protein MotY",
+                    "presence": "nonessential"
+                }
+            ]
+        },
+        {
+            "name": "C-ring",
+            "presence": "essential",
+            "components": [
+                {
+                    "orthoID": "K02410",
+                    "description": "fliG; flagellar motor switch protein FliG",
+                    "presence": "essential"
+                },
+                {
+                    "orthoID": "K02416",
+                    "description": "fliM; flagellar motor switch protein FliM",
+                    "presence": "essential"
+                },
+                {
+                    "orthoID": "K02417",
+                    "description": "fliNY, fliN; flagellar motor switch protein FliN/FliY",
+                    "presence": "essential"
+                }
+            ]
+        },
+        {
+            "name": "M,S,P and L rings",
+            "presence": "essential",
+            "components": [
+                {
+                    "orthoID": "K02409",
+                    "description": "fliF; flagellar M-ring protein FliF",
+                    "presence": "nonessential"
+                },
+                {
+                    "orthoID": "K02394",
+                    "description": "flgI; flagellar P-ring protein precursor FlgI",
+                    "presence": "nonessential"
+                },
+                {
+                    "orthoID": "K02386",
+                    "description": "flgA; flagella basal body P-ring formation protein FlgA",
+                    "presence": "nonessential"
+                },
+                {
+                    "orthoID": "K02393",
+                    "description": "flgH; flagellar L-ring protein precursor FlgH",
+                    "presence": "nonessential"
+                }
+            ]
+        },
+        {
+            "name": "Rod,hook and filament",
+            "presence": "essential",
+            "components": [
+                {
+                    "orthoID": "K02387",
+                    "description": "flgB; flagellar basal-body rod protein FlgB",
+                    "presence": "essential"
+                },
+                {
+                    "orthoID": "K02388",
+                    "description": "flgC; flagellar basal-body rod protein FlgC",
+                    "presence": "essential"
+                },
+                {
+                    "orthoID": "K02389",
+                    "description": "flgD; flagellar basal-body rod modification protein FlgD",
+                    "presence": "essential"
+                },
+                {
+                    "orthoID": "K02391",
+                    "description": "flgF; flagellar basal-body rod protein FlgF",
+                    "presence": "essential"
+                },
+                {
+                    "orthoID": "K02392",
+                    "description": "flgG; flagellar basal-body rod protein FlgG",
+                    "presence": "essential"
+                },
+                {
+                    "orthoID": "K02395",
+                    "description": "flgJ; flagellar protein FlgJ",
+                    "presence": "nonessential"
+                },
+                {
+                    "orthoID": "K02390",
+                    "description": "flgE; flagellar hook protein FlgE",
+                    "presence": "essential"
+                },
+                {
+                    "orthoID": "K02408",
+                    "description": "fliE; flagellar hook-basal body complex protein FliE",
+                    "presence": "essential"
+                },
+                {
+                    "orthoID": "K02396",
+                    "description": "flgK; flagellar hook-associated protein 1 FlgK",
+                    "presence": "essential"
+                },
+                {
+                    "orthoID": "K02397",
+                    "description": "flgL; flagellar hook-associated protein 3 FlgL",
+                    "presence": "essential"
+                },
+                {
+                    "orthoID": "K02407",
+                    "description": "fliD; flagellar hook-associated protein 2",
+                    "presence": "essential"
+                },
+                {
+                    "orthoID": "K02414",
+                    "description": "fliK; flagellar hook-length control protein FliK",
+                    "presence": "nonessential"
+                },
+                {
+                    "orthoID": "K02415",
+                    "description": "fliL; flagellar FliL protein",
+                    "presence": "nonessential"
+                },
+                {
+                    "orthoID": "K02406",
+                    "description": "fliC; flagellin",
+                    "presence": "essential"
+                },
+                {
+                    "orthoID": "K18475",
+                    "description": "fliB; lysine-N-methylase [EC:2.1.1.-]",
+                    "presence": "nonessential"
+                },
+                {
+                    "orthoID": "K06602",
+                    "description": "flaF; flagellar protein FlaF",
+                    "presence": "nonessential"
+                },
+                {
+                    "orthoID": "K06603",
+                    "description": "flaG; flagellar protein FlaG",
+                    "presence": "nonessential"
+                },
+                {
+                    "orthoID": "K02382",
+                    "description": "flbA; flagellar protein FlbA",
+                    "presence": "nonessential"
+                },
+                {
+                    "orthoID": "K02383",
+                    "description": "flbB; flagellar protein FlbB",
+                    "presence": "nonessential"
+                },
+                {
+                    "orthoID": "K02384",
+                    "description": "flbC; flagellar protein FlbC",
+                    "presence": "nonessential"
+                },
+                {
+                    "orthoID": "K02385",
+                    "description": "flbD; flagellar protein FlbD",
+                    "presence": "nonessential"
+                },
+                {
+                    "orthoID": "K06601",
+                    "description": "flbT; flagellar protein FlbT",
+                    "presence": "nonessential"
+                }
+            ]
+        },
+        {
+            "name": "Regulation",
+            "presence": "nonessential",
+            "components": [
+                {
+                    "orthoID": "K02402",
+                    "description": "flhC; flagellar transcriptional activator FlhC",
+                    "presence": "nonessential"
+                },
+                {
+                    "orthoID": "K02403",
+                    "description": "flhD; flagellar transcriptional activator FlhD",
+                    "presence": "nonessential"
+                },
+                {
+                    "orthoID": "K02405",
+                    "description": "fliA; RNA polymerase sigma factor for flagellar operon FliA",
+                    "presence": "nonessential"
+                },
+                {
+                    "orthoID": "K02398",
+                    "description": "flgM; negative regulator of flagellin synthesis FlgM",
+                    "presence": "nonessential"
+                },
+                {
+                    "orthoID": "K02404",
+                    "description": "flhF; flagellar biosynthesis protein FlhF",
+                    "presence": "nonessential"
+                },
+                {
+                    "orthoID": "K04562",
+                    "description": "flhG, fleN; flagellar biosynthesis protein FlhG",
+                    "presence": "nonessential"
+                }
+            ]
+        },
+        {
+            "name": "Chaperones",
+            "presence": "nonessential",
+            "components": [
+                {
+                    "orthoID": "K02399",
+                    "description": "flgN; flagella synthesis protein FlgN",
+                    "presence": "nonessential"
+                },
+                {
+                    "orthoID": "K02413",
+                    "description": "fliJ; flagellar FliJ protein",
+                    "presence": "nonessential"
+                },
+                {
+                    "orthoID": "K02422",
+                    "description": "fliS; flagellar protein FliS",
+                    "presence": "nonessential"
+                },
+                {
+                    "orthoID": "K02423",
+                    "description": "fliT; flagellar protein FliT",
+                    "presence": "nonessential"
+                },
+                {
+                    "orthoID": "K13626",
+                    "description": "fliW; flagellar assembly factor FliW",
+                    "presence": "nonessential"
+                },
+                {
+                    "orthoID": "K02424",
+                    "description": "fliY, tcyA; L-cystine transport system substrate-binding protein",
+                    "presence": "nonessential"
+                },
+                {
+                    "orthoID": "K02425",
+                    "description": "fliZ; regulator of sigma S factor FliZ",
+                    "presence": "nonessential"
+                }
+            ]
+        }
+    ]
+}

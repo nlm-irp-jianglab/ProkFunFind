@@ -41,7 +41,7 @@ def retrieve_function_pipeline(database: str, fun_name: str) -> Callable:
 
     # 1. Obtain the configuration and check the exec as well as the database
     # required
-    path_to_fun = database + fun_name
+    path_to_fun = database.rstrip("/")+"/" + fun_name
 
     # 1.1 check the existance of the function
     if not os.path.exists(path_to_fun):
@@ -72,7 +72,6 @@ def retrieve_function_pipeline(database: str, fun_name: str) -> Callable:
         # varaible for the path for genome(fna),annotations(gff),proteins(faa)
         gff_file = genome_prefix + ".gff"
         fna_file = genome_prefix + ".fna"
-        faa_file = genome_prefix + ".faa"
 
         # create genome object from genome and annotations file and sort the
         # genes
@@ -80,10 +79,18 @@ def retrieve_function_pipeline(database: str, fun_name: str) -> Callable:
         [ct.sort() for ct in genomeObj.contigs.values()]
 
         # detect function related gene
-        detect_list = detect_module.pipeline(
-            config_file=detect_cf_path,
-            protein_file=faa_file,
-            outprefix=outprefix)
+        if detect_tool == "interproscan":
+            xml_file = genome_prefix + ".xml"
+            detect_list = detect_module.pipeline(
+                config_file=detect_cf_path,
+                xml_file=xml_file,
+                outprefix=outprefix)
+        else:
+            faa_file = genome_prefix + ".faa"
+            detect_list = detect_module.pipeline(
+                config_file=detect_cf_path,
+                protein_file=faa_file,
+                outprefix=outprefix)
 
         # attache the detect result to genome object
         for query in detect_list:

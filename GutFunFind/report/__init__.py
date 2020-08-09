@@ -56,25 +56,44 @@ def export_gene_gff(
     """
     f = open(outprefix + ".annot.gff", "a")
     for gene in genomeObj.genes.values():
-        if hasattr(gene, detect_tool) and detect_tool == "blast":
-            qry = getattr(gene, detect_tool)
-            hsp = qry.hsps[0]
-            cluster_annot = "Cl_" + \
-                str(getattr(gene, cluster_tool)) if hasattr(gene, cluster_tool) else "NA"
-            #function_annot = ";".join(gene.Functions) if hasattr(gene,"Functions") else "Unassigned Function"
-            print("{ct}\tGuFunFind\t{tp}\t{start}\t{end}\t.\t{strand}\t.\tID={id};Name={orthoID};Parent={cluster_ID};Target={Target};pct_identity={pct_identity};evalue={evalue}".format(
-                ct=gene.contig,
-                tp=gene.type,
-                start=gene.location.start,
-                end=gene.location.end,
-                strand="+" if gene.strand == 1 else "-",
-                id=gene.id,
-                orthoID=qry.orthoID,
-                cluster_ID=cluster_annot,
-                Target=hsp.hit_id + " " + str(hsp.hit_start) + " " + str(hsp.hit_end),
-                pct_identity=hsp.ident_pct,
-                evalue=hsp.evalue
-            ), file=f)
+        if hasattr(gene, detect_tool):
+            if detect_tool == "blast":
+                qry = getattr(gene, detect_tool)
+                hsp = qry.hsps[0]
+                cluster_annot = "Cl_" + \
+                    str(getattr(gene, cluster_tool)) if hasattr(gene, cluster_tool) else "NA"
+                #function_annot = ";".join(gene.Functions) if hasattr(gene,"Functions") else "Unassigned Function"
+                print("{ct}\tGuFunFind\t{tp}\t{start}\t{end}\t.\t{strand}\t.\tID={id};Name={orthoID};Parent={cluster_ID};Target={Target};pct_identity={pct_identity};evalue={evalue}".format(
+                    ct=gene.contig,
+                    tp=gene.type,
+                    start=gene.location.start,
+                    end=gene.location.end,
+                    strand="+" if gene.strand == 1 else "-",
+                    id=gene.id,
+                    orthoID=qry.orthoID,
+                    cluster_ID=cluster_annot,
+                    Target=hsp.hit_id + " " + str(hsp.hit_start) + " " + str(hsp.hit_end),
+                    pct_identity=hsp.ident_pct,
+                    evalue=hsp.evalue
+                ), file=f)
+            elif detect_tool == "interproscan":
+                qry = getattr(gene, detect_tool)
+                hsp = qry.hsps[0]
+                cluster_annot = "Cl_" + \
+                    str(getattr(gene, cluster_tool)) if hasattr(gene, cluster_tool) else "NA"
+                #function_annot = ";".join(gene.Functions) if hasattr(gene,"Functions") else "Unassigned Function"
+                print("{ct}\tGuFunFind\t{tp}\t{start}\t{end}\t.\t{strand}\t.\tID={id};Name={orthoID};Parent={cluster_ID};Target={Target}{evalue}".format(
+                    ct=gene.contig,
+                    tp=gene.type,
+                    start=gene.location.start,
+                    end=gene.location.end,
+                    strand="+" if gene.strand == 1 else "-",
+                    id=gene.id,
+                    orthoID=qry.orthoID,
+                    cluster_ID=cluster_annot,
+                    Target=hsp.hit_id,
+                    evalue= ";evalue="+str(hsp.evalue) if hasattr(hsp,"evalue") else ""
+                ), file=f)
     f.close()
 
 

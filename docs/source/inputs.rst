@@ -204,10 +204,6 @@ filter.ini
 
   ====================  =================================================================================================================
 
-  .. Attention::
-
-     The parameters in filter currently only support use evalue to filter all the orthoID. We will work on it to make it support orthoID level filter.
-
 
 .. Attention::
 
