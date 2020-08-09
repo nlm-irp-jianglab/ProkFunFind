@@ -4,7 +4,7 @@ with open("README.md", "r") as fh:
     long_description = fh.read()
 
 setuptools.setup(name='GutFunFind',
-                 version='0.1',
+                 version='0.1.1',
                  description='Predict the function based on genome',
                  long_description=long_description,
                  author='Xiaofang Jiang',
@@ -18,11 +18,11 @@ setuptools.setup(name='GutFunFind',
                      "GutFunFind.detect.blast_search",
                      "GutFunFind.detect.ipr_search",
                      "GutFunFind.detect.hmmer_search",
-                     "GutFunFind.cluster.DBSCAN" 
+                     "GutFunFind.cluster.DBSCAN"
                      ],
                  #packages=setuptools.find_packages(),
                  license='MIT',
-                 python_requires='>=3.6',
+                 python_requires='>=3.7',
                  scripts=["bin/run_GutFunFind.py"],
                  install_requires=[
                      'bcbio-gff',
