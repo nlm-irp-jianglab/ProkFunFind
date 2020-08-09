@@ -3,6 +3,7 @@ import csv
 from collections import defaultdict
 from typing import Dict, IO, List, Set, OrderedDict, Callable
 from Bio.SearchIO._model.query import QueryResult
+from GutFunFind.toolkit.base import *
 
 
 def blast_filter(config: ConfigParser, qres: QueryResult) -> QueryResult:
@@ -52,24 +53,7 @@ def blast_filter(config: ConfigParser, qres: QueryResult) -> QueryResult:
 
 def blast_ortho(qres: QueryResult, ortho_pair_file: str) -> QueryResult:
 
-    # Create a dict of dict[bait][orthoID] = precision
-    from collections import defaultdict
-    OrthScore_dict = defaultdict(dict)
-    #############################################################
-    #  User can change the last column to indicate precision    #
-    #############################################################
-    with open(ortho_pair_file) as csv_file:
-        csv_reader = csv.reader(csv_file, delimiter='\t')
-        header = next(csv_reader)
-        col_num = len(header)
-        if col_num == 2:
-            OrthScore_dict[header[1]][header[0]] = 1
-            for row in csv_reader:
-                OrthScore_dict[row[1]][row[0]] = 1
-        else:
-            OrthScore_dict[header[1]][header[0]] = float(header[2])
-            for row in csv_reader:
-                OrthScore_dict[row[1]][row[0]] = float(row[2])
+    OrthScore_dict = read2orthoDict(ortho_pair_file=ortho_pair_file)
 
     ######################################
     #  Sort method can be defined later  #
@@ -80,8 +64,9 @@ def blast_ortho(qres: QueryResult, ortho_pair_file: str) -> QueryResult:
 
     # Use the top matched hit to assgin orthoID to gene
     hit_key = qres.hit_keys[0]
-    ortho_dict = OrthScore_dict[hit_key]
-    setattr(qres, "orthoID", list(ortho_dict.keys())[0])
-    setattr(qres, "orthoID_weight", list(ortho_dict.values())[0])
+    max_dict = OrthScore_dict[hit_key]
+
+    setattr(qres, "orthoID", max_dict["orthoID"])
+    setattr(qres, "orthoID_weight", max_dict["precision"])
 
     return qres
