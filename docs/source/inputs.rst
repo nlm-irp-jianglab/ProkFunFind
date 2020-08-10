@@ -217,7 +217,7 @@ Interproscan Configuration
   ::
   
      [interproscan]
-     base.dir       = /home/xiaofang/GutFunFind/data/Flagellar/archaea.json
+     base.dir       = /home/xiaofang/GutFunFind/data/Flagellar
      orthoID_domain_precision = %(base.dir)s/domain_precision.txt
 
 
