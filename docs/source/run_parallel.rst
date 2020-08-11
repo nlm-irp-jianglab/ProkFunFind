@@ -12,7 +12,7 @@ At the NIH, UHGG is located here
 ``/data/Irp-jiang/share/DB_Share/UHGG/``
 
 At UMD, UHGG is located here 
-``Path to UHGG``
+``/fs/cbcb-lab/hall/data/UHGG/``
 
 
 
