@@ -29,3 +29,6 @@ run_GutFunFind.py -b data.folder -f Mucic_and_Saccharic_Acid -g input.folder/MGY
 * v0.1.1
     * add support for InterProScan
     * fix bug in cluster label
+
+* v0.1.2
+    * add support for InterProScan Tsv formatted output(will use tsv-formatted file in absence of xml-formatted file)

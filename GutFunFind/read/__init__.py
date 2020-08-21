@@ -1,6 +1,8 @@
+from GutFunFind.read.GFFParser import parse
+
 from typing import Dict, IO, List, Set, OrderedDict
-from BCBio import GFF
 from Bio import SeqIO
+
 
 from Bio.SeqFeature import FeatureLocation, SeqFeature
 from Bio.Seq import Seq
@@ -122,7 +124,8 @@ def GetGenomeFromGFF(gff3file: str, fnafile: str) -> Genome:
 
     try:
         with open(gff3file) as handle:
-            gff_records = list(GFF.parse(handle))
+            gff_records = list(parse(handle))
+            #gff_records = list(GFF.parse(handle))
         for rec in gff_records:
             ct = g1[rec.id]
             for f in rec.features:
@@ -178,3 +181,46 @@ def GetGenomeFromGB(gbfile: str) -> Genome:
                 ct[gene.id] = gene
         g1[ct.id] = ct
     return g1
+
+def GetGenomeFromGzipGFF(gzipfile:str) -> Genome:
+    import gzip
+
+    in_seq_handle = gzip.open(gzipfile,"rt")
+    g1 = Genome(
+        contigs={
+            i.id: Contig(
+                id=i.id,
+                seq=i.seq,
+                genes={}) for i in SeqIO.parse(
+                in_seq_handle,
+                "fasta")})
+    in_seq_handle.close()
+
+    try:
+        in_seq_handle = gzip.open(gzipfile,"rt")
+        gff_records = list(parse(in_seq_handle))
+        for rec in gff_records:
+            ct = g1[rec.id]
+            for f in rec.features:
+                if f.type == "CDS":
+                    gene = Gene(contig=ct.id,
+                                id=f.id,
+                                type=f.type,
+                                qualifiers=f.qualifiers,
+                                location=f.location)
+                    ct[gene.id] = gene
+                elif f.type in ["assembly_gap", "source"]:
+                    pass
+                else:
+                    gene = Gene(contig=ct.id,
+                                id=f.id,
+                                type=f.type,
+                                qualifiers=f.qualifiers,
+                                location=f.location)
+                    ct[gene.id] = gene
+    except Exception as err:
+        print("Error:{}".format(err))
+    in_seq_handle.close()
+
+    return g1
+
