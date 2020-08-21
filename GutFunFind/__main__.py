@@ -81,10 +81,22 @@ def retrieve_function_pipeline(database: str, fun_name: str) -> Callable:
         # detect function related gene
         if detect_tool == "interproscan":
             xml_file = genome_prefix + ".xml"
-            detect_list = detect_module.pipeline(
-                config_file=detect_cf_path,
-                xml_file=xml_file,
-                outprefix=outprefix)
+            if not os.path.isfile(xml_file):
+                tsv_file = genome_prefix + "_InterProScan.tsv"
+                if not os.path.isfile(tsv_file):
+                    sys.exit('Neither file {} nor file {} exists'.format(xml_file,tsv_file))
+                else:
+                    detect_list = detect_module.pipeline(
+                            config_file=detect_cf_path,
+                            in_file= tsv_file,
+                            fmt = "tsv",
+                            outprefix=outprefix)
+            else:
+                detect_list = detect_module.pipeline(
+                        config_file=detect_cf_path,
+                        in_file=xml_file,
+                        fmt = "xml",
+                        outprefix=outprefix)
         else:
             faa_file = genome_prefix + ".faa"
             detect_list = detect_module.pipeline(

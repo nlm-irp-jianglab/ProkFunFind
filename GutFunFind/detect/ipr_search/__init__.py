@@ -3,15 +3,20 @@ from Bio import SearchIO
 from typing import  IO, List, Union
 from configparser import ConfigParser
 from GutFunFind.toolkit.base import *
+from GutFunFind.detect.ipr_search.interproscan_tab import InterproscanTabParser,ipr_tab_parse
 
 def pipeline(config_file: Union[str, IO],
-             xml_file: Union[str, IO],
+             in_file: Union[str, IO],
+             fmt: str,
              outprefix: str) -> List[QueryResult]:
     # 1. Read the configuration file into configuration object
     cf = read_config(config_file)["interproscan"]
 
     # 2. Read interproscan xml file
-    qresults = SearchIO.parse(xml_file, "interproscan-xml")
+    if fmt == "xml":
+        qresults = SearchIO.parse(in_file, "interproscan-xml")
+    elif fmt == "tsv":
+        qresults = ipr_tab_parse(in_file)
 
     # 3. Read score and orthoID info into dictionary
     ortho_file = cf["orthoID_domain_precision"]

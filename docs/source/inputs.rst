@@ -18,7 +18,7 @@ Input genome data structure
 
   ``-g`` should be followed by the prefix of genome ``${prefix}``.
   
-  The folder should include: genome sequences(``${prefix}.fna``), protein sequences(``${prefix}.faa``), annotation(``${prefix}.gff``) and Interproscan xml(``${prefix}.xml``: optional).
+  The folder should include: genome sequences(``${prefix}.fna``), protein sequences(``${prefix}.faa``), annotation(``${prefix}.gff``) and Interproscan xml(``${prefix}.xml``: optional; or Interproscan tsv).
   
   In the example below:
   
@@ -29,10 +29,11 @@ Input genome data structure
     > MGYG-HGUT-03390.fna   # genome sequences
     > MGYG-HGUT-03390.gff   # annotations
     > MGYG-HGUT-03390.xml   # Interproscan xml output (only need for interproscan)
+    > MGYG-HGUT-03390_InterProScan.tsv   # Interproscan tsv output (only need for interproscan and the xml output is absent)
   
   The prefix should be ``input.folder/MGYG-HGUT-03390``
   
-  By default we can use Prokka_ to annotate the genome.
+  If we need to analyze other genome(not included in the UHGG database),  we can use Prokka_ to annotate the genome.
   
   .. _Prokka: https://github.com/tseemann/prokka
 
@@ -207,7 +208,7 @@ Blast Configuration
   
     ====================  =================================================================================================================
 
-.. Attention::
+.. Note::
 
    The parameters in ``detect.inc`` and ``filter.ini`` is detection method specific.
 
@@ -266,7 +267,7 @@ cluster.ini
   cluster.min_samples  
   ====================  =================================================================================================================
   
-.. Attention::
+.. Note::
 
    The parameters in ``cluster.inc`` is cluster method specific. Currently DBSCAN is the only detection method supported.
   

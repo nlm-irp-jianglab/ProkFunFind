@@ -13,7 +13,7 @@ Welcome to GutFunFind's documentation!
    - Select the correct method and filter parameters to detect genes
 
      - Blast
-     - Interproscan
+     - Interproscan(Run in advance)
      - Hmmer
      - ...
 

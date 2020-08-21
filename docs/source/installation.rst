@@ -48,7 +48,7 @@ Install programs
 
   .. Attention::
 
-     Currently we only support blast_search and the only dependence is blast+
+     Currently we support blast_search and preconfigured interproscan. The only dependence is blast+.
 
 Install python package
 """""""""""""""""""""""
@@ -98,7 +98,5 @@ Test GutFunFind
 
   .. Attention::
   
-     Still working on how to test the package. 
-     It is **highly recommended** to run tests before performing the full installation.
-     To test the libraries you just build: 
+     Still working on how to test the package...
   

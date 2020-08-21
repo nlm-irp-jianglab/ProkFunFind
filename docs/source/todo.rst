@@ -10,7 +10,7 @@ Todo list
 System-wide todo list
 ========================
 
-* Have a default option that can pass to all modules and overwrite it
+* Have a default option that can pass to all modules 
 
   * CPUs
   * read environment variable
@@ -19,9 +19,16 @@ System-wide todo list
 
 * Figure out how to test the module 
 
-* How to pass default data folder to module
+* How to pass default data folder to module?
 
 * API based readthedoc 
+
+  .. Attention::
+
+     Long-term goal: support UHGG pangenome-level analysis
+
+
+
 
 ==========================
 Module-specific todo list
@@ -30,6 +37,8 @@ Module-specific todo list
 * Add more detect modules
 
   * Hmmer
+  * HHsuite
+  * I-TASSER
   * ...
 
 ==========================
