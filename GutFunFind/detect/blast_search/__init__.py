@@ -1,7 +1,6 @@
 from Bio.SearchIO._model.query import QueryResult
 from Bio import SearchIO
-from typing import Dict, IO, List, Set, OrderedDict, Any, Tuple, Union
-from configparser import ConfigParser
+from typing import IO, List, Union
 from .blast_filter import blast_filter, blast_ortho
 from GutFunFind.toolkit.base import *
 

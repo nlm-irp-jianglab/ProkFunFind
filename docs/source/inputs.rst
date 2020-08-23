@@ -18,7 +18,7 @@ Input genome data structure
 
   ``-g`` should be followed by the prefix of genome ``${prefix}``.
   
-  The folder should include: genome sequences(``${prefix}.fna``), protein sequences(``${prefix}.faa``), annotation(``${prefix}.gff``) and Interproscan xml(``${prefix}.xml``: optional; or Interproscan tsv).
+  The folder should include: genome sequences(``${prefix}.fna``), protein sequences(``${prefix}.faa``), annotation(``${prefix}.gff``) and Interproscan xml(``${prefix}.xml``: optional; or Interproscan tsv ``${prefix}.tsv``).
   
   In the example below:
   
@@ -29,7 +29,7 @@ Input genome data structure
     > MGYG-HGUT-03390.fna   # genome sequences
     > MGYG-HGUT-03390.gff   # annotations
     > MGYG-HGUT-03390.xml   # Interproscan xml output (only need for interproscan)
-    > MGYG-HGUT-03390_InterProScan.tsv   # Interproscan tsv output (only need for interproscan and the xml output is absent)
+    > MGYG-HGUT-03390_InterProScan.tsv   # Interproscan tsv output (only need if Interproscan xml-formatted file is absent)
   
   The prefix should be ``input.folder/MGYG-HGUT-03390``
   

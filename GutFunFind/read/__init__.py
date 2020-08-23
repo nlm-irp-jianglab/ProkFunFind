@@ -1,10 +1,10 @@
 from GutFunFind.read.GFFParser import parse
 
-from typing import Dict, IO, List, Set, OrderedDict
+from collections import OrderedDict
+from typing import MutableMapping
+
 from Bio import SeqIO
-
-
-from Bio.SeqFeature import FeatureLocation, SeqFeature
+from Bio.SeqFeature import SeqFeature
 from Bio.Seq import Seq
 
 
@@ -32,8 +32,7 @@ class Contig:
     def __init__(self,
                  id: str,
                  seq: Seq,
-                 genes: OrderedDict[str,
-                                    Gene],
+                 genes: MutableMapping[str, Gene],
                  sorted=False) -> None:
         self.id = id
         self.seq = seq
@@ -60,8 +59,8 @@ class Contig:
         except KeyError:
             print("Gene:{} not found".format(KeyError))
 
-    def __contains__(self, item):
-        pass
+    def __iter__(self):
+        return iter(self.genes)
 
     def __contains__(self, key: str):
         return key in self.genes.keys()
@@ -81,7 +80,7 @@ class Contig:
 class Genome:
     """Docstring for Genome. """
 
-    def __init__(self, contigs: OrderedDict[str, Contig]) -> None:
+    def __init__(self, contigs: MutableMapping[str, Contig]) -> None:
         self.contigs = contigs
 
     def __repr__(self):
@@ -104,6 +103,9 @@ class Genome:
             del self.contigs[key]
         except KeyError:
             print("Contig:{} not found".format(KeyError))
+
+    def __iter__(self):
+        return iter(self.contigs)
 
     def __contains__(self, key: str):
         return key in self.contigs.keys()
@@ -223,4 +225,3 @@ def GetGenomeFromGzipGFF(gzipfile:str) -> Genome:
     in_seq_handle.close()
 
     return g1
-

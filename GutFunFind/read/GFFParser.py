@@ -31,11 +31,12 @@ import warnings
 import six
 from six.moves import urllib
 # Make defaultdict compatible with versions of python older than 2.4
-try:
-    collections.defaultdict
-except AttributeError:
-    import _utils
-    collections.defaultdict = _utils.defaultdict
+# Commented by Xiaofang Jiang
+#try:
+#    collections.defaultdict
+#except AttributeError:
+#    import _utils
+#    collections.defaultdict = _utils.defaultdict
 
 from Bio.Seq import UnknownSeq
 from Bio.SeqRecord import SeqRecord
@@ -711,42 +712,43 @@ class GFFParser(_AbstractMapReduceGFF):
         if out_info.has_items():
             yield out_info.get_results()
 
-class DiscoGFFParser(_AbstractMapReduceGFF):
-    """GFF Parser with parallelization through Disco (http://discoproject.org.
-    """
-    def __init__(self, disco_host, create_missing=True):
-        """Initialize parser.
-        
-        disco_host - Web reference to a Disco host which will be used for
-        parallelizing the GFF reading job.
-        """
-        _AbstractMapReduceGFF.__init__(self, create_missing=create_missing)
-        self._disco_host = disco_host
-
-    def _gff_process(self, gff_files, limit_info, target_lines=None):
-        """Process GFF addition, using Disco to parallelize the process.
-        """
-        assert target_lines is None, "Cannot split parallelized jobs"
-        # make these imports local; only need them when using disco
-        import simplejson
-        import disco
-        # absolute path names unless they are special disco files 
-        full_files = []
-        for f in gff_files:
-            if f.split(":")[0] != "disco":
-                full_files.append(os.path.abspath(f))
-            else:
-                full_files.append(f)
-        results = disco.job(self._disco_host, name="gff_reader",
-                input=full_files,
-                params=disco.Params(limit_info=limit_info, jsonify=True,
-                    filter_info=self._examiner._filter_info),
-                required_modules=["simplejson", "collections", "re"],
-                map=self._map_fn, reduce=self._reduce_fn)
-        processed = dict()
-        for out_key, out_val in disco.result_iterator(results):
-            processed[out_key] = simplejson.loads(out_val)
-        yield processed
+# Commented by Xiaofang Jiang
+#class DiscoGFFParser(_AbstractMapReduceGFF):
+#    """GFF Parser with parallelization through Disco (http://discoproject.org.
+#    """
+#    def __init__(self, disco_host, create_missing=True):
+#        """Initialize parser.
+#        
+#        disco_host - Web reference to a Disco host which will be used for
+#        parallelizing the GFF reading job.
+#        """
+#        _AbstractMapReduceGFF.__init__(self, create_missing=create_missing)
+#        self._disco_host = disco_host
+#
+#    def _gff_process(self, gff_files, limit_info, target_lines=None):
+#        """Process GFF addition, using Disco to parallelize the process.
+#        """
+#        assert target_lines is None, "Cannot split parallelized jobs"
+#        # make these imports local; only need them when using disco
+#        import simplejson
+#        import disco
+#        # absolute path names unless they are special disco files 
+#        full_files = []
+#        for f in gff_files:
+#            if f.split(":")[0] != "disco":
+#                full_files.append(os.path.abspath(f))
+#            else:
+#                full_files.append(f)
+#        results = disco.job(self._disco_host, name="gff_reader",
+#                input=full_files,
+#                params=disco.Params(limit_info=limit_info, jsonify=True,
+#                    filter_info=self._examiner._filter_info),
+#                required_modules=["simplejson", "collections", "re"],
+#                map=self._map_fn, reduce=self._reduce_fn)
+#        processed = dict()
+#        for out_key, out_val in disco.result_iterator(results):
+#            processed[out_key] = simplejson.loads(out_val)
+#        yield processed
 
 def parse(gff_files, base_dict=None, limit_info=None, target_lines=None):
     """High level interface to parse GFF files into SeqRecords and SeqFeatures.

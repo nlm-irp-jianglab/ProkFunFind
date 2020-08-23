@@ -11,7 +11,7 @@ from GutFunFind.read import *
 import os
 import sys
 from Bio import SeqIO
-from typing import Dict, IO, List, Set, OrderedDict, Callable
+from typing import Callable
 from Bio.SeqRecord import SeqRecord
 import subprocess
 from configparser import ConfigParser

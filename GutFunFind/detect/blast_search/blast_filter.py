@@ -1,7 +1,6 @@
 from configparser import ConfigParser
 import csv
 from collections import defaultdict
-from typing import Dict, IO, List, Set, OrderedDict, Callable
 from Bio.SearchIO._model.query import QueryResult
 from GutFunFind.toolkit.base import *
 
