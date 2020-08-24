@@ -1,17 +1,19 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+from collections import OrderedDict
+import glob, os
 
 import GutFunFind
 from GutFunFind import examine
 from GutFunFind import cluster
 from GutFunFind import detect
 from GutFunFind import report
-from GutFunFind.read import *
+from GutFunFind.read import GetGenomeFromGFF,Genome
 
 import os
 import sys
 from Bio import SeqIO
-from typing import Callable
+from typing import Callable, List, Tuple, Dict, AnyStr
 from Bio.SeqRecord import SeqRecord
 import subprocess
 from configparser import ConfigParser
@@ -32,9 +34,19 @@ def module_name(arg: str) -> str:
     :returns: TODO
 
     """
-    func = switcher.get(arg)
-    return(func)
+    if not switcher.get(arg):
+        sys.exit("can not find module {}".format(arg))
+    else:
+        return switcher.get(arg)
 
+def find_file_in_folder(folder:AnyStr,pattern:AnyStr) -> List:
+    import os, fnmatch
+    fileList = []
+    for dName, sdName, fList in os.walk(folder):
+        for fileName in fList:
+            if fnmatch.fnmatch(fileName, pattern):
+                fileList.append(os.path.join(dName, fileName))
+    return fileList
 
 # Write a funtion pipeline for function of interest
 def retrieve_function_pipeline(database: str, fun_name: str) -> Callable:
@@ -83,7 +95,7 @@ def retrieve_function_pipeline(database: str, fun_name: str) -> Callable:
         sys.exit('Can not find {}. Please check the system_file'.format(system_file))
 
 
-    def function_analysis(genome_prefix: str, outprefix: str) -> Genome:
+    def function_analysis(genome_prefix: str, outprefix: str) -> Tuple[Dict,int,Genome]:
 
         # varaible for the path for genome(fna),annotations(gff),proteins(faa)
         gff_file = genome_prefix + ".gff"
@@ -93,6 +105,19 @@ def retrieve_function_pipeline(database: str, fun_name: str) -> Callable:
         fna_file = genome_prefix + ".fna"
         if not os.path.exists(fna_file):
             sys.exit('Can not find {}. Please check the fna file'.format(fna_file))
+
+        outprefix = os.path.abspath(outprefix)
+        out_base = os.path.basename(outprefix)
+        out_dir  = os.path.dirname(outprefix)
+        if not out_base and out_dir:
+            sys.exit("Please provide prefix of output file, Not directory name {}".format(out_dir))
+        else:
+            if not os.path.exists(out_dir):
+                os.mkdir(out_dir)
+
+        if not out_base and out_dir:
+            sys.exit("Please provide prefix for output filename, not directory {}".format(out_dir))
+
 
         # create genome object from genome and annotations file and sort the
         # genes

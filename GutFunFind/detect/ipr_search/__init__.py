@@ -7,8 +7,7 @@ from GutFunFind.detect.ipr_search.interproscan_tab import InterproscanTabParser,
 
 def pipeline(config_file: Union[str, IO],
              in_file: Union[str, IO],
-             fmt: str,
-             outprefix: str) -> List[QueryResult]:
+             fmt: str) -> List[QueryResult]:
     # 1. Read the configuration file into configuration object
     cf = read_config(config_file)["interproscan"]
 

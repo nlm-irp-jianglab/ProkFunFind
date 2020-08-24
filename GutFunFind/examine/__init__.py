@@ -63,8 +63,8 @@ def check_gene_in_subsystem(
                     setattr(
                         genomeObject.genes[gene], "Functions", [
                             "/".join(fun_list)])
-        return (system_dict, status)
         fun_list.pop()
+        return (system_dict, status)
 
 
     status = 0 
