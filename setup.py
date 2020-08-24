@@ -4,7 +4,7 @@ with open("README.md", "r") as fh:
     long_description = fh.read()
 
 setuptools.setup(name='GutFunFind',
-                 version='0.1.2',
+                 version='0.2.0',
                  description='Predict the function based on genome',
                  long_description=long_description,
                  author='Xiaofang Jiang',
