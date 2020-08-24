@@ -50,28 +50,49 @@ def retrieve_function_pipeline(database: str, fun_name: str) -> Callable:
 
     # 1.2 check the existance of function configuration
     config = ConfigParser()
-    config.read(path_to_fun + "/config.ini")
+    config_path = path_to_fun + "/config.ini"
+
+    if not os.path.exists(config_path):
+        sys.exit('Can not find {}. Please check the path of config.ini'.format(config_path))
+    config.read(config_path)
 
     import importlib
     # 2. Run the correct detect tool
     detect_tool = config.get('main', 'detect.tool')
     detect_cf_path = config.get('main', 'detect.config')
+
+    if not os.path.exists(detect_cf_path):
+        sys.exit('Can not find {}. Please check the detect.inc file'.format(detect_cf_path))
+
     detect_module = importlib.import_module(
         "GutFunFind.detect" + "." + module_name(detect_tool), package=None)
 
     # 3. Run the cluster method
     cluster_tool = config.get('main', 'cluster.tool')
     cluster_cf_path = config.get('main', 'cluster.config')
+
+    if not os.path.exists(cluster_cf_path):
+        sys.exit('Can not find {}. Please check the cluster.inc file'.format(cluster_cf_path))
+
     cluster_module = importlib.import_module(
         "GutFunFind.cluster" + "." + module_name(cluster_tool), package=None)
 
     system_file = config.get('main', 'system.file')
 
+    if not os.path.exists(system_file):
+        sys.exit('Can not find {}. Please check the system_file'.format(system_file))
+
+
     def function_analysis(genome_prefix: str, outprefix: str) -> Genome:
 
         # varaible for the path for genome(fna),annotations(gff),proteins(faa)
         gff_file = genome_prefix + ".gff"
+        if not os.path.exists(gff_file):
+            sys.exit('Can not find {}. Please check the gff file'.format(gff_file))
+        
         fna_file = genome_prefix + ".fna"
+        if not os.path.exists(fna_file):
+            sys.exit('Can not find {}. Please check the fna file'.format(fna_file))
 
         # create genome object from genome and annotations file and sort the
         # genes
@@ -89,16 +110,16 @@ def retrieve_function_pipeline(database: str, fun_name: str) -> Callable:
                     detect_list = detect_module.pipeline(
                             config_file=detect_cf_path,
                             in_file= tsv_file,
-                            fmt = "tsv",
-                            outprefix=outprefix)
+                            fmt = "tsv")
             else:
                 detect_list = detect_module.pipeline(
                         config_file=detect_cf_path,
                         in_file=xml_file,
-                        fmt = "xml",
-                        outprefix=outprefix)
+                        fmt = "xml")
         else:
             faa_file = genome_prefix + ".faa"
+            if not os.path.exists(faa_file):
+                sys.exit('Can not find {}. Please check the faa file'.format(faa_file))
             detect_list = detect_module.pipeline(
                 config_file=detect_cf_path,
                 protein_file=faa_file,
