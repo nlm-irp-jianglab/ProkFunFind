@@ -405,6 +405,40 @@ def main():
         dest='command', title="Usage: {} <command> [options]".format(
             os.path.basename(__file__)), metavar="Commands:")
 
+    parser_rep = subparsers.add_parser(
+        "rep", help='Analyze an individual genome')
+
+    parser_rep.add_argument(
+        '-b',
+        '--databasedir',
+        help='The base dir of function',
+        required=True,
+        dest='database',
+        metavar='')
+    parser_rep.add_argument(
+        '-f',
+        '--function',
+        help='Name of the function',
+        required=True,
+        dest='fun_name',
+        metavar='')
+
+    parser_rep.add_argument(
+        '-g',
+        '--genomeprefix',
+        help='The prefix of genome',
+        required=True,
+        dest='genome_prefix',
+        metavar='')
+    parser_rep.add_argument(
+        '-o',
+        '--outputprefix',
+        help='The output prefix',
+        required=True,
+        dest='outprefix',
+        metavar='')
+    parser_rep.set_defaults(func=main_individual)
+
     parser_pan = subparsers.add_parser(
         "pan", help='Analyze genomes of the same pangenome')
 
@@ -445,40 +479,6 @@ def main():
         dest='outprefix',
         metavar='')
     parser_pan.set_defaults(func=main_pan)
-
-    parser_rep = subparsers.add_parser(
-        "rep", help='Analyze an individual genome')
-
-    parser_rep.add_argument(
-        '-b',
-        '--databasedir',
-        help='The base dir of function',
-        required=True,
-        dest='database',
-        metavar='')
-    parser_rep.add_argument(
-        '-f',
-        '--function',
-        help='Name of the function',
-        required=True,
-        dest='fun_name',
-        metavar='')
-
-    parser_rep.add_argument(
-        '-g',
-        '--genomeprefix',
-        help='The prefix of genome',
-        required=True,
-        dest='genome_prefix',
-        metavar='')
-    parser_rep.add_argument(
-        '-o',
-        '--outputprefix',
-        help='The output prefix',
-        required=True,
-        dest='outprefix',
-        metavar='')
-    parser_rep.set_defaults(func=main_individual)
 
     if len(sys.argv) <= 1:
         sys.argv.append('--help')

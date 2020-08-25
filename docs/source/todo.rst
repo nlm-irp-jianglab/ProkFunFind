@@ -23,12 +23,6 @@ System-wide todo list
 
 * API based readthedoc 
 
-  .. Attention::
-
-     Long-term goal: support UHGG pangenome-level analysis
-
-
-
 
 ==========================
 Module-specific todo list

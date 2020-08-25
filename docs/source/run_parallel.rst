@@ -21,16 +21,16 @@ for example, if you are using the UHGG genomes, you will generate a file like be
 
 ::
 
-  run_GutFunFind.py -b GutFunFind/data -f Mucic_and_Saccharic_Acid -g /data/Irp-jiang/share/DB_Share/UHGG/uhgg_catalogue/MGYG-HGUT-000/MGYG-HGUT-00001/genome/MGYG-HGUT-00001 -o output_for_MGYG-HGUT-00001
-  run_GutFunFind.py -b GutFunFind/data -f Mucic_and_Saccharic_Acid -g /data/Irp-jiang/share/DB_Share/UHGG/uhgg_catalogue/MGYG-HGUT-000/MGYG-HGUT-00002/genome/MGYG-HGUT-00002 -o output_for_MGYG-HGUT-00002
-  run_GutFunFind.py -b GutFunFind/data -f Mucic_and_Saccharic_Acid -g /data/Irp-jiang/share/DB_Share/UHGG/uhgg_catalogue/MGYG-HGUT-000/MGYG-HGUT-00003/genome/MGYG-HGUT-00003 -o output_for_MGYG-HGUT-00003
-  run_GutFunFind.py -b GutFunFind/data -f Mucic_and_Saccharic_Acid -g /data/Irp-jiang/share/DB_Share/UHGG/uhgg_catalogue/MGYG-HGUT-000/MGYG-HGUT-00004/genome/MGYG-HGUT-00004 -o output_for_MGYG-HGUT-00004
-  run_GutFunFind.py -b GutFunFind/data -f Mucic_and_Saccharic_Acid -g /data/Irp-jiang/share/DB_Share/UHGG/uhgg_catalogue/MGYG-HGUT-000/MGYG-HGUT-00005/genome/MGYG-HGUT-00005 -o output_for_MGYG-HGUT-00005
-  run_GutFunFind.py -b GutFunFind/data -f Mucic_and_Saccharic_Acid -g /data/Irp-jiang/share/DB_Share/UHGG/uhgg_catalogue/MGYG-HGUT-000/MGYG-HGUT-00006/genome/MGYG-HGUT-00006 -o output_for_MGYG-HGUT-00006
-  run_GutFunFind.py -b GutFunFind/data -f Mucic_and_Saccharic_Acid -g /data/Irp-jiang/share/DB_Share/UHGG/uhgg_catalogue/MGYG-HGUT-000/MGYG-HGUT-00007/genome/MGYG-HGUT-00007 -o output_for_MGYG-HGUT-00007
-  run_GutFunFind.py -b GutFunFind/data -f Mucic_and_Saccharic_Acid -g /data/Irp-jiang/share/DB_Share/UHGG/uhgg_catalogue/MGYG-HGUT-000/MGYG-HGUT-00008/genome/MGYG-HGUT-00008 -o output_for_MGYG-HGUT-00008
-  run_GutFunFind.py -b GutFunFind/data -f Mucic_and_Saccharic_Acid -g /data/Irp-jiang/share/DB_Share/UHGG/uhgg_catalogue/MGYG-HGUT-000/MGYG-HGUT-00009/genome/MGYG-HGUT-00009 -o output_for_MGYG-HGUT-00009
-  run_GutFunFind.py -b GutFunFind/data -f Mucic_and_Saccharic_Acid -g /data/Irp-jiang/share/DB_Share/UHGG/uhgg_catalogue/MGYG-HGUT-000/MGYG-HGUT-00010/genome/MGYG-HGUT-00010 -o output_for_MGYG-HGUT-00010
+  run_GutFunFind.py rep -b GutFunFind/data -f Mucic_and_Saccharic_Acid -g /data/Irp-jiang/share/DB_Share/UHGG/uhgg_catalogue/MGYG-HGUT-000/MGYG-HGUT-00001/genome/MGYG-HGUT-00001 -o output_for_MGYG-HGUT-00001
+  run_GutFunFind.py rep -b GutFunFind/data -f Mucic_and_Saccharic_Acid -g /data/Irp-jiang/share/DB_Share/UHGG/uhgg_catalogue/MGYG-HGUT-000/MGYG-HGUT-00002/genome/MGYG-HGUT-00002 -o output_for_MGYG-HGUT-00002
+  run_GutFunFind.py rep -b GutFunFind/data -f Mucic_and_Saccharic_Acid -g /data/Irp-jiang/share/DB_Share/UHGG/uhgg_catalogue/MGYG-HGUT-000/MGYG-HGUT-00003/genome/MGYG-HGUT-00003 -o output_for_MGYG-HGUT-00003
+  run_GutFunFind.py rep -b GutFunFind/data -f Mucic_and_Saccharic_Acid -g /data/Irp-jiang/share/DB_Share/UHGG/uhgg_catalogue/MGYG-HGUT-000/MGYG-HGUT-00004/genome/MGYG-HGUT-00004 -o output_for_MGYG-HGUT-00004
+  run_GutFunFind.py rep -b GutFunFind/data -f Mucic_and_Saccharic_Acid -g /data/Irp-jiang/share/DB_Share/UHGG/uhgg_catalogue/MGYG-HGUT-000/MGYG-HGUT-00005/genome/MGYG-HGUT-00005 -o output_for_MGYG-HGUT-00005
+  run_GutFunFind.py rep -b GutFunFind/data -f Mucic_and_Saccharic_Acid -g /data/Irp-jiang/share/DB_Share/UHGG/uhgg_catalogue/MGYG-HGUT-000/MGYG-HGUT-00006/genome/MGYG-HGUT-00006 -o output_for_MGYG-HGUT-00006
+  run_GutFunFind.py rep -b GutFunFind/data -f Mucic_and_Saccharic_Acid -g /data/Irp-jiang/share/DB_Share/UHGG/uhgg_catalogue/MGYG-HGUT-000/MGYG-HGUT-00007/genome/MGYG-HGUT-00007 -o output_for_MGYG-HGUT-00007
+  run_GutFunFind.py rep -b GutFunFind/data -f Mucic_and_Saccharic_Acid -g /data/Irp-jiang/share/DB_Share/UHGG/uhgg_catalogue/MGYG-HGUT-000/MGYG-HGUT-00008/genome/MGYG-HGUT-00008 -o output_for_MGYG-HGUT-00008
+  run_GutFunFind.py rep -b GutFunFind/data -f Mucic_and_Saccharic_Acid -g /data/Irp-jiang/share/DB_Share/UHGG/uhgg_catalogue/MGYG-HGUT-000/MGYG-HGUT-00009/genome/MGYG-HGUT-00009 -o output_for_MGYG-HGUT-00009
+  run_GutFunFind.py rep -b GutFunFind/data -f Mucic_and_Saccharic_Acid -g /data/Irp-jiang/share/DB_Share/UHGG/uhgg_catalogue/MGYG-HGUT-000/MGYG-HGUT-00010/genome/MGYG-HGUT-00010 -o output_for_MGYG-HGUT-00010
   ...
 
 

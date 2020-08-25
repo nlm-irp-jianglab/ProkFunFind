@@ -57,6 +57,7 @@ def export_gene_gff(
 #        if hasattr(gene, "pangenome_group"):
 
             if detect_tool == "blast":
+
                 f.write("{ct}\tGuFunFind\t{tp}\t{start}\t{end}\t.\t{strand}\t.\tID={id};Name={orthoID};ClusterID={cluster_ID};Target={Target};pct_identity={pct_identity};evalue={evalue}".format(
                     ct=gene.contig,
                     tp=gene.type,
@@ -70,7 +71,17 @@ def export_gene_gff(
                     pct_identity=hsp.ident_pct,
                     evalue=hsp.evalue
                 ))
+
+                if hasattr(gene, "pangenome_group"):
+                    gene_group = gene.pangenome_group
+                    if gene_group.method == "Roary":
+                        f.write(";pan_annot="+gene_group.annotation)
+                        f.write(";pan_isolates="+gene_group.number['isolates'])
+                        f.write(";pan_avg_seq="+gene_group.number['Avg sequences'])
+                        f.write(";pan_accessory=True") if hasattr(gene_group,"accessory") else f.write("pan_core=True") 
+
                 f.write("\n")
+
             elif detect_tool == "interproscan":
                 f.write("{ct}\tGuFunFind\t{tp}\t{start}\t{end}\t.\t{strand}\t.\tID={id};Name={orthoID};ClusterID={cluster_ID};Target={Target}{evalue}".format(
                     ct=gene.contig,
@@ -84,6 +95,15 @@ def export_gene_gff(
                     Target=hsp.hit_id,
                     evalue= ";evalue="+str(hsp.evalue) if hasattr(hsp,"evalue") else ""
                 ))
+
+                if hasattr(gene, "pangenome_group"):
+                    gene_group = gene.pangenome_group
+                    if gene_group.method == "Roary":
+                        f.write(";pan_annot="+gene_group.annotation)
+                        f.write(";pan_isolates="+gene_group.number['isolates'])
+                        f.write(";pan_avg_seq="+gene_group.number['Avg sequences'])
+                        f.write(";pan_accessory=True") if hasattr(gene_group,"accessory") else f.write("pan_core=True") 
+
                 f.write("\n")
     f.close()
 

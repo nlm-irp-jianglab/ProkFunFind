@@ -53,7 +53,6 @@ Install programs
 Install python package
 """""""""""""""""""""""
 
-  * bcbio-gff_
   * biopython_
   * scikit-learn_
   * configparser_
@@ -61,8 +60,8 @@ Install python package
   * importlib_
   * argparse_
   * numpy_
+  * six_
   
-  .. _bcbio-gff: https://github.com/chapmanb/bcbb/tree/master/gff
   .. _biopython: http://biopython.org/DIST/docs/tutorial/Tutorial.html
   .. _scikit-learn: https://scikit-learn.org/stable/
   .. _configparser: https://docs.python.org/3/library/configparser.html
@@ -70,6 +69,7 @@ Install python package
   .. _importlib: https://docs.python.org/3/library/importlib.html
   .. _argparse: https://docs.python.org/3/library/argparse.html
   .. _numpy: https://numpy.org/
+  .. _six: https://github.com/benjaminp/six
 
 
 Perform the installation
