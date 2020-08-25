@@ -2,9 +2,12 @@
 
 .. _quickstart:
 
-.. caution::
+.. Attention::
 
-   We add pan-genome support and the command line is different from previous version. (Pay attention to the "`rep`") 
+   We add pan-genome support and the command line is different from previous version.  
+
+     1. To run the original command, please add "`rep`" after `run_GutFunFind.py`
+     2. Use relative path instead of absolute path in all the configuration files (`base.dir` is removed)
 
 ************
 Quick Start

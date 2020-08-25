@@ -5,9 +5,12 @@ from Bio.SearchIO._model.query import QueryResult
 from GutFunFind.toolkit.base import *
 
 
-def blast_filter(config: ConfigParser, qres: QueryResult) -> QueryResult:
+#def blast_filter(config: ConfigParser, qres: QueryResult) -> QueryResult:
+def blast_filter(config_file: Union[str,IO], qres: QueryResult) -> QueryResult:
 
-    cf = config
+    #cf = config
+    cf = read_config(config_file)
+    basedir = os.path.dirname(os.path.abspath(config_file))+"/"
 
     global_evalue = cf["filter.global"]["evalue"]
     global_ident = cf["filter.global"]["ident_pct"]
@@ -25,7 +28,8 @@ def blast_filter(config: ConfigParser, qres: QueryResult) -> QueryResult:
             "!=" : operator.ne
             }
 
-    hit_filter_file = cf["filter.local"]["filter_file"]
+    hit_filter_file = check_path_existence(basedir + cf["filter.local"]["filter_file"])
+
     # check if file exist or empty
     filter_dict = defaultdict(list)
     with open(hit_filter_file) as filter_file:

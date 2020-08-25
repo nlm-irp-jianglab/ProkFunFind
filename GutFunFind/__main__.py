@@ -10,6 +10,7 @@ from GutFunFind import cluster
 from GutFunFind import detect
 from GutFunFind import report
 from GutFunFind.read import GetGenomeFromGFF, Genome, Roarycsv2pangenome, GetGenomeFromGzipGFF
+from GutFunFind.toolkit.base import find_file_in_folder, check_path_existence
 
 from Bio import SeqIO
 from Bio.SeqRecord import SeqRecord
@@ -40,27 +41,12 @@ def module_name(arg: str) -> str:
         return switcher.get(arg)
 
 
-def find_file_in_folder(folder: AnyStr, pattern: AnyStr) -> List:
-    import fnmatch
-    fileList = []
-    for dName, sdName, fList in os.walk(folder):
-        for fileName in fList:
-            if fnmatch.fnmatch(fileName, pattern):
-                fileList.append(os.path.join(dName, fileName))
-    return fileList
-
-def check_path_existence(path):
-    abspath = os.path.abspath(path)
-    if not os.path.exists(abspath):
-        sys.exit("Can not find {}! Please check!".format(abspath))
-    return(abspath)
-
 # Write a funtion pipeline for function of interest for a individual genome
 def retrieve_function_pipeline(database: str, fun_name: str) -> Callable:
 
     # 1. Obtain the configuration and check the exec as well as the database
     # required
-    path_to_fun = database.rstrip("/") + "/" + fun_name
+    path_to_fun = database.rstrip("/") + "/" + fun_name + "/"
 
     # 1.1 check the existance of the function
     if not os.path.exists(path_to_fun):
@@ -68,7 +54,7 @@ def retrieve_function_pipeline(database: str, fun_name: str) -> Callable:
 
     # 1.2 check the existance of function configuration
     config = ConfigParser()
-    config_path = path_to_fun + "/config.ini"
+    config_path = path_to_fun + "config.ini"
     config_path = check_path_existence(config_path)
 
     config.read(config_path)
@@ -76,7 +62,7 @@ def retrieve_function_pipeline(database: str, fun_name: str) -> Callable:
     import importlib
     # 2. Run the correct detect tool
     detect_tool = config.get('main', 'detect.tool')
-    detect_cf_path = config.get('main', 'detect.config')
+    detect_cf_path = path_to_fun + config.get('main', 'detect.config')
     detect_cf_path = check_path_existence(detect_cf_path)
 
     detect_module = importlib.import_module(
@@ -84,13 +70,13 @@ def retrieve_function_pipeline(database: str, fun_name: str) -> Callable:
 
     # 3. Run the cluster method
     cluster_tool = config.get('main', 'cluster.tool')
-    cluster_cf_path = config.get('main', 'cluster.config')
+    cluster_cf_path = path_to_fun + config.get('main', 'cluster.config')
     cluster_cf_path = check_path_existence(cluster_cf_path)
 
     cluster_module = importlib.import_module(
         "GutFunFind.cluster" + "." + module_name(cluster_tool), package=None)
 
-    system_file = config.get('main', 'system.file')
+    system_file = path_to_fun + config.get('main', 'system.file')
     system_file = check_path_existence(system_file)
 
     def function_analysis(genome_prefix: str,
@@ -206,7 +192,7 @@ def retrieve_function_pipeline_pan(database: str, fun_name: str) -> Callable:
 
     # 1. Obtain the configuration and check the exec as well as the database
     # required
-    path_to_fun = database.rstrip("/") + "/" + fun_name
+    path_to_fun = database.rstrip("/") + "/" + fun_name + "/"
 
     # 1.1 check the existance of the function
     if not os.path.exists(path_to_fun):
@@ -222,7 +208,7 @@ def retrieve_function_pipeline_pan(database: str, fun_name: str) -> Callable:
     import importlib
     # 2. Run the correct detect tool
     detect_tool = config.get('main', 'detect.tool')
-    detect_cf_path = config.get('main', 'detect.config')
+    detect_cf_path = path_to_fun + config.get('main', 'detect.config')
     detect_cf_path = check_path_existence(detect_cf_path)
 
     detect_module = importlib.import_module(
@@ -230,13 +216,13 @@ def retrieve_function_pipeline_pan(database: str, fun_name: str) -> Callable:
 
     # 3. Run the cluster method
     cluster_tool = config.get('main', 'cluster.tool')
-    cluster_cf_path = config.get('main', 'cluster.config')
+    cluster_cf_path = path_to_fun + config.get('main', 'cluster.config')
     cluster_cf_path = check_path_existence(cluster_cf_path)
 
     cluster_module = importlib.import_module(
         "GutFunFind.cluster" + "." + module_name(cluster_tool), package=None)
 
-    system_file = config.get('main', 'system.file')
+    system_file = path_to_fun + config.get('main', 'system.file')
     system_file = check_path_existence(system_file)
 
     def function_analysis(pangenome_path: str, outprefix: str, folder: str):

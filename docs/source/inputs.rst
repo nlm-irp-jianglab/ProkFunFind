@@ -143,20 +143,17 @@ config.ini
   ::
   
     [main]
-    base.dir       = /home/jiangx6/GutFunFind/data/Mucic_and_Saccharic_Acid/
     detect.tool    = blast
-    detect.config  = %(base.dir)s/detect.ini
+    detect.config  = detect.ini
     cluster.tool   = DBSCAN
-    cluster.config = %(base.dir)s/cluster.ini
-    system.file    = %(base.dir)s/system.json
+    cluster.config = cluster.ini
+    system.file    = system.json
   
   
   
   ===============  ==============================================================================
   Name              Description
   ===============  ==============================================================================
-  base.dir          The base folder of all configuration files([TODO]_: remove dependence later)
-  ---------------  ------------------------------------------------------------------------------
   detect.tool       The method used to detect the genes
                     option:
                    
@@ -164,14 +161,14 @@ config.ini
                     * hmmer
                     * interproscan
   ---------------  ------------------------------------------------------------------------------
-  detect.config     The path to the configuration file that store the detect method information
+  detect.config     The name of the configuration file that store the detect method information
   ---------------  ------------------------------------------------------------------------------
   cluster.tool      The method used to cluster the genes
                     option:
                    
                     * DBSCAN
   ---------------  ------------------------------------------------------------------------------
-  system.file       The path to describe the structure of the function system
+  system.file       The name of the file that describe the structure of the function system
   ===============  ==============================================================================
 
 
@@ -184,13 +181,12 @@ Blast Configuration
   ::
   
      [blast]
-     base.dir       = /home/jiangx6/GutFunFind/data/Mucic_and_Saccharic_Acid/
-     blast.query    = %(base.dir)s/bait.fa
+     blast.query    = bait.fa
      blast.exec     = blastp
      blast.evalue   = 1e-4
      blast.threads  = 8
-     filter.config  = %(base.dir)s/filter.ini
-     map.ortho_pair = %(base.dir)s/ortho_query_pair.tsv
+     filter.config  = filter.ini
+     map.ortho_pair = ortho_query_pair.tsv
   
   
   ===============  ================================================================================================================================
@@ -198,17 +194,15 @@ Blast Configuration
   ===============  ================================================================================================================================
   ``[blast]``       The header of the detect configuration. Should be consistent with ``detect.tool`` in the ``config.ini`` file.
   ---------------  --------------------------------------------------------------------------------------------------------------------------------
-  base.dir          The folder where all configuration file related to detection store([TODO]_: remove dependence later)
-  ---------------  --------------------------------------------------------------------------------------------------------------------------------
   blast.exec        The executable tool will be passed to the cmd to run blast
   ---------------  --------------------------------------------------------------------------------------------------------------------------------
   blast.evalue      The evalue will be passed to the cmd to run blast
   ---------------  --------------------------------------------------------------------------------------------------------------------------------
   blast.threads     The number of threads will be passed to the cmd to run blast ([TODO]_: optional)
   ---------------  --------------------------------------------------------------------------------------------------------------------------------
-  filter.config     The path to the configuration file that store the filter configuration ([TODO]_: optional)
+  filter.config     The name of the configuration file that store the filter configuration 
   ---------------  --------------------------------------------------------------------------------------------------------------------------------
-  map.ortho_pair    The path to the file that specify how the name(unique) of sequence in ``blast.query`` corrspond to  *orthoID*
+  map.ortho_pair    The name of the file that specify how the name(unique) of sequence in ``blast.query`` corrspond to  *orthoID*
 
                     An example of the map.ortho_query_pair files(separated by tab):
                    
@@ -242,7 +236,7 @@ Blast Configuration
        ident_pct = 30
   
        [filter.local]
-       filter_file = absolute-path-to/hit_filter.tab
+       filter_file = hit_filter.tab
     
     ====================  =================================================================================================================
     Name                  Description
@@ -255,7 +249,7 @@ Blast Configuration
     --------------------  -----------------------------------------------------------------------------------------------------------------
     ``[filter.local]``     Use to specify filter criteria for individual hit
     --------------------  -----------------------------------------------------------------------------------------------------------------
-     filter_file           The absolute path the the file containing filter information for individual hit
+     filter_file           The relative path the the file containing filter information for individual hit
   
   
                            All the four columns:
@@ -286,8 +280,7 @@ Interproscan Configuration
   ::
   
      [interproscan]
-     base.dir       = /home/xiaofang/GutFunFind/data/Flagellar
-     orthoID_domain_precision = %(base.dir)s/domain_precision.txt
+     orthoID_domain_precision = domain_precision.txt
 
 
   ==========================  =================================================================================================================
@@ -295,9 +288,7 @@ Interproscan Configuration
   ==========================  =================================================================================================================
   ``[Interproscan]``          The header of the detect configuration. Should be consistent with ``detect.tool`` in the ``config.ini`` file.
   --------------------------  -----------------------------------------------------------------------------------------------------------------
-  base.dir                    The folder where all configuration file related to detection store([TODO]_: remove dependence later)
-  --------------------------  -----------------------------------------------------------------------------------------------------------------
-  orthoID_domain_precision    The path to the file that specify the precision of the domain corrspond to  *orthoID*
+  orthoID_domain_precision    The name of the file that specify the precision of the domain corrspond to  *orthoID*
 
                               An example(separated by tab):
 
