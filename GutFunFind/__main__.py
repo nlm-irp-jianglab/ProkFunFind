@@ -332,7 +332,7 @@ def retrieve_function_pipeline_pan(database: str, fun_name: str) -> Callable:
                 gene_group = pangenome.get_genegroup(query.id)
                 gene_list_to_annotate = gene_group[genome_name]
                 for i in gene_list_to_annotate:
-                    if i:
+                    if i: # if i == "" will not setattr
                         setattr(genomeObj.genes[i], detect_tool, query)
                         setattr(
                             genomeObj.genes[i],
@@ -446,17 +446,17 @@ def main():
         metavar='')
     parser_pan.set_defaults(func=main_pan)
 
-    parser_main = subparsers.add_parser(
-        "main", help='Analyze an individual genome')
+    parser_rep = subparsers.add_parser(
+        "rep", help='Analyze an individual genome')
 
-    parser_main.add_argument(
+    parser_rep.add_argument(
         '-b',
         '--databasedir',
         help='The base dir of function',
         required=True,
         dest='database',
         metavar='')
-    parser_main.add_argument(
+    parser_rep.add_argument(
         '-f',
         '--function',
         help='Name of the function',
@@ -464,21 +464,21 @@ def main():
         dest='fun_name',
         metavar='')
 
-    parser_main.add_argument(
+    parser_rep.add_argument(
         '-g',
         '--genomeprefix',
         help='The prefix of genome',
         required=True,
         dest='genome_prefix',
         metavar='')
-    parser_main.add_argument(
+    parser_rep.add_argument(
         '-o',
         '--outputprefix',
         help='The output prefix',
         required=True,
         dest='outprefix',
         metavar='')
-    parser_main.set_defaults(func=main_individual)
+    parser_rep.set_defaults(func=main_individual)
 
     if len(sys.argv) <= 1:
         sys.argv.append('--help')

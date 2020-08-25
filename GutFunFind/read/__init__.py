@@ -335,18 +335,22 @@ def Roarycsv2pangenome(in_file):
         pg = PanGenome(genomes = headers[14:])
         ncol = len(headers)
         for row in reader:
-            pg[row[0]]=GeneGroup(
+            geneG=GeneGroup(
                     id =row[0], 
                     pangenes = { headers[idx]:row[idx].split("\t") for idx in range(14,ncol,1)}
                     )
-        setattr(pg,"common_name",row[1])
-        setattr(pg,"annotation",row[2])
-        setattr(pg,"number",{"isolates":row[3],"sequences":row[4],"Avg sequences":row[5]})
-        setattr(pg,"overall",{"Fragment":row[6],"Order":row[7]})
-        if row[8]:
-            setattr(pg,"accessory",{"Fragment":row[8],"Order":row[9]})
-        if row[10]: 
-            setattr(pg,"QC",row[10]) 
-        setattr(pg,"group_size",{"min":row[11],"max":row[12],"avg":row[13]})
+            # set Roary-specific annotation attributes
+            setattr(geneG,"method","Roary")
+            setattr(geneG,"common_name",row[1])
+            setattr(geneG,"annotation",row[2])
+            setattr(geneG,"number",{"isolates":row[3],"sequences":row[4],"Avg sequences":row[5]})
+            setattr(geneG,"overall",{"Fragment":row[6],"Order":row[7]})
+            if row[8]:
+                setattr(geneG,"accessory",{"Fragment":row[8],"Order":row[9]})
+            if row[10]: 
+                setattr(geneG,"QC",row[10]) 
+            setattr(geneG,"group_size",{"min":row[11],"max":row[12],"avg":row[13]})
+
+            pg[row[0]] = geneG
     return(pg)
 
