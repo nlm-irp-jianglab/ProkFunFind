@@ -49,9 +49,13 @@ def find_file_in_folder(folder: AnyStr, pattern: AnyStr) -> List:
                 fileList.append(os.path.join(dName, fileName))
     return fileList
 
+def check_path_existence(path):
+    abspath = os.path.abspath(path)
+    if not os.path.exists(abspath):
+        sys.exit("Can not find {}! Please check!".format(abspath))
+    return(abspath)
+
 # Write a funtion pipeline for function of interest for a individual genome
-
-
 def retrieve_function_pipeline(database: str, fun_name: str) -> Callable:
 
     # 1. Obtain the configuration and check the exec as well as the database
@@ -60,26 +64,20 @@ def retrieve_function_pipeline(database: str, fun_name: str) -> Callable:
 
     # 1.1 check the existance of the function
     if not os.path.exists(path_to_fun):
-        print("Function {} doesn't exist in GutFun".format(fun_name))
-        exit()
+        sys.exist("Function {} doesn't exist in GutFun".format(fun_name))
 
     # 1.2 check the existance of function configuration
     config = ConfigParser()
     config_path = path_to_fun + "/config.ini"
+    config_path = check_path_existence(config_path)
 
-    if not os.path.exists(config_path):
-        sys.exit(
-            'Can not find {}. Please check the path of config.ini'.format(config_path))
     config.read(config_path)
 
     import importlib
     # 2. Run the correct detect tool
     detect_tool = config.get('main', 'detect.tool')
     detect_cf_path = config.get('main', 'detect.config')
-
-    if not os.path.exists(detect_cf_path):
-        sys.exit(
-            'Can not find {}. Please check the detect.inc file'.format(detect_cf_path))
+    detect_cf_path = check_path_existence(detect_cf_path)
 
     detect_module = importlib.import_module(
         "GutFunFind.detect" + "." + module_name(detect_tool), package=None)
@@ -87,33 +85,23 @@ def retrieve_function_pipeline(database: str, fun_name: str) -> Callable:
     # 3. Run the cluster method
     cluster_tool = config.get('main', 'cluster.tool')
     cluster_cf_path = config.get('main', 'cluster.config')
-
-    if not os.path.exists(cluster_cf_path):
-        sys.exit(
-            'Can not find {}. Please check the cluster.inc file'.format(cluster_cf_path))
+    cluster_cf_path = check_path_existence(cluster_cf_path)
 
     cluster_module = importlib.import_module(
         "GutFunFind.cluster" + "." + module_name(cluster_tool), package=None)
 
     system_file = config.get('main', 'system.file')
-
-    if not os.path.exists(system_file):
-        sys.exit(
-            'Can not find {}. Please check the system_file'.format(system_file))
+    system_file = check_path_existence(system_file)
 
     def function_analysis(genome_prefix: str,
                           outprefix: str) -> Tuple[Dict, int, Genome]:
 
         # varaible for the path for genome(fna),annotations(gff),proteins(faa)
         gff_file = genome_prefix + ".gff"
-        if not os.path.exists(gff_file):
-            sys.exit(
-                'Can not find {}. Please check the gff file'.format(gff_file))
-
+        gff_file = check_path_existence(gff_file)
         fna_file = genome_prefix + ".fna"
-        if not os.path.exists(fna_file):
-            sys.exit(
-                'Can not find {}. Please check the fna file'.format(fna_file))
+        fna_file = check_path_existence(fna_file)
+
 
         outprefix = os.path.abspath(outprefix)
         out_base = os.path.basename(outprefix)
@@ -151,9 +139,7 @@ def retrieve_function_pipeline(database: str, fun_name: str) -> Callable:
                     fmt="xml")
         else:
             faa_file = genome_prefix + ".faa"
-            if not os.path.exists(faa_file):
-                sys.exit(
-                    'Can not find {}. Please check the faa file'.format(faa_file))
+            faa_file = check_path_existence(faa_file)
             detect_list = detect_module.pipeline(
                 config_file=detect_cf_path,
                 protein_file=faa_file,
@@ -224,26 +210,20 @@ def retrieve_function_pipeline_pan(database: str, fun_name: str) -> Callable:
 
     # 1.1 check the existance of the function
     if not os.path.exists(path_to_fun):
-        print("Function {} doesn't exist in GutFun".format(fun_name))
-        exit()
+        sys.exist("Function {} doesn't exist in GutFun".format(fun_name))
 
     # 1.2 check the existance of function configuration
     config = ConfigParser()
     config_path = path_to_fun + "/config.ini"
+    config_path = check_path_existence(config_path)
 
-    if not os.path.exists(config_path):
-        sys.exit(
-            'Can not find {}. Please check the path of config.ini'.format(config_path))
     config.read(config_path)
 
     import importlib
     # 2. Run the correct detect tool
     detect_tool = config.get('main', 'detect.tool')
     detect_cf_path = config.get('main', 'detect.config')
-
-    if not os.path.exists(detect_cf_path):
-        sys.exit(
-            'Can not find {}. Please check the detect.inc file'.format(detect_cf_path))
+    detect_cf_path = check_path_existence(detect_cf_path)
 
     detect_module = importlib.import_module(
         "GutFunFind.detect" + "." + module_name(detect_tool), package=None)
@@ -251,26 +231,18 @@ def retrieve_function_pipeline_pan(database: str, fun_name: str) -> Callable:
     # 3. Run the cluster method
     cluster_tool = config.get('main', 'cluster.tool')
     cluster_cf_path = config.get('main', 'cluster.config')
-
-    if not os.path.exists(cluster_cf_path):
-        sys.exit(
-            'Can not find {}. Please check the cluster.inc file'.format(cluster_cf_path))
+    cluster_cf_path = check_path_existence(cluster_cf_path)
 
     cluster_module = importlib.import_module(
         "GutFunFind.cluster" + "." + module_name(cluster_tool), package=None)
 
     system_file = config.get('main', 'system.file')
-
-    if not os.path.exists(system_file):
-        sys.exit(
-            'Can not find {}. Please check the system_file'.format(system_file))
+    system_file = check_path_existence(system_file)
 
     def function_analysis(pangenome_path: str, outprefix: str, folder: str):
 
         roaryfile = pangenome_path + "/genes_presence-absence_locus.csv"
-        if not os.path.exists(roaryfile):
-            sys.exit('Can not find {}'.format(roaryfile))
-
+        roaryfile = check_path_existence(roaryfile)
         genome_prefix = pangenome_path + "/pan-genome"
 
         outprefix = os.path.abspath(outprefix).rstrip("/") + "/"
@@ -301,8 +273,7 @@ def retrieve_function_pipeline_pan(database: str, fun_name: str) -> Callable:
                     fmt="xml")
         else:
             faa_file = genome_prefix + ".faa"
-            if not os.path.exists(faa_file):
-                sys.exit('Can not find {}'.format(faa_file))
+            faa_file = check_path_existence(faa_file)
             detect_list = detect_module.pipeline(
                 config_file=detect_cf_path,
                 protein_file=faa_file,

@@ -2,9 +2,9 @@
 
 .. _quickstart:
 
-.. Warning::
+.. caution::
 
-   We add pan-genome support and the command line is different from previous version. (Pay attention to the `rep`) 
+   We add pan-genome support and the command line is different from previous version. (Pay attention to the "`rep`") 
 
 ************
 Quick Start

@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(name='GutFunFind',
                  version='0.2.0',
-                 description='Predict the function based on genome',
+                 description='Predict the function based on genome sequences',
                  long_description=long_description,
                  author='Xiaofang Jiang',
                  author_email='xiaofang.jiang@nih.gov',
