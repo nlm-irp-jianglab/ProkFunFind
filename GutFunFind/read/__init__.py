@@ -1,5 +1,5 @@
-from GutFunFind.read.GFFParser import parse
-
+import gzip
+import csv
 from collections import OrderedDict
 from typing import MutableMapping, List
 
@@ -7,12 +7,11 @@ from Bio import SeqIO
 from Bio.SeqFeature import SeqFeature
 from Bio.Seq import Seq
 
+from GutFunFind.read.GFFParser import parse
 
 ####################################################################################################
 
 class Gene(SeqFeature):
-    # def __init__(self,contig:str,id:str,type:str,location:FeatureLocation, qualifiers:OrderedDict=None) -> None:
-    #    super().__init__(id=id, type=type, location=location, qualifiers=qualifiers)
     def __init__(self, contig: str, id: str, **kwds) -> None:
         super().__init__(id=id, **kwds)
         self.contig = contig
@@ -74,7 +73,6 @@ class Contig:
                 key=lambda x: (
                     x[1].location.start.real,
                     x[1].location.end.real)))
-        #self.genes = {k: v for k, v in sorted(self.genes.items(), key=lambda x: (x[1].location.start.real,x[1].location.end.real))}
         self.sorted = True
         return self
 
@@ -114,6 +112,7 @@ class Genome:
 
 ####################################################################################################
 
+
 def GetGenomeFromGFF(gff3file: str, fnafile: str) -> Genome:
 
     in_seq_handle = open(fnafile)
@@ -122,9 +121,7 @@ def GetGenomeFromGFF(gff3file: str, fnafile: str) -> Genome:
             i.id: Contig(
                 id=i.id,
                 seq=i.seq,
-                genes={}) for i in SeqIO.parse(
-                in_seq_handle,
-                "fasta")})
+                genes={}) for i in SeqIO.parse(in_seq_handle, "fasta")})
     in_seq_handle.close()
 
     try:
@@ -187,22 +184,20 @@ def GetGenomeFromGB(gbfile: str) -> Genome:
         g1[ct.id] = ct
     return g1
 
-def GetGenomeFromGzipGFF(gzipfile:str) -> Genome:
-    import gzip
 
-    in_seq_handle = gzip.open(gzipfile,"rt")
+def GetGenomeFromGzipGFF(gzipfile: str) -> Genome:
+
+    in_seq_handle = gzip.open(gzipfile, "rt")
     g1 = Genome(
         contigs={
             i.id: Contig(
                 id=i.id,
                 seq=i.seq,
-                genes={}) for i in SeqIO.parse(
-                in_seq_handle,
-                "fasta")})
+                genes={}) for i in SeqIO.parse(in_seq_handle, "fasta")})
     in_seq_handle.close()
 
     try:
-        in_seq_handle = gzip.open(gzipfile,"rt")
+        in_seq_handle = gzip.open(gzipfile, "rt")
         gff_records = list(parse(in_seq_handle))
         for rec in gff_records:
             ct = g1[rec.id]
@@ -230,11 +225,10 @@ def GetGenomeFromGzipGFF(gzipfile:str) -> Genome:
     return g1
 
 
-
 ####################################################################################################
 
 class PanGene:
-    def __init__(self,id:str,GenomeID:str, GeneGroup:str) -> None:
+    def __init__(self, id: str, GenomeID: str, GeneGroup: str) -> None:
         self.id = id
         self.GenomeID = GenomeID
         self.GeneGroup = GeneGroup
@@ -245,12 +239,13 @@ class PanGene:
             self.id,
             self.GenomeID,
             self.GeneGroup
-            )
+        )
+
 
 class GeneGroup:
     def __init__(self,
                  id: str,
-                 pangenes:MutableMapping[str,List[str]]
+                 pangenes: MutableMapping[str, List[str]]
                  ) -> None:
         self.id = id
         self.pangenes = pangenes
@@ -261,7 +256,7 @@ class GeneGroup:
             self.id,
             len(self.pangenes),
             sum([len(self.pangenes[i]) for i in self.pangenes])
-            )
+        )
 
     def __getitem__(self, key: str) -> List[str]:
         return self.pangenes[key]
@@ -281,27 +276,28 @@ class GeneGroup:
     def __contains__(self, key: str):
         return key in self.pangenes.keys()
 
+
 class PanGenome:
     """Docstring for Genome. """
 
-    def __init__(self, gene_groups:MutableMapping[str,GeneGroup]=OrderedDict(), genomes:List=[]) -> None:
-        self.gene_groups= gene_groups
+    def __init__(self, gene_groups: MutableMapping[str, GeneGroup] = OrderedDict(), genomes: List = []) -> None:
+        self.gene_groups = gene_groups
         self.genomes = genomes
 
     def __repr__(self):
         return "{0}(#gene_groups={1} #genomes={2})".format(
-                self.__class__.__name__, 
-                len(self.gene_groups),
-                len(self.genomes)
-            )
+            self.__class__.__name__,
+            len(self.gene_groups),
+            len(self.genomes)
+        )
 
     @property
     def pangenes(self):
-        return { gene:PanGene(id = gene, GenomeID=key, GeneGroup = gene_group)
-            for gene_group in self.gene_groups.values()
-            for key in gene_group
-            for gene in gene_group[key]
-            }
+        return {gene: PanGene(id=gene, GenomeID=key, GeneGroup=gene_group)
+                for gene_group in self.gene_groups.values()
+                for key in gene_group
+                for gene in gene_group[key]
+                }
 
     def __getitem__(self, key: str):
         return self.gene_groups[key]
@@ -321,36 +317,36 @@ class PanGenome:
     def __iter__(self):
         return iter(self.gene_groups)
 
-    def get_genegroup(self,genename):
+    def get_genegroup(self, genename):
         genegroup = self.pangenes[genename].GeneGroup
         return genegroup
 
 ####################################################################################################
 
+
 def Roarycsv2pangenome(in_file):
-    import csv
     with open(in_file, newline='\n') as csvfile:
         reader = csv.reader(csvfile, delimiter=',', quotechar='"')
         headers = next(reader, None)
-        pg = PanGenome(genomes = headers[14:])
+        pg = PanGenome(genomes=headers[14:])
         ncol = len(headers)
         for row in reader:
-            geneG=GeneGroup(
-                    id =row[0], 
-                    pangenes = { headers[idx]:row[idx].split("\t") for idx in range(14,ncol,1)}
-                    )
+            geneG = GeneGroup(
+                id=row[0],
+                pangenes={headers[idx]: row[idx].split(
+                    "\t") for idx in range(14, ncol, 1)}
+            )
             # set Roary-specific annotation attributes
-            setattr(geneG,"method","Roary")
-            setattr(geneG,"common_name",row[1])
-            setattr(geneG,"annotation",row[2])
-            setattr(geneG,"number",{"isolates":row[3],"sequences":row[4],"Avg sequences":row[5]})
-            setattr(geneG,"overall",{"Fragment":row[6],"Order":row[7]})
+            setattr(geneG, "method", "Roary")
+            setattr(geneG, "common_name", row[1])
+            setattr(geneG, "annotation", row[2])
+            setattr(geneG, "number", {"isolates": row[3], "sequences": row[4], "Avg sequences": row[5]})
+            setattr(geneG, "overall", {"Fragment": row[6], "Order": row[7]})
             if row[8]:
-                setattr(geneG,"accessory",{"Fragment":row[8],"Order":row[9]})
-            if row[10]: 
-                setattr(geneG,"QC",row[10]) 
-            setattr(geneG,"group_size",{"min":row[11],"max":row[12],"avg":row[13]})
+                setattr(geneG, "accessory", {"Fragment": row[8], "Order": row[9]})
+            if row[10]:
+                setattr(geneG, "QC", row[10])
+            setattr(geneG, "group_size", {"min": row[11], "max": row[12], "avg": row[13]})
 
             pg[row[0]] = geneG
-    return(pg)
-
+    return pg

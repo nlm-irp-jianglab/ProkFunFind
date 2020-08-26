@@ -1,9 +1,11 @@
+import os
+from typing import IO, List, Union
+
 from Bio.SearchIO._model.query import QueryResult
 from Bio import SearchIO
-from typing import IO, List, Union
-from .blast_filter import blast_filter, blast_ortho
+
 from GutFunFind.toolkit.base import *
-import os
+from GutFunFind.detect.blast_search.blast_filter import blast_filter, blast_ortho
 
 
 def pipeline(config_file: Union[str, IO],
@@ -18,7 +20,7 @@ def pipeline(config_file: Union[str, IO],
     # Right now we use the -m 6 format
     #cmd = [ cf["blast.exec"], "-query",  protein_file, "-db" ,cf["blast.query"], "-evalue", cf["blast.evalue"], "-outfmt" ,"5", "-out", outprefix+".blast.xml"]
 
-    query_path =  check_path_existence(basedir+cf["blast.query"])
+    query_path = check_path_existence(basedir+cf["blast.query"])
 
     cmd = [
         cf["blast.exec"],
@@ -46,7 +48,8 @@ def pipeline(config_file: Union[str, IO],
 
     if cf["filter.config"]:
         filter_path = check_path_existence(basedir + cf["filter.config"])
-        filter_res = [blast_filter(config_file=filter_path, qres=i) for i in q_list]
+        filter_res = [blast_filter(
+            config_file=filter_path, qres=i) for i in q_list]
         q_list = [i for i in filter_res if len(i) > 0]
 
     ortho_file = check_path_existence(basedir + cf["map.ortho_pair"])

@@ -12,14 +12,11 @@ def find_gene_with_orthoID(orthoID, genomeObject, detect_tool):
     :returns: A list of genes fit the above requirement
     """
     gene_list = [
-        gene.id for gene in genomeObject.genes.values() if hasattr(
-            gene,
-            detect_tool) and getattr(
-            getattr(
-                gene,
-                detect_tool),
-            "orthoID") == orthoID]
-    return(gene_list)
+        gene.id for gene in genomeObject.genes.values() 
+        if hasattr(gene, detect_tool) and 
+        getattr(getattr(gene, detect_tool), "orthoID") == orthoID
+        ]
+    return gene_list
 
 
 def check_gene_in_subsystem(
@@ -51,7 +48,7 @@ def check_gene_in_subsystem(
         fun_list.append(system_dict["orthoID"])
         gene_list = find_gene_with_orthoID(
             system_dict["orthoID"], genomeObject, detect_tool)
-        status = 0    # all essential components are present 
+        status = 0    # all essential components are present
         if gene_list:
             system_dict["genes"] = gene_list
             status = 1
@@ -66,13 +63,12 @@ def check_gene_in_subsystem(
         fun_list.pop()
         return (system_dict, status)
 
-
-    status = 0 
+    status = 0
     if completeness["essential"] == completeness["essential_presence"] and completeness["essential"] > 0:
         status = 1
-    elif "analogs" in system_dict: # if the system has analogs
+    elif "analogs" in system_dict:  # if the system has analogs
         _, analogs_status = check_gene_in_subsystem(
-                system_dict["analogs"], genomeObject, detect_tool, fun_string=fun_list)
+            system_dict["analogs"], genomeObject, detect_tool, fun_string=fun_list)
         if analogs_status:
             status = 1
 

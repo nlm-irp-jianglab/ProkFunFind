@@ -234,6 +234,7 @@ def find_file_in_folder(folder: AnyStr, pattern: AnyStr) -> List:
                 fileList.append(os.path.join(dName, fileName))
     return fileList
 
+
 def check_path_existence(path):
     abspath = os.path.abspath(path)
     if not os.path.exists(abspath):
@@ -241,7 +242,7 @@ def check_path_existence(path):
     return(abspath)
 
 
-def read2orthoDict(ortho_pair_file: Union[str,IO]) -> Dict:
+def read2orthoDict(ortho_pair_file: Union[str, IO]) -> Dict:
 
     OrthScore_dict = defaultdict(dict)
 
@@ -254,12 +255,14 @@ def read2orthoDict(ortho_pair_file: Union[str,IO]) -> Dict:
         header = next(csv_reader)
         col_num = len(header)
         if col_num == 2:
-            OrthScore_dict[header[1]] = {"orthoID":header[0],"precision": 1}
+            OrthScore_dict[header[1]] = {"orthoID": header[0], "precision": 1}
             for row in csv_reader:
-                OrthScore_dict[row[1]] = {"orthoID":row[0], "precision":1}
+                OrthScore_dict[row[1]] = {"orthoID": row[0], "precision": 1}
         else:
-            OrthScore_dict[header[1]] = {"orthoID":header[0],"precision": float(header[2])}
+            OrthScore_dict[header[1]] = {
+                "orthoID": header[0], "precision": float(header[2])}
             for row in csv_reader:
-                OrthScore_dict[row[1]] = {"orthoID":row[0],"precision": float(row[2])}
+                OrthScore_dict[row[1]] = {
+                    "orthoID": row[0], "precision": float(row[2])}
 
     return(OrthScore_dict)

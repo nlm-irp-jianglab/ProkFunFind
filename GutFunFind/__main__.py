@@ -1,23 +1,20 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 from collections import OrderedDict
-import glob
 import os
 import sys
+import importlib
+
+from typing import Callable, Tuple, Dict
+from configparser import ConfigParser
+from argparse import ArgumentParser
 
 from GutFunFind import examine
-from GutFunFind import cluster
-from GutFunFind import detect
 from GutFunFind import report
 from GutFunFind.read import GetGenomeFromGFF, Genome, Roarycsv2pangenome, GetGenomeFromGzipGFF
 from GutFunFind.toolkit.base import find_file_in_folder, check_path_existence
 
-from Bio import SeqIO
-from Bio.SeqRecord import SeqRecord
 
-from typing import Callable, List, Tuple, Dict, AnyStr
-import subprocess
-from configparser import ConfigParser
 
 
 switcher = {
@@ -50,7 +47,7 @@ def retrieve_function_pipeline(database: str, fun_name: str) -> Callable:
 
     # 1.1 check the existance of the function
     if not os.path.exists(path_to_fun):
-        sys.exist("Function {} doesn't exist in GutFun".format(fun_name))
+        sys.exit("Function {} doesn't exist in GutFun".format(fun_name))
 
     # 1.2 check the existance of function configuration
     config = ConfigParser()
@@ -59,7 +56,6 @@ def retrieve_function_pipeline(database: str, fun_name: str) -> Callable:
 
     config.read(config_path)
 
-    import importlib
     # 2. Run the correct detect tool
     detect_tool = config.get('main', 'detect.tool')
     detect_cf_path = path_to_fun + config.get('main', 'detect.config')
@@ -87,7 +83,6 @@ def retrieve_function_pipeline(database: str, fun_name: str) -> Callable:
         gff_file = check_path_existence(gff_file)
         fna_file = genome_prefix + ".fna"
         fna_file = check_path_existence(fna_file)
-
 
         outprefix = os.path.abspath(outprefix)
         out_base = os.path.basename(outprefix)
@@ -196,7 +191,7 @@ def retrieve_function_pipeline_pan(database: str, fun_name: str) -> Callable:
 
     # 1.1 check the existance of the function
     if not os.path.exists(path_to_fun):
-        sys.exist("Function {} doesn't exist in GutFun".format(fun_name))
+        sys.exit("Function {} doesn't exist in GutFun".format(fun_name))
 
     # 1.2 check the existance of function configuration
     config = ConfigParser()
@@ -205,7 +200,6 @@ def retrieve_function_pipeline_pan(database: str, fun_name: str) -> Callable:
 
     config.read(config_path)
 
-    import importlib
     # 2. Run the correct detect tool
     detect_tool = config.get('main', 'detect.tool')
     detect_cf_path = path_to_fun + config.get('main', 'detect.config')
@@ -289,7 +283,7 @@ def retrieve_function_pipeline_pan(database: str, fun_name: str) -> Callable:
                 gene_group = pangenome.get_genegroup(query.id)
                 gene_list_to_annotate = gene_group[genome_name]
                 for i in gene_list_to_annotate:
-                    if i: # if i == "" will not setattr
+                    if i:  # if i == "" will not setattr
                         setattr(genomeObj.genes[i], detect_tool, query)
                         setattr(
                             genomeObj.genes[i],
@@ -354,7 +348,6 @@ def main_pan(args):
 
 
 def main():
-    from argparse import ArgumentParser
 
     parser = ArgumentParser(
         description='Identify genes related function of interest')

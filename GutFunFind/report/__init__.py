@@ -1,7 +1,7 @@
 import json
-from GutFunFind.read import *
 from typing import Any, Dict
 
+from GutFunFind.read import *
 
 def export_pickle(genomeObj: Genome, outprefix: str) -> None:
     import pickle
@@ -33,9 +33,7 @@ def export_gene_tab(
         if hasattr(gene, detect_tool):
             cluster_annot = gene.contig + ":Cl_" + \
                 str(getattr(gene, cluster_tool)) if hasattr(gene, cluster_tool) else "NA"
-            function_annot = ";".join(
-                gene.Functions) if hasattr(
-                gene, "Functions") else "Unassigned Function"
+            function_annot = ";".join(gene.Functions) if hasattr(gene, "Functions") else "Unassigned Function"
             f.write(gene.id + "\t" + cluster_annot + "\t" + function_annot+"\n")
     f.close()
 
@@ -53,7 +51,9 @@ def export_gene_gff(
         if hasattr(gene, detect_tool):
             qry = getattr(gene, detect_tool)
             hsp = qry.hsps[0]
-            cluster_annot = "Cl_" + str(getattr(gene, cluster_tool)) if hasattr(gene, cluster_tool) else "NA"
+            cluster_annot = "Cl_" + \
+                str(getattr(gene, cluster_tool)) if hasattr(
+                    gene, cluster_tool) else "NA"
 #        if hasattr(gene, "pangenome_group"):
 
             if detect_tool == "blast":
@@ -67,18 +67,20 @@ def export_gene_gff(
                     id=gene.id,
                     orthoID=qry.orthoID,
                     cluster_ID=cluster_annot,
-                    Target=hsp.hit_id + " " + str(hsp.hit_start) + " " + str(hsp.hit_end),
+                    Target=hsp.hit_id + " " + str(hsp.hit_start) + " " + str(hsp.hit_end), 
                     pct_identity=hsp.ident_pct,
                     evalue=hsp.evalue
-                ))
+                    ))
 
                 if hasattr(gene, "pangenome_group"):
                     gene_group = gene.pangenome_group
                     if gene_group.method == "Roary":
                         f.write(";pan_annot="+gene_group.annotation)
                         f.write(";pan_isolates="+gene_group.number['isolates'])
-                        f.write(";pan_avg_seq="+gene_group.number['Avg sequences'])
-                        f.write(";pan_accessory=True") if hasattr(gene_group,"accessory") else f.write("pan_core=True") 
+                        f.write(";pan_avg_seq=" +
+                                gene_group.number['Avg sequences'])
+                        f.write(";pan_accessory=True") if hasattr(
+                            gene_group, "accessory") else f.write("pan_core=True")
 
                 f.write("\n")
 
@@ -93,16 +95,18 @@ def export_gene_gff(
                     orthoID=qry.orthoID,
                     cluster_ID=cluster_annot,
                     Target=hsp.hit_id,
-                    evalue= ";evalue="+str(hsp.evalue) if hasattr(hsp,"evalue") else ""
-                ))
+                    evalue=";evalue=" + str(hsp.evalue) if hasattr(hsp, "evalue") else ""
+                    ))
 
                 if hasattr(gene, "pangenome_group"):
                     gene_group = gene.pangenome_group
                     if gene_group.method == "Roary":
                         f.write(";pan_annot="+gene_group.annotation)
                         f.write(";pan_isolates="+gene_group.number['isolates'])
-                        f.write(";pan_avg_seq="+gene_group.number['Avg sequences'])
-                        f.write(";pan_accessory=True") if hasattr(gene_group,"accessory") else f.write("pan_core=True") 
+                        f.write(";pan_avg_seq=" +
+                                gene_group.number['Avg sequences'])
+                        f.write(";pan_accessory=True") if hasattr(
+                            gene_group, "accessory") else f.write("pan_core=True")
 
                 f.write("\n")
     f.close()

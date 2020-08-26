@@ -1,8 +1,9 @@
-from sklearn.cluster import DBSCAN
 from typing import List
+import numpy as np
+from sklearn.cluster import DBSCAN
+
 from GutFunFind.read import Genome
 from GutFunFind.toolkit.base import *
-import numpy as np
 
 
 def DBSCANCluster(
@@ -12,9 +13,8 @@ def DBSCANCluster(
         min_samples: float = 0.9) -> List[int]:
     pos = np.array(pos).reshape(-1, 1)
     cluster = DBSCAN(
-        eps=eps, min_samples=min_samples).fit(
-        pos, sample_weight=weight)
-    return(list(cluster.labels_))
+        eps=eps, min_samples=min_samples).fit(pos, sample_weight=weight)
+    return list(cluster.labels_)
 
 
 def pipeline(config_file: str, genome_object, detect_tool: str) -> Genome:

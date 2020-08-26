@@ -1,10 +1,8 @@
 from typing import Any, Dict, List, Union, Set, Tuple  # pylint: disable=unused-import
 
-from Bio import SeqIO
-from Bio.SeqRecord import SeqRecord
-
 class Promoter:
     """ Contains all the relevant info and helpers for promoters """
+
     def __init__(self, gene_name: str, start: int, end: int, seq: str = "") -> None:
         self.gene_name = str(gene_name)
         self.start = int(start)
@@ -21,7 +19,8 @@ class Promoter:
 
     def __len__(self) -> int:
         if self.seq is None:
-            raise ValueError("Requesting length of a promoter sequence which hasn't been set")
+            raise ValueError(
+                "Requesting length of a promoter sequence which hasn't been set")
         return len(self.seq)
 
     def __str__(self) -> str:
@@ -46,4 +45,3 @@ class Promoter:
     def from_json(json: Dict[str, Any]) -> "Promoter":
         """ Deserialises a Promoter from a dictionary """
         return Promoter(str(json["gene"]), int(json["start"]), int(json["end"]), seq=str(json["seq"]))
-
