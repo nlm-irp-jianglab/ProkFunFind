@@ -10,19 +10,12 @@ Todo list
 System-wide todo list
 ========================
 
-* Have a default option that can pass to all modules 
+* Have a default option that can pass to all modules
 
   * CPUs
   * read environment variable
-  * have a default data folder
-  * Temp folder
 
-* Figure out how to test the module 
-
-* How to pass default data folder to module?
-
-* API based readthedoc 
-
+* Figure out how to test the module
 
 ==========================
 Module-specific todo list
