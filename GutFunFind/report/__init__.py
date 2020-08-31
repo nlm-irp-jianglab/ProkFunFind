@@ -77,10 +77,8 @@ def export_gene_gff(
                     if gene_group.method == "Roary":
                         f.write(";pan_annot="+gene_group.annotation)
                         f.write(";pan_isolates="+gene_group.number['isolates'])
-                        f.write(";pan_avg_seq=" +
-                                gene_group.number['Avg sequences'])
-                        f.write(";pan_accessory=True") if hasattr(
-                            gene_group, "accessory") else f.write("pan_core=True")
+                        f.write(";pan_avg_seq=" + gene_group.number['Avg sequences'])
+                        f.write(";pan_accessory=True") if hasattr(gene_group, "accessory") else f.write(";pan_core=True")
 
                 f.write("\n")
 
