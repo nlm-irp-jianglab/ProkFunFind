@@ -351,9 +351,7 @@ def main():
 
     parser = ArgumentParser(
         description='Identify genes related function of interest')
-    subparsers = parser.add_subparsers(
-        dest='command', title="Usage: {} <command> [options]".format(
-            os.path.basename(__file__)), metavar="Commands:")
+    subparsers = parser.add_subparsers(dest='command')
 
     parser_rep = subparsers.add_parser(
         "rep", help='Analyze an individual genome')

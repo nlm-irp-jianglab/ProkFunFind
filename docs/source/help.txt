@@ -1,11 +1,11 @@
-usage: run_GutFunFind.py [-h] Commands: ...
+usage: run_GutFunFind.py [-h] {rep,pan} ...
 
 Identify genes related function of interest
 
-optional arguments:
-  -h, --help  show this help message and exit
-
-Usage: __main__.py <command> [options]:
-  Commands:
+positional arguments:
+  {rep,pan}
     rep       Analyze an individual genome
     pan       Analyze genomes of the same pangenome
+
+optional arguments:
+  -h, --help  show this help message and exit

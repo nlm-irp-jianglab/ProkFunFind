@@ -15,7 +15,7 @@ GutFunFind dependencies
    - The Blast suite of program (https://ftp.ncbi.nlm.nih.gov/blast/executables/blast+/LATEST/)
    - The program *Hmmer* version 3.1 (http://hmmer.janelia.org/).
   
-  All these programs should be installed (e.g., in the ``PATH``) in order to use GutFunFind.
+  All these programs should be installed (e.g., in the ``$PATH``) in order to use GutFunFind.
   
   .. Attention::
   
