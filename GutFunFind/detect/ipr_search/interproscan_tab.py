@@ -8,14 +8,11 @@
 """Bio.SearchIO parser for InterProScan tab output formats."""
 # for more info: https://github.com/ebi-pf-team/interproscan/wiki/OutputFormats
 
-import re
-from itertools import chain
 from collections import defaultdict
 
 from Bio.File import as_handle
-
-from Bio.SearchIO._index import SearchIndexer
 from Bio.SearchIO._model import QueryResult, Hit, HSP, HSPFragment
+
 
 class InterproscanTabParser:
     """Parser for the InterProScan table format."""
@@ -40,31 +37,32 @@ class InterproscanTabParser:
         #cols = [x for x in self.line.strip().split("\t") if x]
         #cols = self.line.split("\t")
         cols = self.line.strip("\n").split("\t")
-        if len(cols) != 15 and len(cols) !=11 :
+        if len(cols) != 15 and len(cols) != 11:
             raise ValueError("Less columns than expected, only %i" % len(cols))
 
         # assign parsed column data into qresult, hit, and hsp dicts
         qresult = {}
         qresult["id"] = cols[0]  # query name
         qresult["seq_len"] = int(cols[2])  # query length
-        qresult["program"] = "InterProScan"  # 
+        qresult["program"] = "InterProScan"  #
 
         hit = {}
         hit["id"] = cols[4]  # target name
         hit["description"] = cols[5]  # description of target
         hit["query_id"] = cols[0]  # query name
-        hit["attributes"] = {"Target": str(cols[4])} # 
+        hit["attributes"] = {"Target": str(cols[4])}
         if len(cols) == 15:
             xrefs = ["IPR:" + cols[11]] if cols[11] else []
             xrefs += cols[13].split("|") if cols[13] else []
-            xrefs += cols[14].replace(' ','').split("|") if cols[14] else []
+            xrefs += cols[14].replace(' ', '').split("|") if cols[14] else []
             hit["dbxrefs"] = xrefs
 
         hsp = {}
-        hsp["evalue"] = float(cols[8]) if cols[8] != "-" else None # evalue or score should be float but sometime not
+        # evalue or score should be float but sometime not
+        hsp["evalue"] = float(cols[8]) if cols[8] != "-" else None
 
         frag = {}
-        frag["query_start"] = int(cols[6]) -1  # query start, zero-based
+        frag["query_start"] = int(cols[6]) - 1  # query start, zero-based
         frag["query_end"] = int(cols[7])  # query end
 
         return {"qresult": qresult, "hit": hit, "hsp": hsp, "frag": frag}
@@ -75,7 +73,6 @@ class InterproscanTabParser:
         state_EOF = 0
         state_QRES_NEW = 1
         state_QRES_SAME = 3
-
 
         # initial value dummies
         qres_state = None
@@ -101,7 +98,6 @@ class InterproscanTabParser:
                 file_state = state_EOF
                 # mock values for cur_qid since the line is empty
                 cur_qid = None
-            
             # get the state of hit and qresult
             if prev_qid != cur_qid:
                 qres_state = state_QRES_NEW
@@ -126,7 +122,7 @@ class InterproscanTabParser:
                 hit = Hit()
                 for attr, value in prev["hit"].items():
                     setattr(hit, attr, value)
-                if not hit.id in [ i.id for i in hit_list]:
+                if not hit.id in [i.id for i in hit_list]:
                     hit_list.append(hit)
 
                 # create qresult and yield if we're at a new qresult or at EOF
@@ -152,7 +148,7 @@ class InterproscanTabParser:
 def ipr_tab_parse(handle, **kwargs):
 
     # get the iterator object and do error checking
-    mod = __import__("GutFunFind.detect.ipr_search",fromlist=[""])
+    mod = __import__("GutFunFind.detect.ipr_search", fromlist=[""])
     obj_name = "InterproscanTabParser"
     iterator = getattr(mod, obj_name)
 

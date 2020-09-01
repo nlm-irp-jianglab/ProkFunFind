@@ -13,7 +13,7 @@ Welcome to GutFunFind's documentation!
    - Select the correct method and filter parameters to detect genes
 
      - Blast
-     - Interproscan(Run in advance)
+     - Interproscan(Preconfigured)
      - Hmmer
      - ...
 
@@ -36,11 +36,3 @@ Welcome to GutFunFind's documentation!
    outputs
    run_parallel
    todo
-
-
-Indices and tables
-==================
-
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`

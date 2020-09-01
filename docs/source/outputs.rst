@@ -8,7 +8,7 @@ Output dataset
 **************
 
 ======================
-Output files overview
+Output format overview
 ======================
 
   GutFunFind will output files with the same prefix. ``annot.gff``, ``json``, ``tsv``, ``pkl`` formatted files will be outputed every time.
@@ -109,6 +109,19 @@ pkl
   
   .. _pickle: https://docs.python.org/3/library/pickle.html
 
+
+==========================
+Outputs in different mode
+==========================
+
+Single genome mode(``rep``)
+===========================
+  In this mode, it will output four(Interproscan) or five(blast) files with the same prefix.
+
+Pangenome mode(``pan``)
+=======================
+  In this mode, it will output the results for all genomes belongs to the same pangenome.
+  All the results will be in the same folder and outputs for the same genome will have the same prefix.
 
 ================
 What to do next?

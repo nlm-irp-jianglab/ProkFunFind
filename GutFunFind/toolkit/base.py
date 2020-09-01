@@ -11,7 +11,7 @@ import logging
 import os
 from subprocess import Popen, PIPE, TimeoutExpired
 import sys
-from typing import Dict, Any, Callable, Iterable, IO, List, Optional, Union
+from typing import Dict, Any, Callable, Iterable, IO, List, Optional, Union, AnyStr
 import warnings
 from distutils.spawn import find_executable
 from collections import defaultdict
@@ -216,8 +216,33 @@ def parallel_execute(commands: List[List[str]],
     return errors
 
 
+def find_file_in_folder(folder: AnyStr, pattern: AnyStr) -> List:
+    """ Find files with a given pattern in a given file path
 
-def read2orthoDict(ortho_pair_file: Union[str,IO]) -> Dict:
+        Arguments:
+            folder: the directory to search
+            pattern: the pattern to search for
+
+        Returns:
+            A list of path for the files with a given pattern in a given file path
+    """
+    import fnmatch
+    fileList = []
+    for dName, sdName, fList in os.walk(folder):
+        for fileName in fList:
+            if fnmatch.fnmatch(fileName, pattern):
+                fileList.append(os.path.join(dName, fileName))
+    return fileList
+
+
+def check_path_existence(path):
+    abspath = os.path.abspath(path)
+    if not os.path.exists(abspath):
+        sys.exit("Can not find {}! Please check!".format(abspath))
+    return(abspath)
+
+
+def read2orthoDict(ortho_pair_file: Union[str, IO]) -> Dict:
 
     OrthScore_dict = defaultdict(dict)
 
@@ -230,12 +255,14 @@ def read2orthoDict(ortho_pair_file: Union[str,IO]) -> Dict:
         header = next(csv_reader)
         col_num = len(header)
         if col_num == 2:
-            OrthScore_dict[header[1]] = {"orthoID":header[0],"precision": 1}
+            OrthScore_dict[header[1]] = {"orthoID": header[0], "precision": 1}
             for row in csv_reader:
-                OrthScore_dict[row[1]] = {"orthoID":row[0], "precision":1}
+                OrthScore_dict[row[1]] = {"orthoID": row[0], "precision": 1}
         else:
-            OrthScore_dict[header[1]] = {"orthoID":header[0],"precision": float(header[2])}
+            OrthScore_dict[header[1]] = {
+                "orthoID": header[0], "precision": float(header[2])}
             for row in csv_reader:
-                OrthScore_dict[row[1]] = {"orthoID":row[0],"precision": float(row[2])}
+                OrthScore_dict[row[1]] = {
+                    "orthoID": row[0], "precision": float(row[2])}
 
     return(OrthScore_dict)

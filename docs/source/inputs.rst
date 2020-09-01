@@ -13,7 +13,44 @@ Command-line options
 
   .. literalinclude:: help.txt
 
-Input genome data structure
+
+Single genome mode(``rep``)
+===========================
+
+  ::
+
+    $ run_GutFunFind.py rep -h
+    > usage: run_GutFunFind.py rep [-h] -b  -f  -g  -o
+    > 
+    > optional arguments:
+    >   -h, --help            show this help message and exit
+    >   -b , --databasedir    The base dir of function
+    >   -f , --function       Name of the function
+    >   -g , --genomeprefix   The prefix of genome
+    >   -o , --outputprefix   The output prefix
+
+
+Pangenome mode(``pan``)
+=======================
+
+  ::
+
+    $ run_GutFunFind.py pan  -h
+    > usage: run_GutFunFind.py pan [-h] -b  -f  -p  -g  -d
+    > 
+    > optional arguments:
+    >   -h, --help           show this help message and exit
+    >   -b , --databasedir   The base dir of function
+    >   -f , --function      Name of the function
+    >   -p , --pangenome     The path to the pan-genome info dir
+    >   -g , --genomeset     the dir of gzipped gff file
+    >   -d , --outputdir     The output directory
+
+=============================
+Input genomic data sets
+=============================
+
+Single genome mode(``rep``)
 ===========================
 
   ``-g`` should be followed by the prefix of genome ``${prefix}``.
@@ -37,8 +74,39 @@ Input genome data structure
   
   .. _Prokka: https://github.com/tseemann/prokka
 
-Function configuration data structure
-======================================
+
+Pangenome mode(``pan``)
+=======================
+
+  ``-p`` should be followed by the path to the dir of pangenome information
+
+  In the example below, ``-p`` should be followed by ``UHGG/uhgg_catalogue/MGYG-HGUT-014/MGYG-HGUT-01463/pan-genome/``.
+
+  ::
+
+    $ ls UHGG/uhgg_catalogue/MGYG-HGUT-014/MGYG-HGUT-01463/pan-genome/
+    > genes_presence-absence_locus.csv  # csv file that specify the pangenome information
+    > pan-genome.faa                    # protein sequences in the pangenome (required for blastp)
+    > pan-genome_InterProScan.tsv       # Interproscan tsv file (required for interproscan)
+
+  ``-g`` should be followed by the path to a dir of all gzipped gff files
+
+  In the example below, ``-g`` should be followed by ``UHGG/all_genomes/MGYG-HGUT-014/MGYG-HGUT-01463``
+
+  ::
+
+    $ tree UHGG/all_genomes/MGYG-HGUT-014/MGYG-HGUT-01463
+    > UHGG/all_genomes/MGYG-HGUT-014/MGYG-HGUT-01463
+    > └── genomes1
+    >     ├── GUT_GENOME096417.gff.gz
+    >     ├── GUT_GENOME179203.gff.gz
+    >     └── GUT_GENOME179220.gff.gz
+    > 
+    > 1 directory, 3 files
+
+=============================
+Input function configuration 
+=============================
 
   ``-b`` should be followed by the data folder(``${data}``) that contains the configuration files for all functions.
   
@@ -65,9 +133,9 @@ Function configuration data structure
     > ortho_query_pair.tsv
     > system.json
 
-==================
-Configuration file
-==================
+=================================
+Configuration file specification
+=================================
 
 config.ini
 ==========
@@ -75,20 +143,17 @@ config.ini
   ::
   
     [main]
-    base.dir       = /home/jiangx6/GutFunFind/data/Mucic_and_Saccharic_Acid/
     detect.tool    = blast
-    detect.config  = %(base.dir)s/detect.ini
+    detect.config  = detect.ini
     cluster.tool   = DBSCAN
-    cluster.config = %(base.dir)s/cluster.ini
-    system.file    = %(base.dir)s/system.json
+    cluster.config = cluster.ini
+    system.file    = system.json
   
   
   
   ===============  ==============================================================================
   Name              Description
   ===============  ==============================================================================
-  base.dir          The base folder of all configuration files([TODO]_: remove dependence later)
-  ---------------  ------------------------------------------------------------------------------
   detect.tool       The method used to detect the genes
                     option:
                    
@@ -96,14 +161,14 @@ config.ini
                     * hmmer
                     * interproscan
   ---------------  ------------------------------------------------------------------------------
-  detect.config     The path to the configuration file that store the detect method information
+  detect.config     The name of the configuration file that store the detect method information
   ---------------  ------------------------------------------------------------------------------
   cluster.tool      The method used to cluster the genes
                     option:
                    
                     * DBSCAN
   ---------------  ------------------------------------------------------------------------------
-  system.file       The path to describe the structure of the function system
+  system.file       The name of the file that describe the structure of the function system
   ===============  ==============================================================================
 
 
@@ -116,13 +181,12 @@ Blast Configuration
   ::
   
      [blast]
-     base.dir       = /home/jiangx6/GutFunFind/data/Mucic_and_Saccharic_Acid/
-     blast.query    = %(base.dir)s/bait.fa
+     blast.query    = bait.fa
      blast.exec     = blastp
      blast.evalue   = 1e-4
      blast.threads  = 8
-     filter.config  = %(base.dir)s/filter.ini
-     map.ortho_pair = %(base.dir)s/ortho_query_pair.tsv
+     filter.config  = filter.ini
+     map.ortho_pair = ortho_query_pair.tsv
   
   
   ===============  ================================================================================================================================
@@ -130,17 +194,15 @@ Blast Configuration
   ===============  ================================================================================================================================
   ``[blast]``       The header of the detect configuration. Should be consistent with ``detect.tool`` in the ``config.ini`` file.
   ---------------  --------------------------------------------------------------------------------------------------------------------------------
-  base.dir          The folder where all configuration file related to detection store([TODO]_: remove dependence later)
-  ---------------  --------------------------------------------------------------------------------------------------------------------------------
   blast.exec        The executable tool will be passed to the cmd to run blast
   ---------------  --------------------------------------------------------------------------------------------------------------------------------
   blast.evalue      The evalue will be passed to the cmd to run blast
   ---------------  --------------------------------------------------------------------------------------------------------------------------------
   blast.threads     The number of threads will be passed to the cmd to run blast ([TODO]_: optional)
   ---------------  --------------------------------------------------------------------------------------------------------------------------------
-  filter.config     The path to the configuration file that store the filter configuration ([TODO]_: optional)
+  filter.config     The name of the configuration file that store the filter configuration 
   ---------------  --------------------------------------------------------------------------------------------------------------------------------
-  map.ortho_pair    The path to the file that specify how the name(unique) of sequence in ``blast.query`` corrspond to  *orthoID*
+  map.ortho_pair    The name of the file that specify how the name(unique) of sequence in ``blast.query`` corrspond to  *orthoID*
 
                     An example of the map.ortho_query_pair files(separated by tab):
                    
@@ -174,7 +236,7 @@ Blast Configuration
        ident_pct = 30
   
        [filter.local]
-       filter_file = absolute-path-to/hit_filter.tab
+       filter_file = hit_filter.tab
     
     ====================  =================================================================================================================
     Name                  Description
@@ -187,7 +249,7 @@ Blast Configuration
     --------------------  -----------------------------------------------------------------------------------------------------------------
     ``[filter.local]``     Use to specify filter criteria for individual hit
     --------------------  -----------------------------------------------------------------------------------------------------------------
-     filter_file           The absolute path the the file containing filter information for individual hit
+     filter_file           The relative path the the file containing filter information for individual hit
   
   
                            All the four columns:
@@ -218,8 +280,7 @@ Interproscan Configuration
   ::
   
      [interproscan]
-     base.dir       = /home/xiaofang/GutFunFind/data/Flagellar
-     orthoID_domain_precision = %(base.dir)s/domain_precision.txt
+     orthoID_domain_precision = domain_precision.txt
 
 
   ==========================  =================================================================================================================
@@ -227,9 +288,7 @@ Interproscan Configuration
   ==========================  =================================================================================================================
   ``[Interproscan]``          The header of the detect configuration. Should be consistent with ``detect.tool`` in the ``config.ini`` file.
   --------------------------  -----------------------------------------------------------------------------------------------------------------
-  base.dir                    The folder where all configuration file related to detection store([TODO]_: remove dependence later)
-  --------------------------  -----------------------------------------------------------------------------------------------------------------
-  orthoID_domain_precision    The path to the file that specify the precision of the domain corrspond to  *orthoID*
+  orthoID_domain_precision    The name of the file that specify the precision of the domain corrspond to  *orthoID*
 
                               An example(separated by tab):
 
