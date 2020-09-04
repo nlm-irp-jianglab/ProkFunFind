@@ -133,6 +133,12 @@ Input function configuration
     > ortho_query_pair.tsv
     > system.json
 
+
+.. Attention::
+
+   Please remember to make bait.fa file blastable by running command line `makeblastdb -in bait.fa -dbtype prot`
+
+
 =================================
 Configuration file specification
 =================================
