@@ -29,15 +29,16 @@ def blast_filter(config_file: Union[str, IO], qres: QueryResult) -> QueryResult:
         "!=": operator.ne
     }
 
-    hit_filter_file = check_path_existence(
-        basedir + cf["filter.local"]["filter_file"])
-
-    # check if file exist or empty
     filter_dict = defaultdict(list)
-    with open(hit_filter_file) as filter_file:
-        for row in csv.reader(filter_file, delimiter='\t'):
-            filter_dict[row[0]].append(
-                {"attr": row[1], "cpfun": ops[row[2]], "value": float(row[3])})
+
+    # if there is section filter.local and that section has filter_file, the info of the filter_file will be passed to  filter_dict; Otherwise filter_dict remains empty
+    if cf.has_option("filter.local", "filter_file"): 
+        hit_filter_file = check_path_existence(basedir + cf["filter.local"]["filter_file"])
+        # check if file exist or empty
+        with open(hit_filter_file) as filter_file:
+            for row in csv.reader(filter_file, delimiter='\t'):
+                filter_dict[row[0]].append(
+                    {"attr": row[1], "cpfun": ops[row[2]], "value": float(row[3])})
 
     def hsp_filter_func(hsp):
         status = True
