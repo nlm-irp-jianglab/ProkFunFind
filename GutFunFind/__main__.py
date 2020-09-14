@@ -149,7 +149,26 @@ def retrieve_function_pipeline(database: str, fun_name: str) -> Callable:
             detect_tool=detect_tool,
             cluster_tool=cluster_tool)
 
-        return (system_dict, status, genomeObj)
+        if status:
+            print(
+                "Detect function:{fun_name} in genome {genome_prefix}\n{mp} out of {m} essential components present\n{ap} out of {a} nonessential components present ".format(
+                    genome_prefix=genome_prefix,
+                    fun_name=system_dict["name"],
+                    mp=system_dict["completeness"]["essential_presence"],
+                    m=system_dict["completeness"]["essential"],
+                    ap=system_dict["completeness"]["nonessential_presence"],
+                    a=system_dict["completeness"]["nonessential"]))
+        else:
+            print(
+                "Failed to detect function:{fun_name} in genome {genome_prefix}\n{mp} out of {m} essential components present\n{ap} out of {a} nonessential components present ".format(
+                    genome_prefix=genome_prefix,
+                    fun_name=system_dict["name"],
+                    mp=system_dict["completeness"]["essential_presence"],
+                    m=system_dict["completeness"]["essential"],
+                    ap=system_dict["completeness"]["nonessential_presence"],
+                    a=system_dict["completeness"]["nonessential"]))
+
+        #return (system_dict, status, genomeObj)
 
     return function_analysis
 
@@ -159,27 +178,8 @@ def main_individual(args):
     detect_fun = retrieve_function_pipeline(
         database=args.database, fun_name=args.fun_name)
 
-    (system_dict, status, genomeObj) = detect_fun(
-        genome_prefix=args.genome_prefix, outprefix=args.outprefix)
+    detect_fun(genome_prefix=args.genome_prefix, outprefix=args.outprefix)
 
-    if status:
-        print(
-            "Detect function:{fun_name} in genome {genome_prefix}\n{mp} out of {m} essential components present\n{ap} out of {a} nonessential components present ".format(
-                genome_prefix=args.genome_prefix,
-                fun_name=system_dict["name"],
-                mp=system_dict["completeness"]["essential_presence"],
-                m=system_dict["completeness"]["essential"],
-                ap=system_dict["completeness"]["nonessential_presence"],
-                a=system_dict["completeness"]["nonessential"]))
-    else:
-        print(
-            "Failed to detect function:{fun_name} in genome {genome_prefix}\n{mp} out of {m} essential components present\n{ap} out of {a} nonessential components present ".format(
-                genome_prefix=args.genome_prefix,
-                fun_name=system_dict["name"],
-                mp=system_dict["completeness"]["essential_presence"],
-                m=system_dict["completeness"]["essential"],
-                ap=system_dict["completeness"]["nonessential_presence"],
-                a=system_dict["completeness"]["nonessential"]))
 
 
 # Write a funtion pipeline for function of interest for pangenome
@@ -263,7 +263,11 @@ def retrieve_function_pipeline_pan(database: str, fun_name: str) -> Callable:
         # genomes in the pan-genome set
 
         pangenome = Roarycsv2pangenome(roaryfile)
-        result_dict = OrderedDict()
+
+        genome_query_dict = { 
+                pangenome.get_genegroup(query.id).id : query
+                for query in detect_list
+                }
 
         for genome_name in pangenome.genomes:
             genome_paths = find_file_in_folder(
@@ -279,18 +283,13 @@ def retrieve_function_pipeline_pan(database: str, fun_name: str) -> Callable:
             genomeObj = GetGenomeFromGzipGFF(genome_path)
             [ct.sort() for ct in genomeObj.contigs.values()]
 
-            for query in detect_list:
-                gene_group = pangenome.get_genegroup(query.id)
-                gene_list_to_annotate = gene_group[genome_name]
-                for i in gene_list_to_annotate:
-                    if i:  # if i == "" will not setattr
-                        setattr(genomeObj.genes[i], detect_tool, query)
-                        setattr(
-                            genomeObj.genes[i],
-                            "pangenome_group",
-                            gene_group)
+            for groupid,query in genome_query_dict.items():
 
-            # identify gene cluster at genome object
+                if genome_name in pangenome[groupid]:
+                    for i in pangenome[groupid][genome_name]:
+                        setattr(genomeObj.genes[i],detect_tool,query)
+                        setattr(genomeObj.genes[i],"pangenome_group",pangenome[groupid]) 
+
             genomeObj = cluster_module.pipeline(
                 config_file=cluster_cf_path,
                 genome_object=genomeObj,
@@ -307,11 +306,29 @@ def retrieve_function_pipeline_pan(database: str, fun_name: str) -> Callable:
                 genomeObj=genomeObj,
                 outprefix=outprefix + genome_name,
                 detect_tool=detect_tool,
-                cluster_tool=cluster_tool)
+                cluster_tool=cluster_tool) 
 
-            result_dict.update({genome_name: [system_dict, status, genomeObj]})
+            if status:
+                print(
+                    "Detect function:{fun_name} in genome {genome_prefix}\n{mp} out of {m} essential components present\n{ap} out of {a} nonessential components present ".format(
+                        genome_prefix=genome_name,
+                        fun_name=system_dict["name"],
+                        mp=system_dict["completeness"]["essential_presence"],
+                        m=system_dict["completeness"]["essential"],
+                        ap=system_dict["completeness"]["nonessential_presence"],
+                        a=system_dict["completeness"]["nonessential"]))
+            else:
+                print(
+                    "Failed to detect function:{fun_name} in genome {genome_prefix}\n{mp} out of {m} essential components present\n{ap} out of {a} nonessential components present ".format(
+                        genome_prefix=genome_name,
+                        fun_name=system_dict["name"],
+                        mp=system_dict["completeness"]["essential_presence"],
+                        m=system_dict["completeness"]["essential"],
+                        ap=system_dict["completeness"]["nonessential_presence"],
+                        a=system_dict["completeness"]["nonessential"]))
 
-        return result_dict
+            #result_dict.update({genome_name: [system_dict, status, genomeObj]})
+
 
     return function_analysis
 
@@ -319,32 +336,11 @@ def retrieve_function_pipeline_pan(database: str, fun_name: str) -> Callable:
 def main_pan(args):
     detect_fun = retrieve_function_pipeline_pan(
         database=args.database, fun_name=args.fun_name)
-    res_dict = detect_fun(
+    detect_fun(
         pangenome_path=args.pangenome_path,
         outprefix=args.outprefix,
         folder=args.folder)
 
-    for res_key in res_dict:
-        system_dict, status, genomeObj = res_dict[res_key]
-
-        if status:
-            print(
-                "Detect function:{fun_name} in genome {genome_prefix}\n{mp} out of {m} essential components present\n{ap} out of {a} nonessential components present ".format(
-                    genome_prefix=res_key,
-                    fun_name=system_dict["name"],
-                    mp=system_dict["completeness"]["essential_presence"],
-                    m=system_dict["completeness"]["essential"],
-                    ap=system_dict["completeness"]["nonessential_presence"],
-                    a=system_dict["completeness"]["nonessential"]))
-        else:
-            print(
-                "Failed to detect function:{fun_name} in genome {genome_prefix}\n{mp} out of {m} essential components present\n{ap} out of {a} nonessential components present ".format(
-                    genome_prefix=res_key,
-                    fun_name=system_dict["name"],
-                    mp=system_dict["completeness"]["essential_presence"],
-                    m=system_dict["completeness"]["essential"],
-                    ap=system_dict["completeness"]["nonessential_presence"],
-                    a=system_dict["completeness"]["nonessential"]))
 
 
 def main():

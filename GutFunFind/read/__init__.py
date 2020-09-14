@@ -334,7 +334,7 @@ def Roarycsv2pangenome(in_file):
             geneG = GeneGroup(
                 id=row[0],
                 pangenes={headers[idx]: row[idx].split(
-                    "\t") for idx in range(14, ncol, 1)}
+                    "\t") for idx in range(14, ncol, 1) if row[idx]}
             )
             # set Roary-specific annotation attributes
             setattr(geneG, "method", "Roary")
