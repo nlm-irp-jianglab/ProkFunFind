@@ -1,0 +1,27 @@
+{
+    "name": "p-cresol production",
+    "components": [
+        {
+            "orthoID": "thiH",
+            "presence": "essential"
+        },
+        {
+            "name": "hpd",
+            "presence": "essential",
+            "components": [
+                {
+                    "orthID": "hpdA",
+                    "presence": "essential"
+                },
+                {
+                    "orthID": "hpdB",
+                    "presence": "essential"
+                },
+                {
+                    "orthID": "hpdC",
+                    "presence": "essential"
+                }
+            ]
+        }
+    ]
+}

@@ -1,0 +1,21 @@
+{
+    "name": "Cysteine Degration",
+    "components": [
+        {
+            "orthoID": "sseA",
+            "presence": "nonessential"
+        },
+        {
+            "orthoID": "mccA",
+            "presence": "nonessential"
+        },
+        {
+            "orthoID": "metB",
+            "presence": "nonessential"            
+        },
+        {
+            "orthoID": "dycD",
+            "presence": "essential"            
+        }
+    ]
+}
