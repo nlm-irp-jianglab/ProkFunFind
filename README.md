@@ -35,3 +35,6 @@ run_GutFunFind.py -b data.folder -f Mucic_and_Saccharic_Acid -g input.folder/MGY
 
 * v0.2.0
     * add support for pangenome
+
+* v0.2.1
+    * fix system.json process error and modify pangenome for speed improvement

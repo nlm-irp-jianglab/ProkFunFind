@@ -35,6 +35,9 @@ def pipeline(config_file: Union[str, IO],
         "-out",
         outprefix + ".blast.m6"]
 
+    if cf.get("blast.threads"):
+        cmd +=["-num_threads",cf["blast.threads"]]
+
     # 3 run command line
     # check the protein_file+".blast.xml" existence
     res = execute(cmd)
