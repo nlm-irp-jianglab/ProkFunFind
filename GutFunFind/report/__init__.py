@@ -61,7 +61,7 @@ def export_gene_gff(
                 f.write("{ct}\tGuFunFind\t{tp}\t{start}\t{end}\t.\t{strand}\t.\tID={id};Name={orthoID};ClusterID={cluster_ID};Target={Target};pct_identity={pct_identity};evalue={evalue}".format(
                     ct=gene.contig,
                     tp=gene.type,
-                    start=gene.location.start,
+                    start=gene.location.start+1,
                     end=gene.location.end,
                     strand="+" if gene.strand == 1 else "-",
                     id=gene.id,
@@ -86,7 +86,7 @@ def export_gene_gff(
                 f.write("{ct}\tGuFunFind\t{tp}\t{start}\t{end}\t.\t{strand}\t.\tID={id};Name={orthoID};ClusterID={cluster_ID};Target={Target}{evalue}".format(
                     ct=gene.contig,
                     tp=gene.type,
-                    start=gene.location.start,
+                    start=gene.location.start+1,
                     end=gene.location.end,
                     strand="+" if gene.strand == 1 else "-",
                     id=gene.id,
