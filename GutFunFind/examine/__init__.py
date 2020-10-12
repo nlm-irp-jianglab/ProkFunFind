@@ -68,11 +68,9 @@ def check_gene_in_subsystem(system_dict,
             system_dict["genes"] = gene_list
             for gene in gene_list:
                 if hasattr(genomeObject.genes[gene], "Functions"):
-                    genomeObject.genes[gene]["Functions"].append(
-                        "/".join(fun_list))
+                    genomeObject.genes[gene].Functions.append( "/".join(fun_list))
                 else:
-                    setattr(genomeObject.genes[gene], "Functions",
-                            ["/".join(fun_list)])
+                    setattr(genomeObject.genes[gene], "Functions", ["/".join(fun_list)])
 
     return (system_dict, status)
 

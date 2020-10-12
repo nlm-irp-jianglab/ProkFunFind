@@ -78,6 +78,11 @@ Single genome mode(``rep``)
 Pangenome mode(``pan``)
 =======================
 
+  .. Attention::
+  
+     Not every representive species of UHGG has `pan-genome/` folder. Check before you run the command line. 
+
+
   ``-p`` should be followed by the path to the dir of pangenome information
 
   In the example below, ``-p`` should be followed by ``UHGG/uhgg_catalogue/MGYG-HGUT-014/MGYG-HGUT-01463/pan-genome/``.
