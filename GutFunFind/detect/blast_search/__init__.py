@@ -49,7 +49,7 @@ def pipeline(config_file: Union[str, IO],
     #qresults = SearchIO.parse(protein_file+".blast.xml", 'blast-xml')
     q_list = [i for _, i in SearchIO.to_dict(qresults).items() if len(i) > 0]
 
-    if cf["filter.config"]:
+    if cf.get("filter.config") and cf["filter.config"]:
         filter_path = check_path_existence(basedir + cf["filter.config"])
         filter_res = [blast_filter(
             config_file=filter_path, qres=i) for i in q_list]

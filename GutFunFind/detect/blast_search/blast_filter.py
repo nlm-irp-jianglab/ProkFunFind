@@ -7,10 +7,8 @@ from typing import IO, Union
 from Bio.SearchIO._model.query import QueryResult
 from GutFunFind.toolkit.base import read_config, check_path_existence, read2orthoDict
 
-# def blast_filter(config: ConfigParser, qres: QueryResult) -> QueryResult:
 def blast_filter(config_file: Union[str, IO], qres: QueryResult) -> QueryResult:
 
-    #cf = config
     cf = read_config(config_file)
     basedir = os.path.dirname(os.path.abspath(config_file))+"/"
 
