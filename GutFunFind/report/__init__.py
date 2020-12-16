@@ -54,10 +54,8 @@ def export_gene_gff(
             cluster_annot = "Cl_" + \
                 str(getattr(gene, cluster_tool)) if hasattr(
                     gene, cluster_tool) else "NA"
-#        if hasattr(gene, "pangenome_group"):
 
             if detect_tool == "blast":
-
                 f.write("{ct}\tGuFunFind\t{tp}\t{start}\t{end}\t.\t{strand}\t.\tID={id};Name={orthoID};ClusterID={cluster_ID};Target={Target};pct_identity={pct_identity};evalue={evalue}".format(
                     ct=gene.contig,
                     tp=gene.type,
@@ -82,7 +80,7 @@ def export_gene_gff(
 
                 f.write("\n")
 
-            elif detect_tool == "interproscan":
+            elif detect_tool == "interproscan" or detect_tool == "hmmer":
                 f.write("{ct}\tGuFunFind\t{tp}\t{start}\t{end}\t.\t{strand}\t.\tID={id};Name={orthoID};ClusterID={cluster_ID};Target={Target}{evalue}".format(
                     ct=gene.contig,
                     tp=gene.type,
@@ -107,6 +105,7 @@ def export_gene_gff(
                             gene_group, "accessory") else f.write("pan_core=True")
 
                 f.write("\n")
+
     f.close()
 
 
