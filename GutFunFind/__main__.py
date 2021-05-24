@@ -21,6 +21,7 @@ switcher = {
     'blast': 'blast_search',
     'interproscan': 'ipr_search',
     'hmmer': 'hmmer_search',
+    'kofamscan' : 'kofam_search',
     'DBSCAN': 'DBSCAN'
 }
 
@@ -60,7 +61,6 @@ def retrieve_function_pipeline(database: str, fun_name: str) -> Callable:
     detect_tool = config.get('main', 'detect.tool')
     detect_cf_path = path_to_fun + config.get('main', 'detect.config')
     detect_cf_path = check_path_existence(detect_cf_path)
-
     detect_module = importlib.import_module(
         "GutFunFind.detect" + "." + module_name(detect_tool), package=None)
 
@@ -118,6 +118,12 @@ def retrieve_function_pipeline(database: str, fun_name: str) -> Callable:
                     config_file=detect_cf_path,
                     in_file=xml_file,
                     fmt="xml")
+        elif detect_tool == "kofamscan":
+            kofam_file = genome_prefix + ".kofam.tsv"
+            kofam_file = check_path_existence(kofam_file)
+            detect_list = detect_module.pipeline(
+                config_file=detect_cf_path, 
+                in_file=kofam_file)
         else:
             faa_file = genome_prefix + ".faa"
             faa_file = check_path_existence(faa_file)
@@ -125,7 +131,7 @@ def retrieve_function_pipeline(database: str, fun_name: str) -> Callable:
                 config_file=detect_cf_path,
                 protein_file=faa_file,
                 outprefix=outprefix)
-
+        print(detect_list)
         # attache the detect result to genome object
         for query in detect_list:
             setattr(genomeObj.genes[query.id], detect_tool, query)
@@ -251,6 +257,12 @@ def retrieve_function_pipeline_pan(database: str, fun_name: str) -> Callable:
                     config_file=detect_cf_path,
                     in_file=xml_file,
                     fmt="xml")
+        elif detect_tool == "kofamscan":
+            kofam_file = genome_prefix + ".kofam.tsv"
+            kofam_file = check_path_existence(kofam_file)
+            detect_list = detect_module.pipeline(
+                config_file=detect_cf_path,
+                in_file=kofam_file)
         else:
             faa_file = genome_prefix + ".faa"
             faa_file = check_path_existence(faa_file)
