@@ -131,7 +131,7 @@ def retrieve_function_pipeline(database: str, fun_name: str) -> Callable:
                 config_file=detect_cf_path,
                 protein_file=faa_file,
                 outprefix=outprefix)
-        print(detect_list)
+
         # attache the detect result to genome object
         for query in detect_list:
             setattr(genomeObj.genes[query.id], detect_tool, query)

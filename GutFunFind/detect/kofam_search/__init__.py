@@ -19,7 +19,7 @@ def pipeline(config_file: Union[str, IO],
     qresults = kofam_tab_parse(in_file)
 
     # 3. Read score and orthoID info into dictionary
-    ortho_file = check_path_existence(basedir + cf["orthoID_domain_precision"])
+    ortho_file = check_path_existence(basedir + cf["map.ortho_pair"])
     OrthScore_dict = read2orthoDict(ortho_pair_file=ortho_file)
 
     # 4. Process all QueryResult
@@ -28,12 +28,12 @@ def pipeline(config_file: Union[str, IO],
 
         # remove QueryResult that doest not hit any domain in function-related domain list
         i = qres.hsp_filter(lambda hsp: hsp.hit_id in OrthScore_dict.keys())
-
+        
+        def sort_key(hit):
+             return hit.hsps[0].evalue
         # for those without any hit match to the domain
         if len(i) > 0:
-            i.sort(
-                key=lambda hit: OrthScore_dict[hit.id]["precision"], reverse=True)
-
+            i.sort(key=sort_key, reverse=False, in_place=True)
             max_dict = OrthScore_dict[i.hits[0].id]
 
             # set the QueryResult attribution
