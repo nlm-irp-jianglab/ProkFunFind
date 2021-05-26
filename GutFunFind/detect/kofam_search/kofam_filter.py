@@ -5,7 +5,7 @@
 # Please see the LICENSE file that should have been included as part of this
 # package.
 
-"""Bio.SearchIO parser for InterProScan tab output formats."""
+"""Bio.SearchIO parser for Kofamscan tab output formats."""
 # for more info: https://github.com/ebi-pf-team/interproscan/wiki/OutputFormats
 
 import os
@@ -19,7 +19,7 @@ from Bio.SearchIO._model import QueryResult, Hit, HSP, HSPFragment
 from GutFunFind.toolkit.base import read_config, check_path_existence
 
 class KofamscanTabParser:
-    """Parser for the InterProScan table format."""
+    """Parser for the Kofamscan table format."""
 
     def __init__(self, handle):
         """Initialize the class."""
@@ -39,16 +39,18 @@ class KofamscanTabParser:
     def _parse_row(self):
         """Return a dictionary of parsed row values (PRIVATE)."""
         cols = self.line.strip("\n").split("\t")
+
+        # Number of columns should be 7 in the standard kofamscan table
         if len(cols) != 7:
             raise ValueError("Less columns than expected, only %i" % len(cols))
 
         # assign parsed column data into qresult, hit, and hsp dicts
         qresult = {}
         qresult["id"] = cols[1]  # gene name
-        qresult["program"] = "Kofamscan"  #
+        qresult["program"] = "Kofamscan"
 
         hit = {}
-        hit["id"] = cols[2]  # ko name
+        hit["id"] = cols[2]  # ko ID
         hit["description"] = cols[6]  # description of target
         hit["query_id"] = cols[1]  # query name
 
@@ -143,7 +145,7 @@ class KofamscanTabParser:
 
 
 def kofam_tab_parse(handle, **kwargs):
-
+    """Parse kofamscan table and tield results"""
     # get the iterator object and do error checking
     mod = __import__("GutFunFind.detect.kofam_search", fromlist=[""])
     obj_name = "KofamscanTabParser"
@@ -156,10 +158,11 @@ def kofam_tab_parse(handle, **kwargs):
 
 
 def kofam_filter(config_file: Union[str, IO], qres: QueryResult) -> QueryResult:
-
+    """Handle filtering of kofamscan query results"""
     cf = read_config(config_file)
     basedir = os.path.dirname(os.path.abspath(config_file))+"/"
 
+    # Parse global evalue and threhsold values
     global_evalue = float(cf["filter.global"]["evalue"])
     global_threshold = float(cf["filter.global"]["threshold"])
 
@@ -171,9 +174,10 @@ def kofam_filter(config_file: Union[str, IO], qres: QueryResult) -> QueryResult:
         "==": operator.eq,
         "!=":operator.ne
     }
-    
+
     filter_dict = defaultdict(list)
 
+    # Parse local filter settings for specific KOs
     if cf.has_option("filter.local", "filter_file"):
         hit_filter_file = check_path_existence(basedir + cf["filter.local"]["filter_file"])
         with open(hit_filter_file) as filter_file:
@@ -181,6 +185,7 @@ def kofam_filter(config_file: Union[str, IO], qres: QueryResult) -> QueryResult:
                 filter_dict[row[0]].append(
                     {"attr": row[1], "cpfun": ops[row[2]], "value": float(row[3])})
 
+    # Handle filtering by local and global thresholds
     def hsp_filter_func(hsp):
         status = True
         if hsp.hit_id in filter_dict:
@@ -191,9 +196,10 @@ def kofam_filter(config_file: Union[str, IO], qres: QueryResult) -> QueryResult:
                     status = False
                     break
         else:
+            # Adjusted threshold = original threshold for KO * global threshold factor
             adjusted_threshold = hsp.threshold*global_threshold
             if hsp.evalue > float(global_evalue) or hsp.score < adjusted_threshold:
-                 status = False
+                status = False
         return status
 
     return qres.hsp_filter(hsp_filter_func)

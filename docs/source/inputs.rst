@@ -171,6 +171,7 @@ config.ini
                     * blast
                     * hmmer
                     * interproscan
+                    * kofamscan
   ---------------  ------------------------------------------------------------------------------
   detect.config     The name of the configuration file that store the detect method information
   ---------------  ------------------------------------------------------------------------------
@@ -315,7 +316,49 @@ Interproscan Configuration
                                 > K00575	PTHR24422	0.634774
                                 > ...
   ==========================  =================================================================================================================
-    
+
+Kofamscan Configuration
+-----------------------
+
+================  ========================================================================================
+``[kofamscan]``   The header of the detect file. Should be consistent between detect and config.yml files
+================  ========================================================================================
+map.ortho_pair    tab separated mapping of orholog IDs to KO numbers:
+                  
+                  ::
+                   
+                   $ cat ortho_pair.tsv
+                   adh      K00001
+                   adh2     K00002
+                   ...
+----------------  ----------------------------------------------------------------------------------------
+filter.ini        Filtering of the kofamscan results can be done based on the score or evalue
+                  that is associated with a comparison of one query to one KO. 
+                  For each KO the score of that query:KO comparison is compared to a predefined
+                  threshold, which is different for each KO. The strictness of these thresholds
+                  can be adjusted globally through the 'thrsehold' setting in the filter.ini file. 
+                  The factor provided through this setting will be used to multiply all scores making
+                  them more or less strict. For example if 2 is provided as the threshold setting, 
+                  then all thresholds will be multiplied by 2, meaning that scores will need to be
+                  twice as high to pass the thresholds. 
+
+                  ::
+
+                   $ cat filter.ini
+                   [filter.global]
+                   evalue = 1e-6
+                   threshold = 2
+
+                   Local filter settings can also be specificed for specific KOs. For these 
+                   settings the score thresholds can be set directly instead of being adjusted
+                   by a given factor. 
+
+                   ::
+                  
+                    $ cat hit_filter.tsv
+                    K00001     threshold    >=    110
+================  ========================================================================================
+
 
 cluster.ini
 ===========
