@@ -80,7 +80,7 @@ def export_gene_gff(
 
                 f.write("\n")
 
-            elif detect_tool == "interproscan" or detect_tool == "hmmer":
+            elif detect_tool == "interproscan" or detect_tool == "hmmer" or detect_tool == "kofamscan":
                 f.write("{ct}\tGuFunFind\t{tp}\t{start}\t{end}\t.\t{strand}\t.\tID={id};Name={orthoID};ClusterID={cluster_ID};Target={Target}{evalue}".format(
                     ct=gene.contig,
                     tp=gene.type,
