@@ -1,0 +1,25 @@
+{
+    "name": "HDC",
+    "components": [
+        {
+            "name": "PLP",
+            "presence": "essential",
+            "components": [
+                {
+                    "orthoID": "PLP",
+                    "presence": "essential"
+                }
+            ]
+        },
+        {
+            "name": "antiporter",
+            "presence": "essential",
+            "components": [
+                {
+                    "orthoID": "antiporter",
+                    "presence": "essential"
+                }
+            ]
+        }
+    ]
+}
