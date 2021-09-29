@@ -18,6 +18,7 @@ setuptools.setup(name='GutFunFind',
                      "GutFunFind.detect.blast_search",
                      "GutFunFind.detect.ipr_search",
                      "GutFunFind.detect.hmmer_search",
+                     "GutFunFind.detect.kofam_search",
                      "GutFunFind.cluster.DBSCAN"
                  ],
                  # packages=setuptools.find_packages(),
