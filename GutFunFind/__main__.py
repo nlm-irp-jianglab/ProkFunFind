@@ -22,6 +22,7 @@ switcher = {
     'interproscan': 'ipr_search',
     'hmmer': 'hmmer_search',
     'kofamscan' : 'kofam_search',
+    'emapper' : 'emap_search',
     'DBSCAN': 'DBSCAN'
 }
 
@@ -122,8 +123,14 @@ def retrieve_function_pipeline(database: str, fun_name: str) -> Callable:
             kofam_file = genome_prefix + ".kofam.tsv"
             kofam_file = check_path_existence(kofam_file)
             detect_list = detect_module.pipeline(
-                config_file=detect_cf_path, 
+                config_file=detect_cf_path,
                 in_file=kofam_file)
+        elif detect_tool == "emapper":
+            emap_file = genome_prefix + ".emapper.annotations"
+            emap_file = check_path_existence(emap_file)
+            detect_list = detect_module.pipeline(
+                config_file=detect_cf_path,
+                in_file=emap_file)
         else:
             faa_file = genome_prefix + ".faa"
             faa_file = check_path_existence(faa_file)
@@ -263,6 +270,12 @@ def retrieve_function_pipeline_pan(database: str, fun_name: str) -> Callable:
             detect_list = detect_module.pipeline(
                 config_file=detect_cf_path,
                 in_file=kofam_file)
+        elif detect_tool == "emapper":
+            emap_file = genome_prefix + ".emapper.annotations"
+            emap_file = check_path_existence(emap_file)
+            detect_list = detect_module.pipeline(
+                config_file=detect_cf_path,
+                in_file=emap_file)
         else:
             faa_file = genome_prefix + ".faa"
             faa_file = check_path_existence(faa_file)
@@ -276,7 +289,7 @@ def retrieve_function_pipeline_pan(database: str, fun_name: str) -> Callable:
 
         pangenome = Roarycsv2pangenome(roaryfile)
 
-        genome_query_dict = { 
+        genome_query_dict = {
                 pangenome.get_genegroup(query.id).id : query
                 for query in detect_list
                 }
@@ -300,7 +313,7 @@ def retrieve_function_pipeline_pan(database: str, fun_name: str) -> Callable:
                 if genome_name in pangenome[groupid]:
                     for i in pangenome[groupid][genome_name]:
                         setattr(genomeObj.genes[i],detect_tool,query)
-                        setattr(genomeObj.genes[i],"pangenome_group",pangenome[groupid]) 
+                        setattr(genomeObj.genes[i],"pangenome_group",pangenome[groupid])
 
             genomeObj = cluster_module.pipeline(
                 config_file=cluster_cf_path,
@@ -318,7 +331,7 @@ def retrieve_function_pipeline_pan(database: str, fun_name: str) -> Callable:
                 genomeObj=genomeObj,
                 outprefix=outprefix + genome_name,
                 detect_tool=detect_tool,
-                cluster_tool=cluster_tool) 
+                cluster_tool=cluster_tool)
 
             if status:
                 print(
