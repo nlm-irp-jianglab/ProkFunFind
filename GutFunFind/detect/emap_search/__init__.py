@@ -11,7 +11,7 @@ from GutFunFind.detect.emap_search.emap_filter import *
 def pipeline(config_file: Union[str, IO],
              in_file: Union[str, IO]
              ) -> List[QueryResult]:
-    """Run emappperscan analysis"""
+    """Run emapper COG analysis"""
     # 1. Read the configuration file into configuration object
     cf = read_config(config_file)["emapper"]
     basedir = os.path.dirname(os.path.abspath(config_file))+"/"
@@ -46,6 +46,6 @@ def pipeline(config_file: Union[str, IO],
         filter_path = check_path_existence(basedir + cf["filter.config"])
         filter_res = [emappper_filter(config_file=filter_path, qres=i) for i in q_list]
 
-    # generate final list
+    # generate final list of hits
     q_list = [i for i in filter_res if len(i) > 0]
     return q_list

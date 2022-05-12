@@ -184,7 +184,7 @@ def emappper_filter(config_file: Union[str, IO], qres: QueryResult) -> QueryResu
                 filter_dict[row[0]].append(
                     {"attr": row[1], "cpfun": ops[row[2]], "value": float(row[3])})
 
-    # Handle filtering by local and global thresholds
+    # Handle filtering by local and global thresholds. Only evalue filtering supported. 
     def hsp_filter_func(hsp):
         status = True
         if hsp.hit_id in filter_dict:
