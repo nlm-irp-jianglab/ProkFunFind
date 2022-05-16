@@ -7,13 +7,13 @@ from typing import IO, Union
 from Bio.SearchIO._model.query import QueryResult
 from GutFunFind.toolkit.base import read_config, check_path_existence, read2orthoDict
 
-def hmmer_filter(config_file: Union[str, IO], qres: QueryResult) -> QueryResult:
+def hmmer_filter(config: dict, qres: QueryResult, basedir=str) -> QueryResult:
 
-    cf = read_config(config_file)
-    basedir = os.path.dirname(os.path.abspath(config_file))+"/"
+    # cf = read_config(config_file)
+    # basedir = os.path.dirname(os.path.abspath(config_file))+"/"
 
-    global_evalue = cf["filter.global"]["evalue"] if  cf["filter.global"].get("evalue") else 10
-    global_bitscore = cf["filter.global"]["bitscore"] if cf["filter.global"].get("bitscore") else 0
+    global_evalue = config["filter"]["evalue"] if  config["filter"].get("evalue") else 10
+    global_bitscore = config["filter"]["bitscore"] if config["filter"].get("bitscore") else 0
 
     ##################################################################
     #  User can customize the filter function to remove QueryResult  #
@@ -32,8 +32,8 @@ def hmmer_filter(config_file: Union[str, IO], qres: QueryResult) -> QueryResult:
     query_len = qres.seq_len;
 
     # if there is section filter.local and that section has filter_file, the info of the filter_file will be passed to  filter_dict; Otherwise filter_dict remains empty
-    if cf.has_option("filter.local", "filter_file"): 
-        hit_filter_file = check_path_existence(basedir + cf["filter.local"]["filter_file"])
+    if config.has_option("filter", "filter_file"):
+        hit_filter_file = check_path_existence(basedir + config["filter"]["filter_file"])
         # check if file exist or empty
         with open(hit_filter_file) as filter_file:
             for row in csv.reader(filter_file, delimiter='\t'):

@@ -65,7 +65,7 @@ def export_gene_gff(
                     id=gene.id,
                     orthoID=qry.orthoID,
                     cluster_ID=cluster_annot,
-                    Target=hsp.hit_id + " " + str(hsp.hit_start) + " " + str(hsp.hit_end), 
+                    Target=hsp.hit_id + " " + str(hsp.hit_start) + " " + str(hsp.hit_end),
                     pct_identity=hsp.ident_pct,
                     evalue=hsp.evalue
                     ))
@@ -80,7 +80,7 @@ def export_gene_gff(
 
                 f.write("\n")
 
-            elif detect_tool == "interproscan" or detect_tool == "hmmer" or detect_tool == "kofamscan":
+            elif detect_tool == "interproscan" or detect_tool == "hmmer" or detect_tool == "kofamscan" or detect_tool == "emapper":
                 f.write("{ct}\tGuFunFind\t{tp}\t{start}\t{end}\t.\t{strand}\t.\tID={id};Name={orthoID};ClusterID={cluster_ID};Target={Target}{evalue}".format(
                     ct=gene.contig,
                     tp=gene.type,

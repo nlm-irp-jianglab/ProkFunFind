@@ -10,22 +10,23 @@ from GutFunFind.detect.hmmer_search import *
 from GutFunFind.detect.hmmer_search.hmmer_filter import hmmer_filter
 
 
-def pipeline(config_file: Union[str, IO],
+def pipeline(config: dict,
              protein_file: Union[str, IO],
-             outprefix: str) -> List[QueryResult]:
+             outprefix: str,
+             basedir: str) -> List[QueryResult]:
     # 1. Read the configuration file into configuration object
-    cf = read_config(config_file)["hmmer"]
-    basedir = os.path.dirname(os.path.abspath(config_file))+"/"
+    # cf = read_config(config_file)["hmmer"]
+    # basedir = os.path.dirname(os.path.abspath(config_file))+"/"
 
     # 2 generate command line to run
 
-    query_path = check_path_existence(basedir+cf["hmmer.query"])
+    query_path = check_path_existence(basedir+config["hmmer"]["hmmer.query"])
 
     tool_format_dict = dict({"hmmsearch":"hmmsearch3-domtab","hmmscan":"hmmscan3-domtab","phmmer":"phmmer3-domtab"});
-    outfmt = tool_format_dict[cf["hmmer.exec"]]
+    outfmt = tool_format_dict[config['hmmer']["hmmer.exec"]]
 
     cmd = [
-        cf["hmmer.exec"],
+        config['hmmer']["hmmer.exec"],
         "-o",
         outprefix + ".out",
         "--tblout",
@@ -36,9 +37,9 @@ def pipeline(config_file: Union[str, IO],
         protein_file
         ]
 
-    if cf.get("hmmer.threads"):
+    if config['hmmer'].get("hmmer.threads"):
         cmd.insert(1,"--cpu")
-        cmd.insert(2,cf["hmmer.threads"])
+        cmd.insert(2,config["hmmer"]["hmmer.threads"])
 
     # 3 run command line
     # check the protein_file+".blast.xml" existence
@@ -49,15 +50,15 @@ def pipeline(config_file: Union[str, IO],
     # 4 read the output from previous step
     qresults = SearchIO.parse(outprefix + ".domtblout", outfmt)
 
-    if cf.get("filter.config") and cf["filter.config"]:
-        filter_path = check_path_existence(basedir + cf["filter.config"])
-        filter_res = [hmmer_filter(config_file=filter_path, qres=i) for i in qresults]
+    if config["filter"]:
+        # filter_path = check_path_existence(basedir + config['hmmer']["filter.config"])
+        filter_res = [hmmer_filter(config=config, qres=i, basedir=basedir) for i in qresults]
         q_list = [i for i in filter_res if len(i) > 0]
     else:
         q_list = [i for i in qresults if len(i) > 0]
 
 
-    ortho_file = check_path_existence(basedir + cf["orthoID_domain_precision"])
+    ortho_file = check_path_existence(basedir + config["hmmer"]["orthoID_domain_precision"])
     OrthScore_dict = read2orthoDict(ortho_pair_file=ortho_file)
 
     # 4. Process all QueryResult

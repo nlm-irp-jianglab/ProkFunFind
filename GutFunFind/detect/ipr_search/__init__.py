@@ -8,12 +8,13 @@ from GutFunFind.toolkit.base import *
 from GutFunFind.detect.ipr_search.interproscan_tab import InterproscanTabParser, ipr_tab_parse
 
 
-def pipeline(config_file: Union[str, IO],
+def pipeline(config: dict,
              in_file: Union[str, IO],
-             fmt: str) -> List[QueryResult]:
+             fmt: str,
+             basedir: str) -> List[QueryResult]:
     # 1. Read the configuration file into configuration object
-    cf = read_config(config_file)["interproscan"]
-    basedir = os.path.dirname(os.path.abspath(config_file))+"/"
+    # cf = read_config(config_file)["interproscan"]
+    # basedir = os.path.dirname(os.path.abspath(config_file))+"/"
 
     # 2. Read interproscan xml file
     if fmt == "xml":
@@ -22,7 +23,7 @@ def pipeline(config_file: Union[str, IO],
         qresults = ipr_tab_parse(in_file)
 
     # 3. Read score and orthoID info into dictionary
-    ortho_file = check_path_existence(basedir + cf["orthoID_domain_precision"])
+    ortho_file = check_path_existence(basedir + config["interproscan"]["orthoID_domain_precision"])
     OrthScore_dict = read2orthoDict(ortho_pair_file=ortho_file)
 
     # 4. Process all QueryResult

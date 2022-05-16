@@ -157,13 +157,12 @@ def emappper_tab_parse(handle, **kwargs):
         yield from generator
 
 
-def emappper_filter(config_file: Union[str, IO], qres: QueryResult) -> QueryResult:
+def emappper_filter(config: dict, qres: QueryResult, basedir=str) -> QueryResult:
     """Handle filtering of emappper query results"""
-    cf = read_config(config_file)
-    basedir = os.path.dirname(os.path.abspath(config_file))+"/"
+    # basedir = os.path.dirname(os.path.abspath(config_file))+"/"
 
     # Parse global evalue and threhsold values
-    global_evalue = float(cf["filter.global"]["evalue"])
+    global_evalue = float(config["filter"]["evalue"])
 
     ops = {
         "<=": operator.le,
@@ -177,14 +176,14 @@ def emappper_filter(config_file: Union[str, IO], qres: QueryResult) -> QueryResu
     filter_dict = defaultdict(list)
 
     # Parse local filter settings for specific KOs
-    if cf.has_option("filter.local", "filter_file"):
-        hit_filter_file = check_path_existence(basedir + cf["filter.local"]["filter_file"])
+    if config.has_option("filter", "filter_file"):
+        hit_filter_file = check_path_existence(basedir + config["filter"]["filter_file"])
         with open(hit_filter_file) as filter_file:
             for row in csv.reader(filter_file, delimiter="\t"):
                 filter_dict[row[0]].append(
                     {"attr": row[1], "cpfun": ops[row[2]], "value": float(row[3])})
 
-    # Handle filtering by local and global thresholds. Only evalue filtering supported. 
+    # Handle filtering by local and global thresholds. Only evalue filtering supported.
     def hsp_filter_func(hsp):
         status = True
         if hsp.hit_id in filter_dict:

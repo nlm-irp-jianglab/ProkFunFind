@@ -8,19 +8,21 @@ from GutFunFind.toolkit.base import *
 from GutFunFind.detect.emap_search.emap_filter import *
 
 
-def pipeline(config_file: Union[str, IO],
-             in_file: Union[str, IO]
+def pipeline(config: dict,
+             in_file: Union[str, IO],
+             basedir: Union[str, IO]
              ) -> List[QueryResult]:
     """Run emapper COG analysis"""
     # 1. Read the configuration file into configuration object
-    cf = read_config(config_file)["emapper"]
-    basedir = os.path.dirname(os.path.abspath(config_file))+"/"
-
+    # cf = read_config(config_file)["emapper"]
+    print(basedir)
+    # basedir = os.path.dirname(os.path.abspath(basedir))+"/"
+    basedir = os.path.abspath(basedir)+'/'
     # 2. Read emappperscan tsv file and parse results
     qresults = emappper_tab_parse(in_file)
 
     # 3. Read orthoID info into dictionary
-    ortho_file = check_path_existence(basedir + cf["map.ortho_pair"])
+    ortho_file = check_path_existence(basedir + config["emapper"]["map.ortho_pair"])
     OrthScore_dict = read2orthoDict(ortho_pair_file=ortho_file)
 
     # 4. Process all QueryResult
@@ -42,9 +44,9 @@ def pipeline(config_file: Union[str, IO],
             q_list.append(i)
 
     # filter results based on evalue and thresholds
-    if cf.get("filter.config") and cf["filter.config"]:
-        filter_path = check_path_existence(basedir + cf["filter.config"])
-        filter_res = [emappper_filter(config_file=filter_path, qres=i) for i in q_list]
+    if config['filter']:#cf.get("filter.config") and cf["filter.config"]:
+        # filter_path = check_path_existence(basedir + cf["filter.config"])
+        filter_res = [emappper_filter(config=config, qres=i, basedir=basedir) for i in q_list]
 
     # generate final list of hits
     q_list = [i for i in filter_res if len(i) > 0]

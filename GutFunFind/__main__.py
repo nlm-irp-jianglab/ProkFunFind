@@ -60,15 +60,17 @@ def retrieve_function_pipeline(database: str, fun_name: str) -> Callable:
 
     # 2. Run the correct detect tool
     detect_tool = config.get('main', 'detect.tool')
-    detect_cf_path = path_to_fun + config.get('main', 'detect.config')
-    detect_cf_path = check_path_existence(detect_cf_path)
+    # detect_cf_path = path_to_fun + config.get('main', 'detect.config')
+    # detect_config = config[detect_tool]
+    # detect_cf_path = check_path_existence(detect_cf_path)
     detect_module = importlib.import_module(
         "GutFunFind.detect" + "." + module_name(detect_tool), package=None)
 
     # 3. Run the cluster method
     cluster_tool = config.get('main', 'cluster.tool')
-    cluster_cf_path = path_to_fun + config.get('main', 'cluster.config')
-    cluster_cf_path = check_path_existence(cluster_cf_path)
+    # cluster_config = config[cluster_tool]
+    # cluster_cf_path = path_to_fun + config.get('main', 'cluster.config')
+    # cluster_cf_path = check_path_existence(cluster_cf_path)
 
     cluster_module = importlib.import_module(
         "GutFunFind.cluster" + "." + module_name(cluster_tool), package=None)
@@ -111,33 +113,38 @@ def retrieve_function_pipeline(database: str, fun_name: str) -> Callable:
                             xml_file, tsv_file))
                 else:
                     detect_list = detect_module.pipeline(
-                        config_file=detect_cf_path,
+                        config=config,
                         in_file=tsv_file,
-                        fmt="tsv")
+                        fmt="tsv",
+                        basedir=path_to_fun)
             else:
                 detect_list = detect_module.pipeline(
-                    config_file=detect_cf_path,
+                    config=config,
                     in_file=xml_file,
-                    fmt="xml")
+                    fmt="xml",
+                    basedir=path_to_fun)
         elif detect_tool == "kofamscan":
             kofam_file = genome_prefix + ".kofam.tsv"
             kofam_file = check_path_existence(kofam_file)
             detect_list = detect_module.pipeline(
-                config_file=detect_cf_path,
-                in_file=kofam_file)
+                config=config,
+                in_file=kofam_file,
+                basedir=path_to_fun)
         elif detect_tool == "emapper":
             emap_file = genome_prefix + ".emapper.annotations"
             emap_file = check_path_existence(emap_file)
             detect_list = detect_module.pipeline(
-                config_file=detect_cf_path,
-                in_file=emap_file)
+                config=config,
+                in_file=emap_file,
+                basedir=path_to_fun)
         else:
             faa_file = genome_prefix + ".faa"
             faa_file = check_path_existence(faa_file)
             detect_list = detect_module.pipeline(
-                config_file=detect_cf_path,
+                config=config,
                 protein_file=faa_file,
-                outprefix=outprefix)
+                outprefix=outprefix,
+                basedir=path_to_fun)
 
         # attache the detect result to genome object
         for query in detect_list:
@@ -145,7 +152,7 @@ def retrieve_function_pipeline(database: str, fun_name: str) -> Callable:
 
         # identify gene cluster at genome object
         genomeObj = cluster_module.pipeline(
-            config_file=cluster_cf_path,
+            config=config,
             genome_object=genomeObj,
             detect_tool=detect_tool)
 

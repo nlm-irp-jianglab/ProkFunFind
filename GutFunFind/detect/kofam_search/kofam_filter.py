@@ -157,14 +157,14 @@ def kofam_tab_parse(handle, **kwargs):
         yield from generator
 
 
-def kofam_filter(config_file: Union[str, IO], qres: QueryResult) -> QueryResult:
+def kofam_filter(config: dict, qres: QueryResult, basedir) -> QueryResult:
     """Handle filtering of kofamscan query results"""
-    cf = read_config(config_file)
-    basedir = os.path.dirname(os.path.abspath(config_file))+"/"
+    # cf = read_config(config_file)
+    # basedir = os.path.dirname(os.path.abspath(config_file))+"/"
 
     # Parse global evalue and threhsold values
-    global_evalue = float(cf["filter.global"]["evalue"])
-    global_threshold = float(cf["filter.global"]["threshold"])
+    global_evalue = float(config["filter"]["evalue"])
+    global_threshold = float(config["filter"]["threshold"])
 
     ops = {
         "<=": operator.le,
@@ -178,8 +178,8 @@ def kofam_filter(config_file: Union[str, IO], qres: QueryResult) -> QueryResult:
     filter_dict = defaultdict(list)
 
     # Parse local filter settings for specific KOs
-    if cf.has_option("filter.local", "filter_file"):
-        hit_filter_file = check_path_existence(basedir + cf["filter.local"]["filter_file"])
+    if config.has_option("filter", "filter_file"):
+        hit_filter_file = check_path_existence(basedir + config["filter"]["filter_file"])
         with open(hit_filter_file) as filter_file:
             for row in csv.reader(filter_file, delimiter="\t"):
                 filter_dict[row[0]].append(

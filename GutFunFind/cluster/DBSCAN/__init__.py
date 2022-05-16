@@ -17,9 +17,9 @@ def DBSCANCluster(
     return list(cluster.labels_)
 
 
-def pipeline(config_file: str, genome_object, detect_tool: str) -> Genome:
+def pipeline(config: dict, genome_object, detect_tool: str) -> Genome:
 
-    cf = read_config(config_file)["DBSCAN"]
+    # cf = read_config(config_file)["DBSCAN"]
 
     for ct in genome_object.contigs.values():
 
@@ -42,8 +42,8 @@ def pipeline(config_file: str, genome_object, detect_tool: str) -> Genome:
         if len(poslist) >= 1:
             cl = DBSCANCluster(pos=poslist,
                                weight=weightlist,
-                               eps=float(cf["cluster.eps"]),
-                               min_samples=float(cf["cluster.min_samples"]))
+                               eps=float(config["DBSCAN"]["cluster.eps"]),
+                               min_samples=float(config["DBSCAN"]["cluster.min_samples"]))
 
             for gene, cl_label in zip(genelist, cl):
                 if cl_label == -1:
