@@ -1,5 +1,5 @@
 import json
-
+import logging
 
 def read_json(system_file):
     with open(system_file) as f:
@@ -58,6 +58,9 @@ def check_gene_in_subsystem(system_dict,
         if completeness["essential"] == completeness[
                 "essential_presence"] and completeness["essential"] > 0:
             status = 1
+        if system_dict["completeness"]["essential"] == 0:
+            logging.warning('Component {} was defined without any essential subcomponents. Please define at least one subcomponent as essential.'.format(system_dict["name"]))
+            quit()
 
     elif "orthoID" in system_dict:
         fun_list.append(system_dict["orthoID"])
