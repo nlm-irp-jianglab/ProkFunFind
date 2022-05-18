@@ -6,8 +6,7 @@ from typing import MutableMapping, List
 from Bio import SeqIO
 from Bio.SeqFeature import SeqFeature
 from Bio.Seq import Seq
-
-from GutFunFind.read.GFFParser import parse
+from BCBio import GFF
 
 ####################################################################################################
 
@@ -126,8 +125,8 @@ def GetGenomeFromGFF(gff3file: str, fnafile: str) -> Genome:
 
     try:
         with open(gff3file) as handle:
-            gff_records = list(parse(handle))
-            #gff_records = list(GFF.parse(handle))
+            # gff_records = list(parse(handle))
+            gff_records = list(GFF.parse(handle))
         for rec in gff_records:
             ct = g1[rec.id]
             for f in rec.features:
@@ -198,7 +197,8 @@ def GetGenomeFromGzipGFF(gzipfile: str) -> Genome:
 
     try:
         in_seq_handle = gzip.open(gzipfile, "rt")
-        gff_records = list(parse(in_seq_handle))
+        # gff_records = list(parse(in_seq_handle))
+        gff_records = GFF.parse(in_seq_handle)
         for rec in gff_records:
             ct = g1[rec.id]
             for f in rec.features:
