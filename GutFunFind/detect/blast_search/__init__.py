@@ -1,10 +1,11 @@
 import os
 from typing import IO, List, Union
+import subprocess
 
 from Bio.SearchIO._model.query import QueryResult
 from Bio import SearchIO
 
-from GutFunFind.toolkit.base import *
+from GutFunFind.toolkit.utility import *
 from GutFunFind.detect.blast_search.blast_filter import blast_filter, blast_ortho
 
 
@@ -40,10 +41,8 @@ def pipeline(config: dict,
         cmd +=["-num_threads",config["blast"]["blast.threads"]]
 
     # 3 run command line
-    # check the protein_file+".blast.xml" existence
-    res = execute(cmd)
-    if res.return_code:
-        print(cmd)
+    res = subprocess.run(cmd)
+    if res.returncode != 0:
         raise RuntimeError("Failed to run: {}".format(" ".join(cmd)))
 
     # 4 read the output from previous step

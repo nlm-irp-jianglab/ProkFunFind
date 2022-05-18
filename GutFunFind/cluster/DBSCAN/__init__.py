@@ -3,7 +3,7 @@ import numpy as np
 from sklearn.cluster import DBSCAN
 
 from GutFunFind.read import Genome
-from GutFunFind.toolkit.base import *
+from GutFunFind.toolkit.utility import *
 
 
 def DBSCANCluster(

@@ -5,7 +5,7 @@ from collections import defaultdict
 
 from typing import IO, Union
 from Bio.SearchIO._model.query import QueryResult
-from GutFunFind.toolkit.base import read_config, check_path_existence, read2orthoDict
+from GutFunFind.toolkit.utility import read_config, check_path_existence, read2orthoDict
 
 def blast_filter(config: dict, qres: QueryResult, basedir=str) -> QueryResult:
 

@@ -16,7 +16,7 @@ from collections import defaultdict
 from typing import IO, Union
 from Bio.File import as_handle
 from Bio.SearchIO._model import QueryResult, Hit, HSP, HSPFragment
-from GutFunFind.toolkit.base import read_config, check_path_existence
+from GutFunFind.toolkit.utility import read_config, check_path_existence
 
 class emappperTabParser:
     """Parser for the emappper table format."""

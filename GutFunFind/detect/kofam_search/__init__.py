@@ -4,7 +4,7 @@ from configparser import ConfigParser
 from Bio import SearchIO
 from Bio.SearchIO._model.query import QueryResult
 
-from GutFunFind.toolkit.base import *
+from GutFunFind.toolkit.utility import *
 from GutFunFind.detect.kofam_search.kofam_filter import *
 
 

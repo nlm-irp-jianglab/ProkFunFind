@@ -12,7 +12,7 @@ from argparse import ArgumentParser
 from GutFunFind import examine
 from GutFunFind import report
 from GutFunFind.read import GetGenomeFromGFF, Genome, Roarycsv2pangenome, GetGenomeFromGzipGFF
-from GutFunFind.toolkit.base import find_file_in_folder, check_path_existence
+from GutFunFind.toolkit.utility import find_file_in_folder, check_path_existence
 
 
 
