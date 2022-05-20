@@ -4,6 +4,7 @@ from collections import OrderedDict
 import os
 import sys
 import importlib
+import logging
 
 from typing import Callable, Tuple, Dict
 from configparser import ConfigParser
@@ -13,9 +14,9 @@ from GutFunFind import examine
 from GutFunFind import report
 from GutFunFind.read import GetGenomeFromGFF, Genome, Roarycsv2pangenome, GetGenomeFromGzipGFF
 from GutFunFind.toolkit.utility import find_file_in_folder, check_path_existence
+from GutFunFind.annotate.genomes import run_prokka, export_proteins
 
-
-
+logging.basicConfig(level=logging.DEBUG)
 
 switcher = {
     'blast': 'blast_search',
@@ -41,10 +42,11 @@ def module_name(arg: str) -> str:
 
 
 # Write a funtion pipeline for function of interest for a individual genome
-def retrieve_function_pipeline(database: str, fun_name: str) -> Callable:
+def retrieve_function_pipeline(database: str, fun_name: str, args) -> Callable:
 
     # 1. Obtain the configuration and check the exec as well as the database
     # required
+    logging.info('Parsing configuration files')
     path_to_fun = database.rstrip("/") + "/" + fun_name + "/"
 
     # 1.1 check the existance of the function
@@ -58,7 +60,12 @@ def retrieve_function_pipeline(database: str, fun_name: str) -> Callable:
 
     config.read(config_path)
 
+    # 1.3 Generate protein fasta files from input GFF files
+    logging.info('Preparing genome files for search')
+    search_list = export_proteins(config, args.gdir, args.gtab, zipped=False)
+
     # 2. Run the correct detect tool
+    logging.info('Searching for functions')
     detect_tool = config.get('main', 'detect.tool')
     # detect_cf_path = path_to_fun + config.get('main', 'detect.config')
     # detect_config = config[detect_tool]
@@ -67,6 +74,7 @@ def retrieve_function_pipeline(database: str, fun_name: str) -> Callable:
         "GutFunFind.detect" + "." + module_name(detect_tool), package=None)
 
     # 3. Run the cluster method
+    logging.info('Identifying gene clusters')
     cluster_tool = config.get('main', 'cluster.tool')
     # cluster_config = config[cluster_tool]
     # cluster_cf_path = path_to_fun + config.get('main', 'cluster.config')
@@ -82,9 +90,9 @@ def retrieve_function_pipeline(database: str, fun_name: str) -> Callable:
                           outprefix: str) -> Tuple[Dict, int, Genome]:
 
         # varaible for the path for genome(fna),annotations(gff),proteins(faa)
-        gff_file = genome_prefix + ".gff"
+        gff_file = genome_prefix + ".pff.gff3"
         gff_file = check_path_existence(gff_file)
-        fna_file = genome_prefix + ".fna"
+        fna_file = genome_prefix + ".pff.fna"
         fna_file = check_path_existence(fna_file)
 
         outprefix = os.path.abspath(outprefix)
@@ -138,7 +146,7 @@ def retrieve_function_pipeline(database: str, fun_name: str) -> Callable:
                 in_file=emap_file,
                 basedir=path_to_fun)
         else:
-            faa_file = genome_prefix + ".faa"
+            faa_file = genome_prefix + ".pff.faa"
             faa_file = check_path_existence(faa_file)
             detect_list = detect_module.pipeline(
                 config=config,
@@ -146,7 +154,7 @@ def retrieve_function_pipeline(database: str, fun_name: str) -> Callable:
                 outprefix=outprefix,
                 basedir=path_to_fun)
 
-        # attache the detect result to genome object
+        # attach the detect result to genome object
         for query in detect_list:
             setattr(genomeObj.genes[query.id], detect_tool, query)
 
@@ -158,14 +166,15 @@ def retrieve_function_pipeline(database: str, fun_name: str) -> Callable:
 
         # examine the genome to see if it contain the function and annotate
         # related genes
+        logging.info('Summarizing function presence and genes')
         (system_dict, status, genomeObj) = examine.pipeline(
             system_file=system_file, genome_object=genomeObj, detect_tool=detect_tool)
-
+        genome_name = genome_prefix.split('/')[len(genome_prefix.split('/'))-1]
         report.report_all(
             system_dict=system_dict,
             status=status,
             genomeObj=genomeObj,
-            outprefix=outprefix,
+            outprefix=outprefix+'.'+genome_name,
             detect_tool=detect_tool,
             cluster_tool=cluster_tool)
 
@@ -190,15 +199,18 @@ def retrieve_function_pipeline(database: str, fun_name: str) -> Callable:
 
         #return (system_dict, status, genomeObj)
 
-    return function_analysis
+    return function_analysis, search_list
+
 
 
 def main_individual(args):
 
-    detect_fun = retrieve_function_pipeline(
-        database=args.database, fun_name=args.fun_name)
+    detect_fun, search_list = retrieve_function_pipeline(
+        database=args.database, fun_name=args.fun_name, args=args)
 
-    detect_fun(genome_prefix=args.genome_prefix, outprefix=args.outprefix)
+    # detect_fun(genome_prefix=args.genome_prefix, outprefix=args.outprefix)
+    for prefix in search_list:
+        detect_fun(genome_prefix=prefix, outprefix=args.outprefix)
 
 
 
@@ -238,6 +250,7 @@ def retrieve_function_pipeline_pan(database: str, fun_name: str) -> Callable:
 
     system_file = path_to_fun + config.get('main', 'system.file')
     system_file = check_path_existence(system_file)
+    logging.info('Output saved in {}'.format(args.outputdir))
 
     def function_analysis(pangenome_path: str, outprefix: str, folder: str):
 
@@ -359,8 +372,7 @@ def retrieve_function_pipeline_pan(database: str, fun_name: str) -> Callable:
                         ap=system_dict["completeness"]["nonessential_presence"],
                         a=system_dict["completeness"]["nonessential"]))
 
-            #result_dict.update({genome_name: [system_dict, status, genomeObj]})
-
+            #result_dict.update({genome_name: [system_dict, status, genomeObj]}
 
     return function_analysis
 
@@ -399,13 +411,13 @@ def main():
         dest='fun_name',
         metavar='')
 
-    parser_rep.add_argument(
-        '-g',
-        '--genomeprefix',
-        help='The prefix of genome',
-        required=True,
-        dest='genome_prefix',
-        metavar='')
+    # parser_rep.add_argument(
+    #     '-g',
+    #     '--genomeprefix',
+    #     help='The prefix of genome',
+    #     required=False,
+    #     dest='genome_prefix',
+    #     metavar='')
     parser_rep.add_argument(
         '-o',
         '--outputprefix',
@@ -413,6 +425,10 @@ def main():
         required=True,
         dest='outprefix',
         metavar='')
+    parser_rep.add_argument(
+        '--gdir')
+    parser_rep.add_argument(
+        '--gtab')
     parser_rep.set_defaults(func=main_individual)
 
     parser_pan = subparsers.add_parser(
