@@ -15,7 +15,7 @@ from GutFunFind import report
 from GutFunFind.read import GetGenomeFromGFF, Genome, Roarycsv2pangenome, GetGenomeFromGzipGFF
 from GutFunFind.toolkit.utility import find_file_in_folder, check_path_existence
 from GutFunFind.annotate.genomes import run_prokka, export_proteins, parse_gtab
-from GutFunFind.annotate.annoate import run_emapper, run_kofamscan, run_interproscan
+from GutFunFind.annotate.annotate import run_emapper, run_kofamscan, run_interproscan
 
 logging.basicConfig(level=logging.DEBUG)
 
