@@ -14,7 +14,8 @@ from GutFunFind import examine
 from GutFunFind import report
 from GutFunFind.read import GetGenomeFromGFF, Genome, Roarycsv2pangenome, GetGenomeFromGzipGFF
 from GutFunFind.toolkit.utility import find_file_in_folder, check_path_existence
-from GutFunFind.annotate.genomes import run_prokka, export_proteins
+from GutFunFind.annotate.genomes import run_prokka, export_proteins, parse_gtab
+from GutFunFind.annotate.annoate import run_emapper, run_kofamscan, run_interproscan
 
 logging.basicConfig(level=logging.DEBUG)
 
@@ -72,6 +73,38 @@ def retrieve_function_pipeline(database: str, fun_name: str, args) -> Callable:
     # detect_cf_path = check_path_existence(detect_cf_path)
     detect_module = importlib.import_module(
         "GutFunFind.detect" + "." + module_name(detect_tool), package=None)
+
+    # 2.1 Run correction annotation tool or use precomupted input
+    gids = parse_gtab(args.gtab)
+
+    if not args.precomputed:
+        logging.info('running annotation tools')
+        quit()
+        if detect_tool == 'interproscan':
+            for genome in gids:
+                gin = args.gdir+'/'+genome
+                run_emapper(config, gin)
+        elif detect_tool == 'kofamscan':
+            for genome in gids:
+                gin = args.gdir+'/'+genome
+                run_kofamscan(config, gin)
+        elif detect_tool == 'interproscan':
+            for genome in gids:
+                gin = args.gdir+'/'+genome
+                run_interproscan(config, gin)
+    else:
+        logging.info('')
+        if detect_tool in ['blast', 'hmmer']:
+            logging.warning('Precomputed blast and hmmer input is not currently supported')
+            quit()
+        for genome in gids:
+            if detect_tool == 'interproscan':
+                #Need to handle both tsv and xml outputs.
+                check_path_existence(args.gdir+'/'+genome+'_InterProScan.tsv')
+            if detect_tool == 'kofamscan':
+                check_path_existence(args.gdir+'/'+genome+'.kofam.tsv')
+            if detect_tool == 'emapper':
+                check_path_existence(args.gdir+'/'+genome+".emapper.annotations")
 
     # 3. Run the cluster method
     logging.info('Identifying gene clusters')
@@ -429,6 +462,10 @@ def main():
         '--gdir')
     parser_rep.add_argument(
         '--gtab')
+    parser_rep.add_argument(
+        '--precomputed',
+        action='store_true'
+    )
     parser_rep.set_defaults(func=main_individual)
 
     parser_pan = subparsers.add_parser(
