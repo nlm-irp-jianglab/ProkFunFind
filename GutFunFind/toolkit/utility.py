@@ -43,7 +43,8 @@ def find_file_in_folder(folder: AnyStr, pattern: AnyStr) -> List:
 def check_path_existence(path):
     abspath = os.path.abspath(path)
     if not os.path.exists(abspath):
-        sys.exit("Can not find {}! Please check!".format(abspath))
+        # logging.warning
+        raise OSError("Can not find {}! Please check!".format(abspath))
     return(abspath)
 
 
@@ -59,6 +60,7 @@ def read2orthoDict(ortho_pair_file: Union[str, IO]) -> Dict:
         csv_reader = csv.reader(csv_file, delimiter='\t')
         header = next(csv_reader)
         col_num = len(header)
+        print(header, col_num)
         if col_num == 2:
             OrthScore_dict[header[1]] = {"orthoID": header[0], "precision": 1}
             for row in csv_reader:
