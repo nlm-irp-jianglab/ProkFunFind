@@ -1,6 +1,5 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-from collections import OrderedDict
 import os
 import sys
 import importlib
@@ -12,10 +11,13 @@ from argparse import ArgumentParser
 
 from GutFunFind import examine
 from GutFunFind import report
-from GutFunFind.read import GetGenomeFromGFF, Genome, Roarycsv2pangenome, GetGenomeFromGzipGFF
-from GutFunFind.toolkit.utility import find_file_in_folder, check_path_existence
+from GutFunFind.read import (GetGenomeFromGFF, Genome, Roarycsv2pangenome,
+                             GetGenomeFromGzipGFF)
+from GutFunFind.toolkit.utility import (find_file_in_folder,
+                                        check_path_existence)
 from GutFunFind.annotate.genomes import run_prokka, export_proteins, parse_gtab
-from GutFunFind.annotate.annotate import run_emapper, run_kofamscan, run_interproscan
+from GutFunFind.annotate.annotate import (run_emapper, run_kofamscan,
+                                          run_interproscan)
 
 logging.basicConfig(level=logging.DEBUG)
 
@@ -23,8 +25,8 @@ switcher = {
     'blast': 'blast_search',
     'interproscan': 'ipr_search',
     'hmmer': 'hmmer_search',
-    'kofamscan' : 'kofam_search',
-    'emapper' : 'emap_search',
+    'kofamscan': 'kofam_search',
+    'emapper': 'emap_search',
     'DBSCAN': 'DBSCAN'
 }
 
@@ -94,16 +96,19 @@ def retrieve_function_pipeline(database: str, fun_name: str, args) -> Callable:
     else:
         logging.info('')
         if detect_tool in ['blast', 'hmmer']:
-            logging.warning('Precomputed blast and hmmer input is not currently supported')
+            logging.warning('Precomputed blast and hmmer input \
+                             is not currently supported')
             quit()
         for genome in gids:
             if detect_tool == 'interproscan':
-                #Need to handle both tsv and xml outputs.
-                check_path_existence(args.gdir+'/'+genome+'_InterProScan.tsv')
+                # Need to handle both tsv and xml outputs.
+                check_path_existence(args.gdir + '/' + genome +
+                                     '_InterProScan.tsv')
             if detect_tool == 'kofamscan':
-                check_path_existence(args.gdir+'/'+genome+'.kofam.tsv')
+                check_path_existence(args.gdir + '/' + genome + '.kofam.tsv')
             if detect_tool == 'emapper':
-                check_path_existence(args.gdir+'/'+genome+".emapper.annotations")
+                check_path_existence(args.gdir + '/' + genome +
+                                     ".emapper.annotations")
 
     # 3. Run the cluster method
     cluster_tool = config.get('main', 'cluster.tool')
@@ -131,7 +136,8 @@ def retrieve_function_pipeline(database: str, fun_name: str, args) -> Callable:
         out_dir = os.path.dirname(outprefix)
         if not out_base and out_dir:
             sys.exit(
-                "Please provide prefix of output file, Not directory name {}".format(out_dir))
+                     "Please provide prefix of output file, Not directory \
+                     name {}".format(out_dir))
         else:
             if not os.path.exists(out_dir):
                 os.makedirs(out_dir)
@@ -200,7 +206,8 @@ def retrieve_function_pipeline(database: str, fun_name: str, args) -> Callable:
         # related genes
         logging.info('Summarizing function presence and genes')
         (system_dict, status, genomeObj) = examine.pipeline(
-            system_file=system_file, genome_object=genomeObj, detect_tool=detect_tool)
+            system_file=system_file, genome_object=genomeObj,
+            detect_tool=detect_tool)
         genome_name = genome_prefix.split('/')[len(genome_prefix.split('/'))-1]
         report.report_all(
             system_dict=system_dict,
@@ -212,7 +219,9 @@ def retrieve_function_pipeline(database: str, fun_name: str, args) -> Callable:
 
         if status:
             print(
-                "Detect function:{fun_name} in genome {genome_prefix}\n{mp} out of {m} essential components present\n{ap} out of {a} nonessential components present ".format(
+                "Detect function:{fun_name} in genome {genome_prefix}\n{mp} \
+                out of {m} essential components present\n{ap} out of {a} \
+                nonessential components present ".format(
                     genome_prefix=genome_prefix,
                     fun_name=system_dict["name"],
                     mp=system_dict["completeness"]["essential_presence"],
@@ -221,7 +230,10 @@ def retrieve_function_pipeline(database: str, fun_name: str, args) -> Callable:
                     a=system_dict["completeness"]["nonessential"]))
         else:
             print(
-                "Failed to detect function:{fun_name} in genome {genome_prefix}\n{mp} out of {m} essential components present\n{ap} out of {a} nonessential components present ".format(
+                "Failed to detect function:{fun_name} in \
+                genome {genome_prefix}\n{mp} out of {m} essential \
+                components present\n{ap} out of {a} nonessential \
+                components present ".format(
                     genome_prefix=genome_prefix,
                     fun_name=system_dict["name"],
                     mp=system_dict["completeness"]["essential_presence"],
@@ -229,10 +241,9 @@ def retrieve_function_pipeline(database: str, fun_name: str, args) -> Callable:
                     ap=system_dict["completeness"]["nonessential_presence"],
                     a=system_dict["completeness"]["nonessential"]))
 
-        #return (system_dict, status, genomeObj)
+        # return (system_dict, status, genomeObj)
 
     return function_analysis, search_list
-
 
 
 def main_individual(args):
@@ -243,7 +254,6 @@ def main_individual(args):
     # detect_fun(genome_prefix=args.genome_prefix, outprefix=args.outprefix)
     for prefix in search_list:
         detect_fun(genome_prefix=prefix, outprefix=args.outprefix)
-
 
 
 # Write a funtion pipeline for function of interest for pangenome
@@ -293,7 +303,8 @@ def retrieve_function_pipeline_pan(database: str, fun_name: str) -> Callable:
         outprefix = os.path.abspath(outprefix).rstrip("/") + "/"
         if os.path.exists(outprefix):
             sys.exit(
-                "Directory name {} exists! Please delete the directory first!".format(outprefix))
+                "Directory name {} exists! Please delete the \
+                directory first!".format(outprefix))
         else:
             os.makedirs(outprefix)
 
@@ -404,7 +415,7 @@ def retrieve_function_pipeline_pan(database: str, fun_name: str) -> Callable:
                         ap=system_dict["completeness"]["nonessential_presence"],
                         a=system_dict["completeness"]["nonessential"]))
 
-            #result_dict.update({genome_name: [system_dict, status, genomeObj]}
+            # result_dict.update({genome_name: [system_dict, status, genomeObj]}
 
     return function_analysis
 
@@ -418,9 +429,7 @@ def main_pan(args):
         folder=args.folder)
 
 
-
 def main():
-
     parser = ArgumentParser(
         description='Identify genes related function of interest')
     subparsers = parser.add_subparsers(dest='command')
@@ -508,8 +517,8 @@ def main():
         metavar='')
     parser_pan.set_defaults(func=main_pan)
 
-    #if len(sys.argv) <= 1:
-    #    sys.argv.append('--help')
+    # if len(sys.argv) <= 1:
+    #     sys.argv.append('--help')
 
     options = parser.parse_args()
     options.func(options)

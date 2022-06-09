@@ -3,7 +3,7 @@ import numpy as np
 from sklearn.cluster import DBSCAN
 
 from GutFunFind.read import Genome
-from GutFunFind.toolkit.utility import *
+# from GutFunFind.toolkit.utility import *
 
 
 def DBSCANCluster(
@@ -43,7 +43,8 @@ def pipeline(config: dict, genome_object, detect_tool: str) -> Genome:
             cl = DBSCANCluster(pos=poslist,
                                weight=weightlist,
                                eps=float(config["DBSCAN"]["cluster.eps"]),
-                               min_samples=float(config["DBSCAN"]["cluster.min_samples"]))
+                               min_samples=float(config["DBSCAN"][
+                                                 "cluster.min_samples"]))
 
             for gene, cl_label in zip(genelist, cl):
                 if cl_label == -1:

@@ -1,11 +1,10 @@
 import csv
 import subprocess
 
-from BCBio import GFF
-from Bio import SeqIO
 from Bio.SeqFeature import SeqFeature, FeatureLocation
 
 from GutFunFind.read import GetGenomeFromGFF, GetGenomeFromGzipGFF
+
 
 def run_prokka(config: dict, genome_dir: str, genome_tab: str):
     """
@@ -18,12 +17,15 @@ def run_prokka(config: dict, genome_dir: str, genome_tab: str):
     """
     gids = parse_gtab(genome_tab)
     for genome in gids.keys():
-        cmd = ['prokka', '--outdir', genome_dir, '--locustag', gids[genome]+'_', genome_dir+'/'+genome]
+        cmd = ['prokka', '--outdir', genome_dir, '--locustag',
+               gids[genome]+'_', genome_dir+'/'+genome]
         res = subprocess.run(cmd)
         if res.returncode != 0:
             raise RuntimeError("Failed to run: {}".format(" ".join(cmd)))
 
-def export_proteins(config: dict, genome_dir: str, genome_tab: str, zipped: False):
+
+def export_proteins(config: dict, genome_dir: str, genome_tab: str,
+                    zipped: False):
     """ Generates protein and nucletotide fasta files from GFF and Genome file
 
         Arguments:
@@ -35,41 +37,34 @@ def export_proteins(config: dict, genome_dir: str, genome_tab: str, zipped: Fals
         Returns:
             A list of input input paths with genome prefixes the input genomes
     """
-    # gff_path = './test-genomein/GTDB15451.comb.gff3'
-    # fna_path = None
-    # zipped
+
     prefixes = []
     gids = parse_gtab(genome_tab)
     for genome in gids.keys():
         # fna_path = None
         prefix = genome_dir+'/'+genome
         gff_path = prefix+'.gff'
-        # if fna_path:
-        #     g = create_genome_object(gff_file=gff_path, fna_file=fna_path)
-        # else:
-        #     if zipped:
-        #         g = create_genome_object(gff_gz_file=gff_path)
-        #     else:
         extract_fna(gff_path, prefix)
-        g = create_genome_object(gff_file=prefix+'.pff.gff3', fna_file=prefix+'.pff.fna')
-
+        g = create_genome_object(gff_file=prefix+'.pff.gff3',
+                                 fna_file=prefix+'.pff.fna')
         g1 = open(prefix+".pff.ffn", "w")
         g2 = open(prefix+".pff.faa", "w")
         prefixes.append(prefix)
-
-
         for contig in g.contigs.values():
             for gene in contig.genes.values():
                 if gene.type != "CDS":
                     continue
-                nt_seq = extract_gene(contig, gene.location, gene.type, translate=False)
-                aa_seq = extract_gene(contig, gene.location, gene.type, translate=True)
+                nt_seq = extract_gene(contig, gene.location,
+                                      gene.type, translate=False)
+                aa_seq = extract_gene(contig, gene.location,
+                                      gene.type, translate=True)
                 g1.write(">"+gene.id+"\n")
                 g1.write(str(nt_seq)+"\n")
                 g2.write(">"+gene.id+"\n")
                 g2.write(str(aa_seq)+"\n")
 
     return prefixes
+
 
 def extract_fna(comb_gff_path: str, prefix):
     """ Generates separate genome fasta file and gff file from combined file
@@ -85,12 +80,13 @@ def extract_fna(comb_gff_path: str, prefix):
         txt = f.read()
         try:
             gff_str, fna_str = txt.split("##FASTA\n")
-        except ValueError as e:
+        except ValueError:
             print("Error: No fasta tag '##FASTA' found in gff file")
     with open(prefix+'.pff.gff3', 'w') as g:
         g.write(gff_str)
     with open(prefix+'.pff.fna', 'w') as g:
         g.write(fna_str)
+
 
 def extract_gene(contig, location, genType, translate=False):
     """ Extract gene sequence given a contig and location
@@ -104,7 +100,8 @@ def extract_gene(contig, location, genType, translate=False):
         Returns:
             None
     """
-    f = SeqFeature(FeatureLocation(location.start, location.end, strand=location.strand), type=genType)
+    f = SeqFeature(FeatureLocation(location.start, location.end,
+                   strand=location.strand), type=genType)
     seq = f.extract(contig.seq)
     if translate:
         return seq.translate(table=11, cds=False, to_stop=True)
