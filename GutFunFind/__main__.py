@@ -79,8 +79,7 @@ def retrieve_function_pipeline(database: str, fun_name: str, args) -> Callable:
 
     if not args.precomputed:
         logging.info('running annotation tools')
-        quit()
-        if detect_tool == 'interproscan':
+        if detect_tool == 'emapper':
             for genome in gids:
                 gin = args.gdir+'/'+genome
                 run_emapper(config, gin)
@@ -107,7 +106,6 @@ def retrieve_function_pipeline(database: str, fun_name: str, args) -> Callable:
                 check_path_existence(args.gdir+'/'+genome+".emapper.annotations")
 
     # 3. Run the cluster method
-    logging.info('Identifying gene clusters')
     cluster_tool = config.get('main', 'cluster.tool')
     # cluster_config = config[cluster_tool]
     # cluster_cf_path = path_to_fun + config.get('main', 'cluster.config')
@@ -191,6 +189,7 @@ def retrieve_function_pipeline(database: str, fun_name: str, args) -> Callable:
         for query in detect_list:
             setattr(genomeObj.genes[query.id], detect_tool, query)
 
+        logging.info('Identifying gene clusters')
         # identify gene cluster at genome object
         genomeObj = cluster_module.pipeline(
             config=config,
@@ -509,8 +508,8 @@ def main():
         metavar='')
     parser_pan.set_defaults(func=main_pan)
 
-    if len(sys.argv) <= 1:
-        sys.argv.append('--help')
+    #if len(sys.argv) <= 1:
+    #    sys.argv.append('--help')
 
     options = parser.parse_args()
     options.func(options)

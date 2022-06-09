@@ -43,7 +43,7 @@ def export_proteins(config: dict, genome_dir: str, genome_tab: str, zipped: Fals
     for genome in gids.keys():
         # fna_path = None
         prefix = genome_dir+'/'+genome
-        gff_path = prefix+'.gff3'
+        gff_path = prefix+'.gff'
         # if fna_path:
         #     g = create_genome_object(gff_file=gff_path, fna_file=fna_path)
         # else:

@@ -30,9 +30,9 @@ setuptools.setup(name='GutFunFind',
                      'scikit-learn',
                      'configparser',
                      'typing',
-                     'importlib',
                      'argparse',
                      'numpy',
                      'six'
                  ],
                  zip_safe=False)
+#                     'importlib',
