@@ -65,7 +65,14 @@ def retrieve_function_pipeline(database: str, fun_name: str, args) -> Callable:
 
     # 1.3 Generate protein fasta files from input GFF files
     logging.info('Preparing genome files for search')
-    search_list = export_proteins(config, args.gdir, args.gtab, zipped=False)
+    #search_list = export_proteins(config, args.gdir, args.gtab, zipped=False)
+    search_list = []
+    gids = parse_gtab(args.gtab)
+    for genome in gids.keys():
+        # fna_path = None
+        prefix = args.gdir+'/'+genome
+        search_list.append(prefix)
+        print(search_list)
 
     # 2. Run the correct detect tool
     logging.info('Searching for functions')
@@ -77,38 +84,34 @@ def retrieve_function_pipeline(database: str, fun_name: str, args) -> Callable:
         "GutFunFind.detect" + "." + module_name(detect_tool), package=None)
 
     # 2.1 Run correction annotation tool or use precomupted input
-    gids = parse_gtab(args.gtab)
 
-    if not args.precomputed:
-        logging.info('running annotation tools')
-        if detect_tool == 'emapper':
-            for genome in gids:
-                gin = args.gdir+'/'+genome
-                run_emapper(config, gin)
-        elif detect_tool == 'kofamscan':
-            for genome in gids:
-                gin = args.gdir+'/'+genome
-                run_kofamscan(config, gin)
-        elif detect_tool == 'interproscan':
-            for genome in gids:
-                gin = args.gdir+'/'+genome
-                run_interproscan(config, gin)
-    else:
-        logging.info('')
-        if detect_tool in ['blast', 'hmmer']:
-            logging.warning('Precomputed blast and hmmer input \
-                             is not currently supported')
-            quit()
+    # if not args.precomputed:
+    #     logging.info('running annotation tools')
+    #     if detect_tool == 'emapper':
+    #         for genome in gids:
+    #             gin = args.gdir+'/'+genome
+    #             run_emapper(config, gin)
+    #     elif detect_tool == 'kofamscan':
+    #         for genome in gids:
+    #             gin = args.gdir+'/'+genome
+    #             run_kofamscan(config, gin)
+    #     elif detect_tool == 'interproscan':
+    #         for genome in gids:
+    #             gin = args.gdir+'/'+genome
+    #             run_interproscan(config, gin)
+    # else:
+    #     logging.info('')
+    if detect_tool in ['interproscan', 'kofamscan', 'emapper']:
         for genome in gids:
             if detect_tool == 'interproscan':
                 # Need to handle both tsv and xml outputs.
                 check_path_existence(args.gdir + '/' + genome +
-                                     '_InterProScan.tsv')
-            if detect_tool == 'kofamscan':
-                check_path_existence(args.gdir + '/' + genome + '.kofam.tsv')
-            if detect_tool == 'emapper':
+                                     config['interproscan']['annot_suffix'])
+            elif detect_tool == 'kofamscan':
+                check_path_existence(args.gdir + '/' + genome + config['kofamscan']['annot_suffix'])
+            elif detect_tool == 'emapper':
                 check_path_existence(args.gdir + '/' + genome +
-                                     ".emapper.annotations")
+                                     config['emapper']['annot_suffix'])
 
     # 3. Run the cluster method
     cluster_tool = config.get('main', 'cluster.tool')
@@ -126,9 +129,9 @@ def retrieve_function_pipeline(database: str, fun_name: str, args) -> Callable:
                           outprefix: str) -> Tuple[Dict, int, Genome]:
 
         # varaible for the path for genome(fna),annotations(gff),proteins(faa)
-        gff_file = genome_prefix + ".pff.gff3"
+        gff_file = genome_prefix + config['main']['gff_suffix']
         gff_file = check_path_existence(gff_file)
-        fna_file = genome_prefix + ".pff.fna"
+        fna_file = genome_prefix + config['main']['fna_suffix']
         fna_file = check_path_existence(fna_file)
 
         outprefix = os.path.abspath(outprefix)
@@ -151,7 +154,7 @@ def retrieve_function_pipeline(database: str, fun_name: str, args) -> Callable:
         if detect_tool == "interproscan":
             xml_file = genome_prefix + ".xml"
             if not os.path.isfile(xml_file):
-                tsv_file = genome_prefix + "_InterProScan.tsv"
+                tsv_file = genome_prefix + config['interproscan']['annot_suffix']
                 if not os.path.isfile(tsv_file):
                     sys.exit(
                         'Neither file {} nor file {} exists'.format(
@@ -169,21 +172,21 @@ def retrieve_function_pipeline(database: str, fun_name: str, args) -> Callable:
                     fmt="xml",
                     basedir=path_to_fun)
         elif detect_tool == "kofamscan":
-            kofam_file = genome_prefix + ".kofam.tsv"
+            kofam_file = genome_prefix + config['kofamscan']['annot_suffix']
             kofam_file = check_path_existence(kofam_file)
             detect_list = detect_module.pipeline(
                 config=config,
                 in_file=kofam_file,
                 basedir=path_to_fun)
         elif detect_tool == "emapper":
-            emap_file = genome_prefix + ".emapper.annotations"
+            emap_file = genome_prefix + config['emapper']['annot_suffix']
             emap_file = check_path_existence(emap_file)
             detect_list = detect_module.pipeline(
                 config=config,
                 in_file=emap_file,
                 basedir=path_to_fun)
         else:
-            faa_file = genome_prefix + ".pff.faa"
+            faa_file = genome_prefix + config['main']['faa_suffix']
             faa_file = check_path_existence(faa_file)
             detect_list = detect_module.pipeline(
                 config=config,
