@@ -21,13 +21,13 @@ def pipeline(config: dict,
 
     # 2 generate command line to run
 
-    query_path = check_path_existence(basedir+config["hmmer"]["hmmer.query"])
+    query_path = check_path_existence(basedir+config['hmmer']['hmmer.query'])
 
-    tool_format_dict = dict({"hmmsearch":"hmmsearch3-domtab","hmmscan":"hmmscan3-domtab","phmmer":"phmmer3-domtab"});
-    outfmt = tool_format_dict[config['hmmer']["hmmer.exec"]]
+    tool_format_dict = dict({'hmmsearch':"hmmsearch3-domtab",'hmmscan':"hmmscan3-domtab",'phmmer':"phmmer3-domtab"});
+    outfmt = tool_format_dict[config['hmmer']['hmmer.exec']]
 
     cmd = [
-        config['hmmer']["hmmer.exec"],
+        config['hmmer']['hmmer.exec'],
         "-o",
         outprefix + ".out",
         "--tblout",
@@ -38,9 +38,9 @@ def pipeline(config: dict,
         protein_file
         ]
 
-    if config['hmmer'].get("hmmer.threads"):
+    if config['hmmer'].get('hmmer.threads'):
         cmd.insert(1,"--cpu")
-        cmd.insert(2,config["hmmer"]["hmmer.threads"])
+        cmd.insert(2,config['hmmer']['hmmer.threads'])
 
     # 3 run command line
     res = subprocess.run(cmd)
@@ -50,7 +50,7 @@ def pipeline(config: dict,
     # 4 read the output from previous step
     qresults = SearchIO.parse(outprefix + ".domtblout", outfmt)
 
-    if config["filter"]:
+    if config['filter']:
         # filter_path = check_path_existence(basedir + config['hmmer']["filter.config"])
         filter_res = [hmmer_filter(config=config, qres=i, basedir=basedir) for i in qresults]
         q_list = [i for i in filter_res if len(i) > 0]
@@ -58,7 +58,7 @@ def pipeline(config: dict,
         q_list = [i for i in qresults if len(i) > 0]
 
 
-    ortho_file = check_path_existence(basedir + config["hmmer"]["orthoID_domain_precision"])
+    ortho_file = check_path_existence(basedir + config['hmmer']['orthoID_domain_precision'])
     OrthScore_dict = read2orthoDict(ortho_pair_file=ortho_file)
 
     # 4. Process all QueryResult
@@ -69,12 +69,12 @@ def pipeline(config: dict,
         if len(i) > 0:
             # sort the hits by precision
             # max_dict = sorted([OrthScore_dict[x.id] for x in i], key = lambda i: i['precision'],reverse=True)[0]
-            i.sort(key=lambda hit: OrthScore_dict[hit.id]["precision"], reverse=True)
+            i.sort(key=lambda hit: OrthScore_dict[hit.id]['precision'], reverse=True)
 
             max_dict = OrthScore_dict[i.hits[0].id]
 
             # set the QueryResult attribution
-            setattr(i, "orthoID", max_dict["orthoID"])
-            setattr(i, "orthoID_weight", max_dict["precision"])
+            setattr(i, "orthoID", max_dict['orthoID'])
+            setattr(i, "orthoID_weight", max_dict['precision'])
             a_list.append(i)
     return a_list

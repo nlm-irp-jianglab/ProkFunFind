@@ -46,24 +46,24 @@ class emappperTabParser:
 
         # assign parsed column data into qresult, hit, and hsp dicts
         qresult = {}
-        qresult["id"] = cols[0]  # gene name
-        qresult["program"] = "emappper"
+        qresult['id'] = cols[0]  # gene name
+        qresult['program'] = "emappper"
 
         hit = {}
-        cogs_full = cols[4].split(',')
-        cogs = [i.split('@')[0] for i in cogs_full]
-        hit["id"] = cogs  # COG ID
-        hit["description"] = cols[6]  # description of target
-        hit["query_id"] = cols[0]  # query name
+        cogs_full = cols[4].split(",")
+        cogs = [i.split("@")[0] for i in cogs_full]
+        hit['id'] = cogs  # COG ID
+        hit['description'] = cols[6]  # description of target
+        hit['query_id'] = cols[0]  # query name
         hsp = {}
         # evalue or score should be float but sometimes not
-        hsp["evalue"] = float(cols[2]) if cols[5] != "-" else None
+        hsp['evalue'] = float(cols[2]) if cols[5] != "-" else None
 
         frag = {}
         #frag["query_start"] = int(cols[6]) - 1  # query start, zero-based
         #frag["query_end"] = int(cols[7])  # query end
 
-        return {"qresult": qresult, "hit": hit, "hsp": hsp, "frag": frag}
+        return {'qresult': qresult, 'hit': hit, 'hsp': hsp, 'frag': frag}
 
     def _parse_qresult(self):
         """Parse query results (PRIVATE)."""
@@ -91,7 +91,7 @@ class emappperTabParser:
 
             if self.line and not self.line.startswith("#"):
                 cur = self._parse_row()
-                cur_qid = cur["qresult"]["id"]
+                cur_qid = cur['qresult']['id']
             else:
                 file_state = state_EOF
                 # mock values for cur_qid since the line is empty
@@ -103,23 +103,23 @@ class emappperTabParser:
                 qres_state = state_QRES_SAME
 
             if prev is not None:
-                for cog in prev["hit"]["id"]:
+                for cog in prev['hit']['id']:
                     prev_hid = cog
 
                     frag = HSPFragment(prev_hid, prev_qid)
 
-                    for attr, value in prev["frag"].items():
+                    for attr, value in prev['frag'].items():
                         setattr(frag, attr, value)
                     hsp = HSP([frag])
 
-                    for attr, value in prev["hsp"].items():
+                    for attr, value in prev['hsp'].items():
                         setattr(hsp, attr, value)
                     hsp_dict[prev_hid].append(hsp)
 
                     hit = Hit()
-                    for attr, value in prev["hit"].items():
-                        if attr == 'id':
-                            setattr(hit, 'id', cog)
+                    for attr, value in prev['hit'].items():
+                        if attr == "id":
+                            setattr(hit, "id", cog)
                         else:
                             setattr(hit, attr, value)
                     if not hit.id in [i.id for i in hit_list]:
@@ -132,7 +132,7 @@ class emappperTabParser:
                         for hsp in hsp_dict[hit.id]:
                             hit.hsps.append(hsp)
                     qresult = QueryResult(hit_list, prev_qid)
-                    for attr, value in prev["qresult"].items():
+                    for attr, value in prev['qresult'].items():
                         setattr(qresult, attr, value)
                     yield qresult
                     # if we're at EOF, break
@@ -162,33 +162,33 @@ def emappper_filter(config: dict, qres: QueryResult, basedir=str) -> QueryResult
     # basedir = os.path.dirname(os.path.abspath(config_file))+"/"
 
     # Parse global evalue and threhsold values
-    global_evalue = float(config["filter"]["evalue"])
+    global_evalue = float(config['filter']['evalue'])
 
     ops = {
-        "<=": operator.le,
-        ">=": operator.ge,
-        ">": operator.gt,
-        "<": operator.lt,
-        "==": operator.eq,
-        "!=":operator.ne
+        '<=': operator.le,
+        '>=': operator.ge,
+        '>': operator.gt,
+        '<': operator.lt,
+        '==': operator.eq,
+        '!=':operator.ne
     }
 
     filter_dict = defaultdict(list)
 
     # Parse local filter settings for specific KOs
     if config.has_option("filter", "filter_file"):
-        hit_filter_file = check_path_existence(basedir + config["filter"]["filter_file"])
+        hit_filter_file = check_path_existence(basedir + config['filter']['filter_file'])
         with open(hit_filter_file) as filter_file:
             for row in csv.reader(filter_file, delimiter="\t"):
                 filter_dict[row[0]].append(
-                    {"attr": row[1], "cpfun": ops[row[2]], "value": float(row[3])})
+                    {'attr': row[1], 'cpfun': ops[row[2]], 'value': float(row[3])})
 
     # Handle filtering by local and global thresholds. Only evalue filtering supported.
     def hsp_filter_func(hsp):
         status = True
         if hsp.hit_id in filter_dict:
             for one in filter_dict[hsp.hit_id]:
-                if one["cpfun"](getattr(hsp, one["attr"]), one["value"]):
+                if one['cpfun'](getattr(hsp, one['attr']), one['value']):
                     pass
                 else:
                     status = False

@@ -15,14 +15,13 @@ def pipeline(config: dict,
     """Run emapper COG analysis"""
     # 1. Read the configuration file into configuration object
     # cf = read_config(config_file)["emapper"]
-    print(basedir)
     # basedir = os.path.dirname(os.path.abspath(basedir))+"/"
-    basedir = os.path.abspath(basedir)+'/'
+    basedir = os.path.abspath(basedir)+"/"
     # 2. Read emappperscan tsv file and parse results
     qresults = emappper_tab_parse(in_file)
 
     # 3. Read orthoID info into dictionary
-    ortho_file = check_path_existence(basedir + config["emapper"]["map.ortho_pair"])
+    ortho_file = check_path_existence(basedir + config['emapper']['map.ortho_pair'])
     OrthScore_dict = read2orthoDict(ortho_pair_file=ortho_file)
 
     # 4. Process all QueryResult
@@ -39,8 +38,8 @@ def pipeline(config: dict,
             max_dict = OrthScore_dict[i.hits[0].id]
 
             # set the QueryResult attributes
-            setattr(i, "orthoID", max_dict["orthoID"])
-            setattr(i, "orthoID_weight", max_dict["precision"])
+            setattr(i, "orthoID", max_dict['orthoID'])
+            setattr(i, "orthoID_weight", max_dict['precision'])
             q_list.append(i)
 
     # filter results based on evalue and thresholds

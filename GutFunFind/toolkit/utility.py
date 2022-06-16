@@ -57,18 +57,18 @@ def read2orthoDict(ortho_pair_file: Union[str, IO]) -> Dict:
     #############################################################
 
     with open(ortho_pair_file) as csv_file:
-        csv_reader = csv.reader(csv_file, delimiter='\t')
+        csv_reader = csv.reader(csv_file, delimiter="\t")
         header = next(csv_reader)
         col_num = len(header)
         if col_num == 2:
-            OrthScore_dict[header[1]] = {"orthoID": header[0], "precision": 1}
+            OrthScore_dict[header[1]] = {'orthoID': header[0], 'precision': 1}
             for row in csv_reader:
-                OrthScore_dict[row[1]] = {"orthoID": row[0], "precision": 1}
+                OrthScore_dict[row[1]] = {'orthoID': row[0], 'precision': 1}
         else:
             OrthScore_dict[header[1]] = {
-                "orthoID": header[0], "precision": float(header[2])}
+                'orthoID': header[0], 'precision': float(header[2])}
             for row in csv_reader:
                 OrthScore_dict[row[1]] = {
-                    "orthoID": row[0], "precision": float(row[2])}
+                    'orthoID': row[0], 'precision': float(row[2])}
 
     return(OrthScore_dict)

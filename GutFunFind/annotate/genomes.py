@@ -17,8 +17,8 @@ def run_prokka(config: dict, genome_dir: str, genome_tab: str):
     """
     gids = parse_gtab(genome_tab)
     for genome in gids.keys():
-        cmd = ['prokka', '--outdir', genome_dir, '--locustag',
-               gids[genome]+'_', genome_dir+'/'+genome]
+        cmd = ["prokka", "--outdir", genome_dir, "--locustag",
+               gids[genome]+"_", genome_dir+"/"+genome]
         res = subprocess.run(cmd)
         if res.returncode != 0:
             raise RuntimeError("Failed to run: {}".format(" ".join(cmd)))
@@ -42,11 +42,11 @@ def export_proteins(config: dict, genome_dir: str, genome_tab: str,
     gids = parse_gtab(genome_tab)
     for genome in gids.keys():
         # fna_path = None
-        prefix = genome_dir+'/'+genome
-        gff_path = prefix+'.gff'
+        prefix = genome_dir+"/"+genome
+        gff_path = prefix+".gff"
         extract_fna(gff_path, prefix)
-        g = create_genome_object(gff_file=prefix+'.pff.gff3',
-                                 fna_file=prefix+'.pff.fna')
+        g = create_genome_object(gff_file=prefix+".pff.gff3",
+                                 fna_file=prefix+".pff.fna")
         g1 = open(prefix+".pff.ffn", "w")
         g2 = open(prefix+".pff.faa", "w")
         prefixes.append(prefix)
@@ -82,9 +82,9 @@ def extract_fna(comb_gff_path: str, prefix):
             gff_str, fna_str = txt.split("##FASTA\n")
         except ValueError:
             print("Error: No fasta tag '##FASTA' found in gff file")
-    with open(prefix+'.pff.gff3', 'w') as g:
+    with open(prefix+".pff.gff3", "w") as g:
         g.write(gff_str)
-    with open(prefix+'.pff.fna', 'w') as g:
+    with open(prefix+".pff.fna", "w") as g:
         g.write(fna_str)
 
 
@@ -139,7 +139,7 @@ def parse_gtab(genome_tab: str):
     """
     # Add in check to make sure that file exists.
     gtab = {}
-    for row in csv.reader(open(genome_tab), delimiter='\t'):
+    for row in csv.reader(open(genome_tab), delimiter="\t"):
         gtab[row[0]] = row[1]
 
     return gtab

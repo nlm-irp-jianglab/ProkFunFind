@@ -12,29 +12,29 @@ def blast_filter(config: dict, qres: QueryResult, basedir=str) -> QueryResult:
     # cf = read_config(config_file)
     # basedir = os.path.dirname(os.path.abspath(config_file))+"/"
 
-    global_evalue = config["filter"]["evalue"]
-    global_ident = config["filter"]["ident_pct"]
+    global_evalue = config['filter']['evalue']
+    global_ident = config['filter']['ident_pct']
 
     ##################################################################
     #  User can customize the filter function to remove QueryResult  #
     ##################################################################
     ops = {
-        "<=": operator.le,
-        ">=": operator.ge,
-        ">": operator.gt,
-        "<": operator.lt,
-        "==": operator.eq,
-        "!=": operator.ne
+        '<=': operator.le,
+        '>=': operator.ge,
+        '>': operator.gt,
+        '<': operator.lt,
+        '==': operator.eq,
+        '!=': operator.ne
     }
 
     filter_dict = defaultdict(list)
 
     # if there is section filter.local and that section has filter_file, the info of the filter_file will be passed to  filter_dict; Otherwise filter_dict remains empty
     if config.has_option("filter", "filter_file"):
-        hit_filter_file = check_path_existence(basedir + config["filter"]["filter_file"])
+        hit_filter_file = check_path_existence(basedir + config['filter']['filter_file'])
         # check if file exist or empty
         with open(hit_filter_file) as filter_file:
-            for row in csv.reader(filter_file, delimiter='\t'):
+            for row in csv.reader(filter_file, delimiter="\t"):
                 filter_dict[row[0]].append(
                     {"attr": row[1], "cpfun": ops[row[2]], "value": float(row[3])})
 
@@ -42,7 +42,7 @@ def blast_filter(config: dict, qres: QueryResult, basedir=str) -> QueryResult:
         status = True
         if hsp.hit_id in filter_dict:
             for one in filter_dict[hsp.hit_id]:
-                if one["cpfun"](getattr(hsp, one['attr']), one["value"]):
+                if one['cpfun'](getattr(hsp, one['attr']), one['value']):
                     pass
                 else:
                     status = False
@@ -72,7 +72,7 @@ def blast_ortho(qres: QueryResult, ortho_pair_file: str) -> QueryResult:
     hit_key = qres.hit_keys[0]
     max_dict = OrthScore_dict[hit_key]
 
-    setattr(qres, "orthoID", max_dict["orthoID"])
-    setattr(qres, "orthoID_weight", max_dict["precision"])
+    setattr(qres, "orthoID", max_dict['orthoID'])
+    setattr(qres, "orthoID_weight", max_dict['precision'])
 
     return qres

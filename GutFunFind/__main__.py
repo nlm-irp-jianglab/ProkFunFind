@@ -49,7 +49,7 @@ def retrieve_function_pipeline(database: str, fun_name: str, args) -> Callable:
 
     # 1. Obtain the configuration and check the exec as well as the database
     # required
-    logging.info('Parsing configuration files')
+    logging.info("Parsing configuration files")
     path_to_fun = database.rstrip("/") + "/" + fun_name + "/"
 
     # 1.1 check the existance of the function
@@ -64,18 +64,18 @@ def retrieve_function_pipeline(database: str, fun_name: str, args) -> Callable:
     config.read(config_path)
 
     # 1.3 Generate protein fasta files from input GFF files
-    logging.info('Preparing genome files for search')
+    logging.info("Preparing genome files for search")
     #search_list = export_proteins(config, args.gdir, args.gtab, zipped=False)
     search_list = []
     gids = parse_gtab(args.gtab)
-    for genome in gids.keys():
+    for genome, p in gids.items():
         # fna_path = None
-        prefix = args.gdir+'/'+genome
+        prefix = p+"/"+genome
         search_list.append(prefix)
         print(search_list)
 
     # 2. Run the correct detect tool
-    logging.info('Searching for functions')
+    logging.info("Searching for functions")
     detect_tool = config.get('main', 'detect.tool')
     # detect_cf_path = path_to_fun + config.get('main', 'detect.config')
     # detect_config = config[detect_tool]
@@ -102,15 +102,15 @@ def retrieve_function_pipeline(database: str, fun_name: str, args) -> Callable:
     # else:
     #     logging.info('')
     if detect_tool in ['interproscan', 'kofamscan', 'emapper']:
-        for genome in gids:
-            if detect_tool == 'interproscan':
+        for genome, p in gids.items():
+            if detect_tool == "interproscan":
                 # Need to handle both tsv and xml outputs.
-                check_path_existence(args.gdir + '/' + genome +
+                check_path_existence(p + "/" + genome +
                                      config['interproscan']['annot_suffix'])
-            elif detect_tool == 'kofamscan':
-                check_path_existence(args.gdir + '/' + genome + config['kofamscan']['annot_suffix'])
-            elif detect_tool == 'emapper':
-                check_path_existence(args.gdir + '/' + genome +
+            elif detect_tool == "kofamscan":
+                check_path_existence(p + "/" + genome + config['kofamscan']['annot_suffix'])
+            elif detect_tool == "emapper":
+                check_path_existence(p + '/' + genome +
                                      config['emapper']['annot_suffix'])
 
     # 3. Run the cluster method
@@ -157,7 +157,7 @@ def retrieve_function_pipeline(database: str, fun_name: str, args) -> Callable:
                 tsv_file = genome_prefix + config['interproscan']['annot_suffix']
                 if not os.path.isfile(tsv_file):
                     sys.exit(
-                        'Neither file {} nor file {} exists'.format(
+                        "Neither file {} nor file {} exists".format(
                             xml_file, tsv_file))
                 else:
                     detect_list = detect_module.pipeline(
@@ -198,7 +198,7 @@ def retrieve_function_pipeline(database: str, fun_name: str, args) -> Callable:
         for query in detect_list:
             setattr(genomeObj.genes[query.id], detect_tool, query)
 
-        logging.info('Identifying gene clusters')
+        logging.info("Identifying gene clusters")
         # identify gene cluster at genome object
         genomeObj = cluster_module.pipeline(
             config=config,
@@ -207,11 +207,11 @@ def retrieve_function_pipeline(database: str, fun_name: str, args) -> Callable:
 
         # examine the genome to see if it contain the function and annotate
         # related genes
-        logging.info('Summarizing function presence and genes')
+        logging.info("Summarizing function presence and genes")
         (system_dict, status, genomeObj) = examine.pipeline(
             system_file=system_file, genome_object=genomeObj,
             detect_tool=detect_tool)
-        genome_name = genome_prefix.split('/')[len(genome_prefix.split('/'))-1]
+        genome_name = genome_prefix.split("/")[len(genome_prefix.split("/"))-1]
         report.report_all(
             system_dict=system_dict,
             status=status,
@@ -226,11 +226,11 @@ def retrieve_function_pipeline(database: str, fun_name: str, args) -> Callable:
                 out of {m} essential components present\n{ap} out of {a} \
                 nonessential components present ".format(
                     genome_prefix=genome_prefix,
-                    fun_name=system_dict["name"],
-                    mp=system_dict["completeness"]["essential_presence"],
-                    m=system_dict["completeness"]["essential"],
-                    ap=system_dict["completeness"]["nonessential_presence"],
-                    a=system_dict["completeness"]["nonessential"]))
+                    fun_name=system_dict['name'],
+                    mp=system_dict['completeness']['essential_presence'],
+                    m=system_dict['completeness']['essential'],
+                    ap=system_dict['completeness']['nonessential_presence'],
+                    a=system_dict['completeness']['nonessential']))
         else:
             print(
                 "Failed to detect function:{fun_name} in \
@@ -238,11 +238,11 @@ def retrieve_function_pipeline(database: str, fun_name: str, args) -> Callable:
                 components present\n{ap} out of {a} nonessential \
                 components present ".format(
                     genome_prefix=genome_prefix,
-                    fun_name=system_dict["name"],
-                    mp=system_dict["completeness"]["essential_presence"],
-                    m=system_dict["completeness"]["essential"],
-                    ap=system_dict["completeness"]["nonessential_presence"],
-                    a=system_dict["completeness"]["nonessential"]))
+                    fun_name=system_dict['name'],
+                    mp=system_dict['completeness']['essential_presence'],
+                    m=system_dict['completeness']['essential'],
+                    ap=system_dict['completeness']['nonessential_presence'],
+                    a=system_dict['completeness']['nonessential']))
 
         # return (system_dict, status, genomeObj)
 
@@ -295,7 +295,7 @@ def retrieve_function_pipeline_pan(database: str, fun_name: str) -> Callable:
 
     system_file = path_to_fun + config.get('main', 'system.file')
     system_file = check_path_existence(system_file)
-    logging.info('Output saved in {}'.format(args.outputdir))
+    logging.info("Output saved in {}".format(args.outputdir))
 
     def function_analysis(pangenome_path: str, outprefix: str, folder: str):
 
@@ -318,7 +318,7 @@ def retrieve_function_pipeline_pan(database: str, fun_name: str) -> Callable:
                 tsv_file = genome_prefix + "_InterProScan.tsv"
                 if not os.path.isfile(tsv_file):
                     sys.exit(
-                        'Neither file {} nor file {} exists'.format(
+                        "Neither file {} nor file {} exists".format(
                             xml_file, tsv_file))
                 else:
                     detect_list = detect_module.pipeline(
@@ -368,7 +368,7 @@ def retrieve_function_pipeline_pan(database: str, fun_name: str) -> Callable:
                 genome_path = genome_paths[0]
             else:
                 sys.exit(
-                    'Can not find {f} or more than one {f} is found'.format(
+                    "Can not find {f} or more than one {f} is found".format(
                         f=genome_name + ".gff.gz"))
 
             genomeObj = GetGenomeFromGzipGFF(genome_path)
@@ -403,20 +403,20 @@ def retrieve_function_pipeline_pan(database: str, fun_name: str) -> Callable:
                 print(
                     "Detect function:{fun_name} in genome {genome_prefix}\n{mp} out of {m} essential components present\n{ap} out of {a} nonessential components present ".format(
                         genome_prefix=genome_name,
-                        fun_name=system_dict["name"],
-                        mp=system_dict["completeness"]["essential_presence"],
-                        m=system_dict["completeness"]["essential"],
-                        ap=system_dict["completeness"]["nonessential_presence"],
-                        a=system_dict["completeness"]["nonessential"]))
+                        fun_name=system_dict['name'],
+                        mp=system_dict['completeness']['essential_presence'],
+                        m=system_dict['completeness']['essential'],
+                        ap=system_dict['completeness']['nonessential_presence'],
+                        a=system_dict['completeness']['nonessential']))
             else:
                 print(
                     "Failed to detect function:{fun_name} in genome {genome_prefix}\n{mp} out of {m} essential components present\n{ap} out of {a} nonessential components present ".format(
                         genome_prefix=genome_name,
-                        fun_name=system_dict["name"],
-                        mp=system_dict["completeness"]["essential_presence"],
-                        m=system_dict["completeness"]["essential"],
-                        ap=system_dict["completeness"]["nonessential_presence"],
-                        a=system_dict["completeness"]["nonessential"]))
+                        fun_name=system_dict['name'],
+                        mp=system_dict['completeness']['essential_presence'],
+                        m=system_dict['completeness']['essential'],
+                        ap=system_dict['completeness']['nonessential_presence'],
+                        a=system_dict['completeness']['nonessential']))
 
             # result_dict.update({genome_name: [system_dict, status, genomeObj]}
 
@@ -434,94 +434,94 @@ def main_pan(args):
 
 def main():
     parser = ArgumentParser(
-        description='Identify genes related function of interest')
-    subparsers = parser.add_subparsers(dest='command')
+        description="Identify genes related function of interest")
+    subparsers = parser.add_subparsers(dest="command")
 
     parser_rep = subparsers.add_parser(
-        "rep", help='Analyze an individual genome')
+        "rep", help="Analyze an individual genome")
 
     parser_rep.add_argument(
-        '-b',
-        '--databasedir',
-        help='The base dir of function',
+        "-b",
+        "--databasedir",
+        help="The base dir of function",
         required=True,
-        dest='database',
-        metavar='')
+        dest="database",
+        metavar="")
     parser_rep.add_argument(
-        '-f',
-        '--function',
-        help='Name of the function',
+        "-f",
+        "--function",
+        help="Name of the function",
         required=True,
-        dest='fun_name',
-        metavar='')
+        dest="fun_name",
+        metavar="")
 
     # parser_rep.add_argument(
-    #     '-g',
-    #     '--genomeprefix',
-    #     help='The prefix of genome',
+    #     "-g",
+    #     "--genomeprefix",
+    #     help="The prefix of genome",
     #     required=False,
-    #     dest='genome_prefix',
-    #     metavar='')
+    #     dest="genome_prefix",
+    #     metavar="")
     parser_rep.add_argument(
-        '-o',
-        '--outputprefix',
-        help='The output prefix',
+        "-o",
+        "--outputprefix",
+        help="The output prefix",
         required=True,
-        dest='outprefix',
-        metavar='')
+        dest="outprefix",
+        metavar="")
     parser_rep.add_argument(
-        '--gdir')
+        "--gdir")
     parser_rep.add_argument(
-        '--gtab')
+        "--gtab")
     parser_rep.add_argument(
-        '--precomputed',
-        action='store_true'
+        "--precomputed",
+        action="store_true"
     )
     parser_rep.set_defaults(func=main_individual)
 
     parser_pan = subparsers.add_parser(
-        "pan", help='Analyze genomes of the same pangenome')
+        "pan", help="Analyze genomes of the same pangenome")
 
     parser_pan.add_argument(
-        '-b',
-        '--databasedir',
-        help='The base dir of function',
+        "-b",
+        "--databasedir",
+        help="The base dir of function",
         required=True,
-        dest='database',
-        metavar='')
+        dest="database",
+        metavar="")
     parser_pan.add_argument(
-        '-f',
-        '--function',
-        help='Name of the function',
+        "-f",
+        "--function",
+        help="Name of the function",
         required=True,
-        dest='fun_name',
-        metavar='')
+        dest="fun_name",
+        metavar="")
 
     parser_pan.add_argument(
-        '-p',
-        '--pangenome',
-        help='The path to the pan-genome info dir',
+        "-p",
+        "--pangenome",
+        help="The path to the pan-genome info dir",
         required=True,
-        dest='pangenome_path',
-        metavar='')
+        dest="pangenome_path",
+        metavar="")
     parser_pan.add_argument(
-        '-g',
-        '--genomeset',
-        help='the dir of gzipped gff file',
+        "-g",
+        "--genomeset",
+        help="the dir of gzipped gff file",
         required=True,
-        dest='folder',
-        metavar='')
+        dest="folder",
+        metavar="")
     parser_pan.add_argument(
-        '-d',
-        '--outputdir',
-        help='The output directory',
+        "-d",
+        "--outputdir",
+        help="The output directory",
         required=True,
-        dest='outprefix',
-        metavar='')
+        dest="outprefix",
+        metavar="")
     parser_pan.set_defaults(func=main_pan)
 
     # if len(sys.argv) <= 1:
-    #     sys.argv.append('--help')
+    #     sys.argv.append("--help")
 
     options = parser.parse_args()
     options.func(options)

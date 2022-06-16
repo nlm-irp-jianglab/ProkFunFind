@@ -28,10 +28,10 @@ def check_gene_in_subsystem(system_dict,
     """
 
     completeness = {
-        "essential": 0,
-        "nonessential": 0,
-        "essential_presence": 0,
-        "nonessential_presence": 0
+        'essential': 0,
+        'nonessential': 0,
+        'essential_presence': 0,
+        'nonessential_presence': 0
     }
 
     status = 0
@@ -46,29 +46,29 @@ def check_gene_in_subsystem(system_dict,
             status = 1
 
     if "name" in system_dict:
-        fun_list.append(system_dict["name"])
-        for sub_component in system_dict["components"]:
+        fun_list.append(system_dict['name'])
+        for sub_component in system_dict['components']:
             _, sub_status = check_gene_in_subsystem(sub_component,
                                                     genomeObject,
                                                     detect_tool,
                                                     fun_string=fun_list)
-            completeness[sub_component["presence"]] += 1
-            completeness[sub_component["presence"] + "_presence"] += sub_status
-        system_dict["completeness"] = completeness
-        if completeness["essential"] == completeness[
-                "essential_presence"] and completeness["essential"] > 0:
+            completeness[sub_component['presence']] += 1
+            completeness[sub_component['presence'] + "_presence"] += sub_status
+        system_dict['completeness'] = completeness
+        if completeness['essential'] == completeness[
+                'essential_presence'] and completeness['essential'] > 0:
             status = 1
-        if system_dict["completeness"]["essential"] == 0:
-            logging.warning('Component {} was defined without any essential subcomponents. Please define at least one subcomponent as essential.'.format(system_dict["name"]))
+        if system_dict['completeness']['essential'] == 0:
+            logging.warning("Component {} was defined without any essential subcomponents. Please define at least one subcomponent as essential.".format(system_dict['name']))
             quit()
 
     elif "orthoID" in system_dict:
-        fun_list.append(system_dict["orthoID"])
-        gene_list = find_gene_with_orthoID(system_dict["orthoID"],
+        fun_list.append(system_dict['orthoID'])
+        gene_list = find_gene_with_orthoID(system_dict['orthoID'],
                                            genomeObject, detect_tool)
         if gene_list:
             status = 1
-            system_dict["genes"] = gene_list
+            system_dict['genes'] = gene_list
             for gene in gene_list:
                 if hasattr(genomeObject.genes[gene], "Functions"):
                     genomeObject.genes[gene].Functions.append( "/".join(fun_list))

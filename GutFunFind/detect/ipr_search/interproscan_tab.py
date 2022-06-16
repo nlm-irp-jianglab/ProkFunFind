@@ -1,4 +1,4 @@
-# Copyright 2020 by Xiaofang Jiang. All rights reserved.
+'# Copyright 2020 by Xiaofang Jiang. All rights reserved.
 #
 # This file is part of the Biopython distribution and governed by your
 # choice of the "Biopython License Agreement" or the "BSD 3-Clause License".
@@ -42,30 +42,30 @@ class InterproscanTabParser:
 
         # assign parsed column data into qresult, hit, and hsp dicts
         qresult = {}
-        qresult["id"] = cols[0]  # query name
-        qresult["seq_len"] = int(cols[2])  # query length
-        qresult["program"] = "InterProScan"  #
+        qresult['id'] = cols[0]  # query name
+        qresult['seq_len'] = int(cols[2])  # query length
+        qresult['program'] = "InterProScan"  #
 
         hit = {}
-        hit["id"] = cols[4]  # target name
-        hit["description"] = cols[5]  # description of target
-        hit["query_id"] = cols[0]  # query name
-        hit["attributes"] = {"Target": str(cols[4])}
+        hit['id'] = cols[4]  # target name
+        hit['description'] = cols[5]  # description of target
+        hit['query_id'] = cols[0]  # query name
+        hit['attributes'] = {'Target': str(cols[4])}
         if len(cols) == 15:
             xrefs = ["IPR:" + cols[11]] if cols[11] else []
             xrefs += cols[13].split("|") if cols[13] else []
-            xrefs += cols[14].replace(' ', '').split("|") if cols[14] else []
-            hit["dbxrefs"] = xrefs
+            xrefs += cols[14].replace(" ", "").split("|") if cols[14] else []
+            hit['dbxrefs'] = xrefs
 
         hsp = {}
         # evalue or score should be float but sometime not
-        hsp["evalue"] = float(cols[8]) if cols[8] != "-" else None
+        hsp['evalue'] = float(cols[8]) if cols[8] != "-" else None
 
         frag = {}
-        frag["query_start"] = int(cols[6]) - 1  # query start, zero-based
-        frag["query_end"] = int(cols[7])  # query end
+        frag['query_start'] = int(cols[6]) - 1  # query start, zero-based
+        frag['query_end'] = int(cols[7])  # query end
 
-        return {"qresult": qresult, "hit": hit, "hsp": hsp, "frag": frag}
+        return {'qresult': qresult, 'hit': hit, 'hsp': hsp, 'frag': frag}
 
     def _parse_qresult(self):
         """Parse query results (PRIVATE)."""
@@ -93,7 +93,7 @@ class InterproscanTabParser:
 
             if self.line and not self.line.startswith("#"):
                 cur = self._parse_row()
-                cur_qid = cur["qresult"]["id"]
+                cur_qid = cur['qresult']['id']
             else:
                 file_state = state_EOF
                 # mock values for cur_qid since the line is empty
@@ -107,20 +107,20 @@ class InterproscanTabParser:
             if prev is not None:
                 # since domain tab formats only have 1 Hit per line
                 # we always create HSPFragment, HSP, and Hit per line
-                prev_hid = prev["hit"]["id"]
+                prev_hid = prev['hit']['id']
 
                 frag = HSPFragment(prev_hid, prev_qid)
 
-                for attr, value in prev["frag"].items():
+                for attr, value in prev['frag'].items():
                     setattr(frag, attr, value)
                 hsp = HSP([frag])
 
-                for attr, value in prev["hsp"].items():
+                for attr, value in prev['hsp'].items():
                     setattr(hsp, attr, value)
                 hsp_dict[prev_hid].append(hsp)
 
                 hit = Hit()
-                for attr, value in prev["hit"].items():
+                for attr, value in prev['hit'].items():
                     setattr(hit, attr, value)
                 if not hit.id in [i.id for i in hit_list]:
                     hit_list.append(hit)
@@ -133,7 +133,7 @@ class InterproscanTabParser:
                             hit.hsps.append(hsp)
 
                     qresult = QueryResult(hit_list, prev_qid)
-                    for attr, value in prev["qresult"].items():
+                    for attr, value in prev['qresult'].items():
                         setattr(qresult, attr, value)
                     yield qresult
                     # if we're at EOF, break

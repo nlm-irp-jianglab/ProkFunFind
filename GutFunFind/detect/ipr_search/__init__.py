@@ -23,7 +23,7 @@ def pipeline(config: dict,
         qresults = ipr_tab_parse(in_file)
 
     # 3. Read score and orthoID info into dictionary
-    ortho_file = check_path_existence(basedir + config["interproscan"]["orthoID_domain_precision"])
+    ortho_file = check_path_existence(basedir + config['interproscan']['orthoID_domain_precision'])
     OrthScore_dict = read2orthoDict(ortho_pair_file=ortho_file)
 
     # 4. Process all QueryResult
@@ -38,13 +38,13 @@ def pipeline(config: dict,
             # sort the hits by precision
             # max_dict = sorted([OrthScore_dict[x.id] for x in i], key = lambda i: i['precision'],reverse=True)[0]
             i.sort(
-                key=lambda hit: OrthScore_dict[hit.id]["precision"], reverse=True)
+                key=lambda hit: OrthScore_dict[hit.id]['precision'], reverse=True)
 
             max_dict = OrthScore_dict[i.hits[0].id]
 
             # set the QueryResult attribution
-            setattr(i, "orthoID", max_dict["orthoID"])
-            setattr(i, "orthoID_weight", max_dict["precision"])
+            setattr(i, "orthoID", max_dict['orthoID'])
+            setattr(i, "orthoID_weight", max_dict['precision'])
             q_list.append(i)
 
     return q_list

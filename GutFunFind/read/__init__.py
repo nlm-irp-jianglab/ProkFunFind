@@ -163,7 +163,7 @@ def GetGenomeFromGB(gbfile: str) -> Genome:
         ct = Contig(id=rec.id, seq=rec.seq, genes={})
         for f in rec.features:
             if f.type == "CDS":
-                fid = f.qualifiers["locus_tag"][0]
+                fid = f.qualifiers['locus_tag'][0]
                 gene = Gene(contig=rec.id,
                             id=fid,
                             type=f.type,
@@ -173,7 +173,7 @@ def GetGenomeFromGB(gbfile: str) -> Genome:
             elif f.type in ["assembly_gap", "source"]:
                 pass
             else:
-                fid = f.qualifiers["locus_tag"][0]
+                fid = f.qualifiers['locus_tag'][0]
                 gene = Gene(contig=rec.id,
                             id=fid,
                             qualifiers=f.qualifiers,

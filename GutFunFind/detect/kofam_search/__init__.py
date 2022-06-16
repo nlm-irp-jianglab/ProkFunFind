@@ -21,7 +21,7 @@ def pipeline(config: dict,
     qresults = kofam_tab_parse(in_file)
 
     # 3. Read orthoID info into dictionary
-    ortho_file = check_path_existence(basedir + config['kofamscan']["map.ortho_pair"])
+    ortho_file = check_path_existence(basedir + config['kofamscan']['map.ortho_pair'])
     OrthScore_dict = read2orthoDict(ortho_pair_file=ortho_file)
 
     # 4. Process all QueryResult
@@ -40,8 +40,8 @@ def pipeline(config: dict,
             max_dict = OrthScore_dict[i.hits[0].id]
 
             # set the QueryResult attributes
-            setattr(i, "orthoID", max_dict["orthoID"])
-            setattr(i, "orthoID_weight", max_dict["precision"])
+            setattr(i, "orthoID", max_dict['orthoID'])
+            setattr(i, "orthoID_weight", max_dict['precision'])
             q_list.append(i)
 
     # filter results based on evalue and thresholds
