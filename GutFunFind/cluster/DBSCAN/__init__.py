@@ -17,7 +17,7 @@ def DBSCANCluster(
     return list(cluster.labels_)
 
 
-def pipeline(config: dict, genome_object, detect_tool: str) -> Genome:
+def pipeline(config: dict, genome_object, detect_tools: set) -> Genome:
 
     # cf = read_config(config_file)["DBSCAN"]
 
@@ -26,17 +26,18 @@ def pipeline(config: dict, genome_object, detect_tool: str) -> Genome:
         # obtain weight for genes with blast attributes and the postion in the
         # contig(0-based)
         poslist, weightlist, genelist = [], [], []
-        for i, gene in enumerate(ct.genes.values()):
-            if hasattr(gene, detect_tool):
-                poslist.append(i)
-                genelist.append(gene)
-                weightlist.append(
-                    getattr(
+        for detect_tool in detect_tools:
+            for i, gene in enumerate(ct.genes.values()):
+                if hasattr(gene, detect_tool):
+                    poslist.append(i)
+                    genelist.append(gene)
+                    weightlist.append(
                         getattr(
-                            gene,
-                            detect_tool),
-                        "orthoID_weight"))
-                # weightlist.append(gene.blast.orthoID_weight)
+                            getattr(
+                                gene,
+                                detect_tool),
+                            "orthoID_weight"))
+                    # weightlist.append(gene.blast.orthoID_weight)
 
         # if there is a hit in the contig, run DBSCANCluster
         if len(poslist) >= 1:

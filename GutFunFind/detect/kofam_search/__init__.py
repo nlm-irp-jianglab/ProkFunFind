@@ -10,7 +10,7 @@ from GutFunFind.detect.kofam_search.kofam_filter import *
 
 def pipeline(config: dict,
              in_file: Union[str, IO],
-             basedir
+             basedir, OrthScore_dict: dict, q_list: dict,
              ) -> List[QueryResult]:
     """Run kofamscan analysis"""
     # 1. Read the configuration file into configuration object
@@ -21,11 +21,11 @@ def pipeline(config: dict,
     qresults = kofam_tab_parse(in_file)
 
     # 3. Read orthoID info into dictionary
-    ortho_file = check_path_existence(basedir + config['kofamscan']['map.ortho_pair'])
-    OrthScore_dict = read2orthoDict(ortho_pair_file=ortho_file)
+    # ortho_file = check_path_existence(basedir + config['kofamscan']['map.ortho_pair'])
+    # OrthScore_dict = read2orthoDict(ortho_pair_file=ortho_file)
 
     # 4. Process all QueryResult
-    q_list = []
+    tmp_list = []
     for qres in qresults:
 
         # remove and query results that do not hit to searched KOs
@@ -42,13 +42,19 @@ def pipeline(config: dict,
             # set the QueryResult attributes
             setattr(i, "orthoID", max_dict['orthoID'])
             setattr(i, "orthoID_weight", max_dict['precision'])
-            q_list.append(i)
+            setattr(i, "detect_tool", "kofamscan")
+            tmp_list.append(i)
 
     # filter results based on evalue and thresholds
     if config['filter']:
         # filter_path = check_path_existence(basedir + cf["filter.config"])
-        filter_res = [kofam_filter(config=config, qres=i, basedir=basedir) for i in q_list]
+        filter_res = [kofam_filter(config=config, qres=i, basedir=basedir) for i in tmp_list]
+    else:
+        filter_res = tmp_list
 
     # generate final list
-    q_list = [i for i in filter_res if len(i) > 0]
+    # q_list = [i for i in filter_res if len(i) > 0]
+    for i in filter_res:
+        if len(i) > 0:
+            q_list.append(i)
     return q_list

@@ -55,9 +55,9 @@ def blast_filter(config: dict, qres: QueryResult, basedir=str) -> QueryResult:
     return qres.hsp_filter(hsp_filter_func)
 
 
-def blast_ortho(qres: QueryResult, ortho_pair_file: str) -> QueryResult:
+def blast_ortho(qres: QueryResult, OrthScore_dict: dict) -> QueryResult:
 
-    OrthScore_dict = read2orthoDict(ortho_pair_file=ortho_pair_file)
+    # OrthScore_dict = read2orthoDict(ortho_pair_file=ortho_pair_file)
 
     ######################################
     #  Sort method can be defined later  #
@@ -74,5 +74,6 @@ def blast_ortho(qres: QueryResult, ortho_pair_file: str) -> QueryResult:
 
     setattr(qres, "orthoID", max_dict['orthoID'])
     setattr(qres, "orthoID_weight", max_dict['precision'])
+    setattr(qres, "detect_tool", "blast")
 
     return qres

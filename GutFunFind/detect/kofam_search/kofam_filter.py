@@ -163,8 +163,8 @@ def kofam_filter(config: dict, qres: QueryResult, basedir) -> QueryResult:
     # basedir = os.path.dirname(os.path.abspath(config_file))+"/"
 
     # Parse global evalue and threhsold values
-    global_evalue = float(config['filter']['evalue'])
-    global_threshold = float(config['filter']['threshold'])
+    global_evalue = float(config['filter'].get('evalue', 1e-3))
+    global_threshold = float(config['filter'].get('threshold', 1))
 
     ops = {
         '<=': operator.le,

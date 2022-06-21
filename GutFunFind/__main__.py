@@ -14,7 +14,8 @@ from GutFunFind import report
 from GutFunFind.read import (GetGenomeFromGFF, Genome, Roarycsv2pangenome,
                              GetGenomeFromGzipGFF)
 from GutFunFind.toolkit.utility import (find_file_in_folder,
-                                        check_path_existence)
+                                        check_path_existence,
+                                        read2orthoDict)
 from GutFunFind.annotate.genomes import parse_gtab
 
 logging.basicConfig(level=logging.DEBUG)
@@ -70,16 +71,19 @@ def retrieve_function_pipeline(database: str, fun_name: str, args) -> Callable:
         # fna_path = None
         prefix = p+"/"+genome
         search_list.append(prefix)
-        print(search_list)
 
     # 2. Run the correct detect tool
-    logging.info("Searching for functions")
-    detect_tool = config.get('main', 'detect.tool')
+    # logging.info("Searching for functions")
+    # detect_tool = config.get('main', 'detect.tool')
     # detect_cf_path = path_to_fun + config.get('main', 'detect.config')
     # detect_config = config[detect_tool]
     # detect_cf_path = check_path_existence(detect_cf_path)
-    detect_module = importlib.import_module(
-        "GutFunFind.detect" + "." + module_name(detect_tool), package=None)
+    # detect_module = importlib.import_module(
+    #     "GutFunFind.detect" + "." + module_name(detect_tool), package=None)
+
+    # get orthodict
+    ortho_file = check_path_existence(path_to_fun + config['main']['map.ortho_pair'])
+    OrthScore_dict, search_approaches = read2orthoDict(ortho_pair_file=ortho_file)
 
     # 2.1 Run correction annotation tool or use precomupted input
 
@@ -99,17 +103,18 @@ def retrieve_function_pipeline(database: str, fun_name: str, args) -> Callable:
     #             run_interproscan(config, gin)
     # else:
     #     logging.info('')
-    if detect_tool in ['interproscan', 'kofamscan', 'emapper']:
-        for genome, p in gids.items():
-            if detect_tool == "interproscan":
-                # Need to handle both tsv and xml outputs.
-                check_path_existence(p + "/" + genome +
-                                     config['interproscan']['annot_suffix'])
-            elif detect_tool == "kofamscan":
-                check_path_existence(p + "/" + genome + config['kofamscan']['annot_suffix'])
-            elif detect_tool == "emapper":
-                check_path_existence(p + '/' + genome +
-                                     config['emapper']['annot_suffix'])
+    for detect_tool in search_approaches:
+        if detect_tool in ['interproscan', 'kofamscan', 'emapper']:
+            for genome, p in gids.items():
+                if detect_tool == "interproscan":
+                    # Need to handle both tsv and xml outputs.
+                    check_path_existence(p + "/" + genome +
+                                         config['interproscan']['annot_suffix'])
+                elif detect_tool == "kofamscan":
+                    check_path_existence(p + "/" + genome + config['kofamscan']['annot_suffix'])
+                elif detect_tool == "emapper":
+                    check_path_existence(p + '/' + genome +
+                                         config['emapper']['annot_suffix'])
 
     # 3. Run the cluster method
     cluster_tool = config.get('main', 'cluster.tool')
@@ -147,9 +152,11 @@ def retrieve_function_pipeline(database: str, fun_name: str, args) -> Callable:
         # genes
         genomeObj = GetGenomeFromGFF(gff3file=gff_file, fnafile=fna_file)
         [ct.sort() for ct in genomeObj.contigs.values()]
-
-        # detect function related gene
-        if detect_tool == "interproscan":
+        detect_list = []
+        # defstect function related gene
+        if "interproscan" in search_approaches:
+            detect_module = importlib.import_module(
+                "GutFunFind.detect" + "." + module_name('interproscan'), package=None)
             xml_file = genome_prefix + ".xml"
             if not os.path.isfile(xml_file):
                 tsv_file = genome_prefix + config['interproscan']['annot_suffix']
@@ -162,60 +169,89 @@ def retrieve_function_pipeline(database: str, fun_name: str, args) -> Callable:
                         config=config,
                         in_file=tsv_file,
                         fmt="tsv",
-                        basedir=path_to_fun)
+                        basedir=path_to_fun,
+                        OrthScore_dict=OrthScore_dict['interproscan'],
+                        q_list=detect_list)
             else:
                 detect_list = detect_module.pipeline(
                     config=config,
                     in_file=xml_file,
                     fmt="xml",
-                    basedir=path_to_fun)
-        elif detect_tool == "kofamscan":
+                    basedir=path_to_fun,
+                    OrthScore_dict=OrthScore_dict['interproscan'],
+                    q_list=detect_list)
+        if "kofamscan" in search_approaches:
+            detect_module = importlib.import_module(
+                "GutFunFind.detect" + "." + module_name('kofamscan'), package=None)
             kofam_file = genome_prefix + config['kofamscan']['annot_suffix']
             kofam_file = check_path_existence(kofam_file)
             detect_list = detect_module.pipeline(
                 config=config,
                 in_file=kofam_file,
-                basedir=path_to_fun)
-        elif detect_tool == "emapper":
+                basedir=path_to_fun,
+                OrthScore_dict=OrthScore_dict['kofamscan'],
+                q_list=detect_list)
+        if "emapper" in search_approaches:
+            detect_module = importlib.import_module(
+                "GutFunFind.detect" + "." + module_name('emapper'), package=None)
             emap_file = genome_prefix + config['emapper']['annot_suffix']
             emap_file = check_path_existence(emap_file)
             detect_list = detect_module.pipeline(
                 config=config,
                 in_file=emap_file,
-                basedir=path_to_fun)
-        else:
+                basedir=path_to_fun,
+                OrthScore_dict=OrthScore_dict['emapper'],
+                q_list=detect_list)
+
+        if 'blast' in search_approaches:
+            detect_module = importlib.import_module(
+                "GutFunFind.detect" + "." + module_name('blast'), package=None)
             faa_file = genome_prefix + config['main']['faa_suffix']
             faa_file = check_path_existence(faa_file)
             detect_list = detect_module.pipeline(
                 config=config,
                 protein_file=faa_file,
                 outprefix=outprefix,
-                basedir=path_to_fun)
+                basedir=path_to_fun,
+                OrthScore_dict=OrthScore_dict['blast'],
+                q_list=detect_list)
+        if 'hmmer' in search_approaches:
+            detect_module = importlib.import_module(
+                "GutFunFind.detect" + "." + module_name('hmmer'), package=None)
+            faa_file = genome_prefix + config['main']['faa_suffix']
+            faa_file = check_path_existence(faa_file)
+            detect_list = detect_module.pipeline(
+                config=config,
+                protein_file=faa_file,
+                outprefix=outprefix,
+                basedir=path_to_fun,
+                OrthScore_dict=OrthScore_dict['hmmer'],
+                q_list=detect_list)
 
         # attach the detect result to genome object
         for query in detect_list:
-            setattr(genomeObj.genes[query.id], detect_tool, query)
+            setattr(genomeObj.genes[query.id], query.detect_tool, query)
 
         logging.info("Identifying gene clusters")
         # identify gene cluster at genome object
         genomeObj = cluster_module.pipeline(
             config=config,
             genome_object=genomeObj,
-            detect_tool=detect_tool)
+            detect_tools=search_approaches)
 
         # examine the genome to see if it contain the function and annotate
         # related genes
         logging.info("Summarizing function presence and genes")
         (system_dict, status, genomeObj) = examine.pipeline(
             system_file=system_file, genome_object=genomeObj,
-            detect_tool=detect_tool)
+            detect_tools=search_approaches)
         genome_name = genome_prefix.split("/")[len(genome_prefix.split("/"))-1]
         report.report_all(
             system_dict=system_dict,
             status=status,
             genomeObj=genomeObj,
             outprefix=outprefix+'.'+genome_name,
-            detect_tool=detect_tool,
+            detect_tools=search_approaches,
             cluster_tool=cluster_tool)
 
         if status:
