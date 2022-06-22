@@ -13,18 +13,11 @@ def pipeline(config: dict,
              basedir: Union[str, IO], OrthScore_dict: dict, q_list: dict
              ) -> List[QueryResult]:
     """Run emapper COG analysis"""
-    # 1. Read the configuration file into configuration object
-    # cf = read_config(config_file)["emapper"]
-    # basedir = os.path.dirname(os.path.abspath(basedir))+"/"
+    # 1. Read emappperscan tsv file and parse results
     basedir = os.path.abspath(basedir)+"/"
-    # 2. Read emappperscan tsv file and parse results
     qresults = emappper_tab_parse(in_file)
 
-    # 3. Read orthoID info into dictionary
-    # ortho_file = check_path_existence(basedir + config['emapper']['map.ortho_pair'])
-    # OrthScore_dict = read2orthoDict(ortho_pair_file=ortho_file)
-
-    # 4. Process all QueryResult
+    # 2. Process all QueryResult
     tmp_list = []
     for qres in qresults:
         # remove and query results that do not hit to searched KOs
@@ -43,15 +36,13 @@ def pipeline(config: dict,
             setattr(i, "detect_tool", "emapper")
             tmp_list.append(i)
 
-    # filter results based on evalue and thresholds
-    if config['filter']:#cf.get("filter.config") and cf["filter.config"]:
-        # filter_path = check_path_existence(basedir + cf["filter.config"])
+    # 3. filter results based on evalue and thresholds
+    if config['filter']:
         filter_res = [emappper_filter(config=config, qres=i, basedir=basedir) for i in tmp_list]
     else:
         filter_res = tmp_list
 
-    # generate final list of hits
-    # q_list = [i for i in filter_res if len(i) > 0]
+    # 4. Append hits to overall q_list
     for i in filter_res:
         if len(i) > 0:
             q_list.append(i)

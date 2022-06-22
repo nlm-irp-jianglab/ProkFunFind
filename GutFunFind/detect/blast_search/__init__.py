@@ -13,17 +13,11 @@ def pipeline(config: dict,
              protein_file: Union[str, IO],
              outprefix: str,
              basedir: str, q_list: dict, OrthScore_dict: dict) -> List[QueryResult]:
-    # 1. Read the configuration file into configuration object
-    # config = read_config(config)["blast"]
-    # basedir = os.path.dirname(os.path.abspath(config))+"/"
 
-    # 2 generate command line to run
-    # we can add "-num_threads" later
-    # Right now we use the -m 6 format
-    #cmd = [ cf["blast.exec"], "-query",  protein_file, "-db" ,cf["blast.query"], "-evalue", cf["blast.evalue"], "-outfmt" ,"5", "-out", outprefix+".blast.xml"]
-
+    # 1. Check for query file
     query_path = check_path_existence(basedir+config['blast']['blast.query'])
 
+    # 2. Set up blast command.
     cmd = [
         config['blast']['blast.exec'],
         "-query",
@@ -40,23 +34,24 @@ def pipeline(config: dict,
     if config['blast'].get('blast.threads'):
         cmd +=["-num_threads",config['blast']['blast.threads']]
 
-    # 3 run command line
+    # 3. run command line
     res = subprocess.run(cmd)
     if res.returncode != 0:
         raise RuntimeError("Failed to run: {}".format(" ".join(cmd)))
 
-    # 4 read the output from previous step
+    # 4. read the output from previous step
     qresults = SearchIO.parse(outprefix + ".blast.m6", "blast-tab")
     #qresults = SearchIO.parse(protein_file+".blast.xml", 'blast-xml')
     tmp_list = [i for _, i in SearchIO.to_dict(qresults).items() if len(i) > 0]
 
+    # 5. Apply blast filtering.
     if config['filter']:
-        # filter_path = check_path_existence(basedir + config["filter.config"])
         filter_res = [blast_filter(
             config=config, qres=i, basedir=basedir) for i in tmp_list]
         res_list = [i for i in filter_res if len(i) > 0]
+    else:
+        res_list = tmp_list
 
-    # ortho_file = check_path_existence(basedir + config['blast']['map.ortho_pair'])
     for i in res_list:
         q_list.append(blast_ortho(OrthScore_dict=OrthScore_dict, qres=i))
 

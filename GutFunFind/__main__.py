@@ -11,8 +11,7 @@ from argparse import ArgumentParser
 
 from GutFunFind import examine
 from GutFunFind import report
-from GutFunFind.read import (GetGenomeFromGFF, Genome, Roarycsv2pangenome,
-                             GetGenomeFromGzipGFF)
+from GutFunFind.read import Genome, GetGenomeFromGFF
 from GutFunFind.toolkit.utility import (find_file_in_folder,
                                         check_path_existence,
                                         read2orthoDict)
@@ -46,25 +45,24 @@ def module_name(arg: str) -> str:
 # Write a funtion pipeline for function of interest for a individual genome
 def retrieve_function_pipeline(database: str, fun_name: str, args) -> Callable:
 
-    # 1. Obtain the configuration and check the exec as well as the database
+    # 1. Parse configuration files and search files
+    # 1.1 Obtain the configuration and check the exec as well as the database
     # required
-    logging.info("Parsing configuration files")
+    logging.info("Checking configuration files")
     path_to_fun = database.rstrip("/") + "/" + fun_name + "/"
 
-    # 1.1 check the existance of the function
+    # 1.2 check the existance of the function
     if not os.path.exists(path_to_fun):
         sys.exit("Function {} doesn't exist in GutFun".format(fun_name))
 
-    # 1.2 check the existance of function configuration
+    # 1.3 check the existance of function configuration
     config = ConfigParser()
     config_path = path_to_fun + "config.ini"
     config_path = check_path_existence(config_path)
 
     config.read(config_path)
 
-    # 1.3 Generate protein fasta files from input GFF files
-    logging.info("Preparing genome files for search")
-    #search_list = export_proteins(config, args.gdir, args.gtab, zipped=False)
+    # 1.4 Parse genome search table
     search_list = []
     gids = parse_gtab(args.gtab)
     for genome, p in gids.items():
@@ -72,37 +70,11 @@ def retrieve_function_pipeline(database: str, fun_name: str, args) -> Callable:
         prefix = p+"/"+genome
         search_list.append(prefix)
 
-    # 2. Run the correct detect tool
-    # logging.info("Searching for functions")
-    # detect_tool = config.get('main', 'detect.tool')
-    # detect_cf_path = path_to_fun + config.get('main', 'detect.config')
-    # detect_config = config[detect_tool]
-    # detect_cf_path = check_path_existence(detect_cf_path)
-    # detect_module = importlib.import_module(
-    #     "GutFunFind.detect" + "." + module_name(detect_tool), package=None)
-
-    # get orthodict
+    # 1.5 Parse ortholog search table
     ortho_file = check_path_existence(path_to_fun + config['main']['map.ortho_pair'])
     OrthScore_dict, search_approaches = read2orthoDict(ortho_pair_file=ortho_file)
 
-    # 2.1 Run correction annotation tool or use precomupted input
-
-    # if not args.precomputed:
-    #     logging.info('running annotation tools')
-    #     if detect_tool == 'emapper':
-    #         for genome in gids:
-    #             gin = args.gdir+'/'+genome
-    #             run_emapper(config, gin)
-    #     elif detect_tool == 'kofamscan':
-    #         for genome in gids:
-    #             gin = args.gdir+'/'+genome
-    #             run_kofamscan(config, gin)
-    #     elif detect_tool == 'interproscan':
-    #         for genome in gids:
-    #             gin = args.gdir+'/'+genome
-    #             run_interproscan(config, gin)
-    # else:
-    #     logging.info('')
+    # 2. Check for annotation file existence for all requested searches
     for detect_tool in search_approaches:
         if detect_tool in ['interproscan', 'kofamscan', 'emapper']:
             for genome, p in gids.items():
@@ -116,11 +88,8 @@ def retrieve_function_pipeline(database: str, fun_name: str, args) -> Callable:
                     check_path_existence(p + '/' + genome +
                                          config['emapper']['annot_suffix'])
 
-    # 3. Run the cluster method
+    # 3. Set up clustering and parse system file
     cluster_tool = config.get('main', 'cluster.tool')
-    # cluster_config = config[cluster_tool]
-    # cluster_cf_path = path_to_fun + config.get('main', 'cluster.config')
-    # cluster_cf_path = check_path_existence(cluster_cf_path)
 
     cluster_module = importlib.import_module(
         "GutFunFind.cluster" + "." + module_name(cluster_tool), package=None)
@@ -128,10 +97,11 @@ def retrieve_function_pipeline(database: str, fun_name: str, args) -> Callable:
     system_file = path_to_fun + config.get('main', 'system.file')
     system_file = check_path_existence(system_file)
 
+    # Function to run analysis on a given genome
     def function_analysis(genome_prefix: str,
                           outprefix: str) -> Tuple[Dict, int, Genome]:
 
-        # varaible for the path for genome(fna),annotations(gff),proteins(faa)
+        # get the paths to the the GFF and fna files
         gff_file = genome_prefix + config['main']['gff_suffix']
         gff_file = check_path_existence(gff_file)
         fna_file = genome_prefix + config['main']['fna_suffix']
@@ -148,12 +118,13 @@ def retrieve_function_pipeline(database: str, fun_name: str, args) -> Callable:
             if not os.path.exists(out_dir):
                 os.makedirs(out_dir)
 
-        # create genome object from genome and annotations file and sort the
-        # genes
+        # create genome object from genome and gff file and sort the genes
         genomeObj = GetGenomeFromGFF(gff3file=gff_file, fnafile=fna_file)
         [ct.sort() for ct in genomeObj.contigs.values()]
         detect_list = []
-        # defstect function related gene
+
+        logging.info('Searching for function')
+        # Run detect methods
         if "interproscan" in search_approaches:
             detect_module = importlib.import_module(
                 "GutFunFind.detect" + "." + module_name('interproscan'), package=None)
@@ -228,7 +199,7 @@ def retrieve_function_pipeline(database: str, fun_name: str, args) -> Callable:
                 OrthScore_dict=OrthScore_dict['hmmer'],
                 q_list=detect_list)
 
-        # attach the detect result to genome object
+        # Attach search results to genome object
         for query in detect_list:
             setattr(genomeObj.genes[query.id], query.detect_tool, query)
 
@@ -278,17 +249,13 @@ def retrieve_function_pipeline(database: str, fun_name: str, args) -> Callable:
                     ap=system_dict['completeness']['nonessential_presence'],
                     a=system_dict['completeness']['nonessential']))
 
-        # return (system_dict, status, genomeObj)
-
     return function_analysis, search_list
 
 
 def main_individual(args):
-
     detect_fun, search_list = retrieve_function_pipeline(
         database=args.database, fun_name=args.fun_name, args=args)
 
-    # detect_fun(genome_prefix=args.genome_prefix, outprefix=args.outprefix)
     for prefix in search_list:
         detect_fun(genome_prefix=prefix, outprefix=args.outprefix)
 
@@ -488,14 +455,6 @@ def main():
         required=True,
         dest="fun_name",
         metavar="")
-
-    # parser_rep.add_argument(
-    #     "-g",
-    #     "--genomeprefix",
-    #     help="The prefix of genome",
-    #     required=False,
-    #     dest="genome_prefix",
-    #     metavar="")
     parser_rep.add_argument(
         "-o",
         "--outputprefix",
@@ -504,13 +463,9 @@ def main():
         dest="outprefix",
         metavar="")
     parser_rep.add_argument(
-        "--gdir")
+        "--gdir", )
     parser_rep.add_argument(
         "--gtab")
-    parser_rep.add_argument(
-        "--precomputed",
-        action="store_true"
-    )
     parser_rep.set_defaults(func=main_individual)
 
     parser_pan = subparsers.add_parser(
@@ -553,9 +508,6 @@ def main():
         dest="outprefix",
         metavar="")
     parser_pan.set_defaults(func=main_pan)
-
-    # if len(sys.argv) <= 1:
-    #     sys.argv.append("--help")
 
     options = parser.parse_args()
     options.func(options)

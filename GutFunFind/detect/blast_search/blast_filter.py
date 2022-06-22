@@ -9,9 +9,6 @@ from GutFunFind.toolkit.utility import read_config, check_path_existence, read2o
 
 def blast_filter(config: dict, qres: QueryResult, basedir=str) -> QueryResult:
 
-    # cf = read_config(config_file)
-    # basedir = os.path.dirname(os.path.abspath(config_file))+"/"
-
     global_evalue = config['filter']['evalue']
     global_ident = config['filter']['ident_pct']
 
@@ -56,8 +53,6 @@ def blast_filter(config: dict, qres: QueryResult, basedir=str) -> QueryResult:
 
 
 def blast_ortho(qres: QueryResult, OrthScore_dict: dict) -> QueryResult:
-
-    # OrthScore_dict = read2orthoDict(ortho_pair_file=ortho_pair_file)
 
     ######################################
     #  Sort method can be defined later  #

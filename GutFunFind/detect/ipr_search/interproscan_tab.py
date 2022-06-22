@@ -34,8 +34,6 @@ class InterproscanTabParser:
 
     def _parse_row(self):
         """Return a dictionary of parsed row values (PRIVATE)."""
-        #cols = [x for x in self.line.strip().split("\t") if x]
-        #cols = self.line.split("\t")
         cols = self.line.strip("\n").split("\t")
         if len(cols) != 15 and len(cols) != 11:
             raise ValueError("Less columns than expected, only %i" % len(cols))

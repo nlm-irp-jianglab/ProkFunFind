@@ -159,9 +159,6 @@ def kofam_tab_parse(handle, **kwargs):
 
 def kofam_filter(config: dict, qres: QueryResult, basedir) -> QueryResult:
     """Handle filtering of kofamscan query results"""
-    # cf = read_config(config_file)
-    # basedir = os.path.dirname(os.path.abspath(config_file))+"/"
-
     # Parse global evalue and threhsold values
     global_evalue = float(config['filter'].get('evalue', 1e-3))
     global_threshold = float(config['filter'].get('threshold', 1))

@@ -60,8 +60,6 @@ class emappperTabParser:
         hsp['evalue'] = float(cols[2]) if cols[5] != "-" else None
 
         frag = {}
-        #frag["query_start"] = int(cols[6]) - 1  # query start, zero-based
-        #frag["query_end"] = int(cols[7])  # query end
 
         return {'qresult': qresult, 'hit': hit, 'hsp': hsp, 'frag': frag}
 
@@ -125,7 +123,7 @@ class emappperTabParser:
                     if not hit.id in [i.id for i in hit_list]:
                         hit_list.append(hit)
 
-                    # create qresult and yield if we're at a new qresult or at EOF
+                # create qresult and yield if we're at a new qresult or at EOF
                 if qres_state == state_QRES_NEW or file_state == state_EOF:
 
                     for hit in hit_list:
@@ -159,8 +157,6 @@ def emappper_tab_parse(handle, **kwargs):
 
 def emappper_filter(config: dict, qres: QueryResult, basedir=str) -> QueryResult:
     """Handle filtering of emappper query results"""
-    # basedir = os.path.dirname(os.path.abspath(config_file))+"/"
-
     # Parse global evalue and threhsold values
     global_evalue = float(config['filter']['evalue'])
 
