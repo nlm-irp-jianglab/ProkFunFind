@@ -12,7 +12,18 @@ def pipeline(config: dict,
              in_file: Union[str, IO],
              basedir, OrthScore_dict: dict, q_list: dict,
              ) -> List[QueryResult]:
-    """Run kofamscan analysis"""
+    """Run kofamscan analysis
+
+       Arguments:
+           config: A configuration dictionary object
+           in_file: path to kofamscan output file
+           basedir: path to configuration directory
+           OrthScore_dict: OrthScore dict object
+           q_list: List of query results or empty list
+
+       Returns:
+           q_list: Updated list of query objects
+    """
     # 1. Read kofamscan tsv file and parse results
     qresults = kofam_tab_parse(in_file)
 

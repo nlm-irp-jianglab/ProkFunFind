@@ -12,7 +12,18 @@ def pipeline(config: dict,
              in_file: Union[str, IO],
              basedir: Union[str, IO], OrthScore_dict: dict, q_list: dict
              ) -> List[QueryResult]:
-    """Run emapper COG analysis"""
+    """Run emapper COG analysis
+
+       Arguments:
+           config: A configuration dictionary
+           in_file: Input emapper tab file
+           basedir: path to directory containing config files
+           OrthScore_dict: parsed ortholog table dictionary
+           q_list: list of QueryResult objects or empty list
+
+       Returns:
+           q_list: An updated list of QueryResults
+    """
     # 1. Read emappperscan tsv file and parse results
     basedir = os.path.abspath(basedir)+"/"
     qresults = emappper_tab_parse(in_file)

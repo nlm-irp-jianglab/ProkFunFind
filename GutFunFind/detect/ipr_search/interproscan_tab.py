@@ -15,7 +15,19 @@ from Bio.SearchIO._model import QueryResult, Hit, HSP, HSPFragment
 
 
 class InterproscanTabParser:
-    """Parser for the InterProScan table format."""
+    """Parser for the InterProScan table format.
+
+       Attributes:
+           handle: str
+               open file object
+           line: str
+               next line in the file
+
+       Methods:
+           __iter__: Function to iterate over file and return QueryResults
+           _parse_row: Function to parse and split row in file
+           _parse_qresult: Function to take row data and make QueryResult
+    """
 
     def __init__(self, handle):
         """Initialize the class."""
@@ -144,7 +156,11 @@ class InterproscanTabParser:
 
 
 def ipr_tab_parse(handle, **kwargs):
+    """Fucntion to handle parsing of IPR file
 
+       Arguments:
+           handle: IPR file object. 
+    """
     # get the iterator object and do error checking
     mod = __import__("GutFunFind.detect.ipr_search", fromlist=[""])
     obj_name = "InterproscanTabParser"

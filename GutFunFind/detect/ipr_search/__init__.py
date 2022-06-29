@@ -12,6 +12,19 @@ def pipeline(config: dict,
              in_file: Union[str, IO],
              fmt: str,
              basedir: str, OrthScore_dict: dict, q_list: dict) -> List[QueryResult]:
+    """Main function for running IPR based search
+
+       Arguments:
+           config: A configuration dictionary
+           in_file: Path to interproscan output file
+           fmt: format of input file (xml or tsv)
+           basedir: path to configuration file directory
+           OrthScore_dict: OrthScore_dict dictionary
+           q_list: list of query results or empty list
+
+       Returns:
+           q_list: Updated list of QueryResults
+    """
     # 1. Read the input files
     if fmt == "xml":
         qresults = SearchIO.parse(in_file, "interproscan-xml")

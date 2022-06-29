@@ -15,6 +15,19 @@ def pipeline(config: dict,
              protein_file: Union[str, IO],
              outprefix: str,
              basedir: str, OrthScore_dict: dict, q_list: dict) -> List[QueryResult]:
+    """Run HMMER based search
+
+       Arguments:
+           config: A configuration dictionary
+           protein_file: Input protein fasta file
+           outprefix: path and prefix name of the output files
+           basedir: path to config file directory
+           OrthScore_dict: parsed ortholog table dictionary
+           q_list: list of QueryResult objects or empty list
+
+       Returns:
+           q_list: An updated list of QueryResults
+    """
     # 1. Read the query files
     query_path = check_path_existence(basedir+config['hmmer']['hmmer.query'])
 

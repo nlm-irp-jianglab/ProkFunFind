@@ -8,6 +8,16 @@ from Bio.SearchIO._model.query import QueryResult
 from GutFunFind.toolkit.utility import read_config, check_path_existence, read2orthoDict
 
 def hmmer_filter(config: dict, qres: QueryResult, basedir=str) -> QueryResult:
+    """Function to filetr HMMER search results
+
+       Arguments
+           config: A configuration dictionary
+           qres: A Bio.SearchIO._model.query.QueryResult object
+           basedir: Path to the configuration files directory
+
+       Returns:
+           status: True if query passes filtering.
+    """
     global_evalue = config['filter']['evalue'] if  config['filter'].get('evalue') else 10
     global_bitscore = config['filter']['bitscore'] if config['filter'].get('bitscore') else 0
 
