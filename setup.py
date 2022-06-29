@@ -32,7 +32,8 @@ setuptools.setup(name='GutFunFind',
                      'typing',
                      'argparse',
                      'numpy',
-                     'six'
+                     'six',
+                     'bcbio-gff'
                  ],
                  zip_safe=False)
 #                     'importlib',

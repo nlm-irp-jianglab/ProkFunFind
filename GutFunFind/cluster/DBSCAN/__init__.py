@@ -11,6 +11,17 @@ def DBSCANCluster(
         weight: List[float] = None,
         eps: float = 2,
         min_samples: float = 0.9) -> List[int]:
+    """Wrapper function to run DBSCAN clustering
+
+       Arguments:
+           pos:
+           weight:
+           eps: 
+           min_samples:
+
+       Returns:
+           list of cluster labels for genes 
+    """
     pos = np.array(pos).reshape(-1, 1)
     cluster = DBSCAN(
         eps=eps, min_samples=min_samples).fit(pos, sample_weight=weight)
@@ -18,6 +29,15 @@ def DBSCANCluster(
 
 
 def pipeline(config: dict, genome_object, detect_tools: set) -> Genome:
+    """Main pipeline function for DBSCAN clustering analysis
+
+       Arguments:
+           config: A config dictionary 
+           genome_object: A GutFunFind.annotate.Genome object
+           detect_tools: list of gene hit detection tools used
+       Returns: 
+           genome_object: GutFunFind.annotate.Genome object with cluster info
+    """
     for ct in genome_object.contigs.values():
 
         # obtain weight for genes with blast attributes and the postion in the

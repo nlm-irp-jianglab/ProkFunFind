@@ -19,10 +19,27 @@ from Bio.SearchIO._model import QueryResult, Hit, HSP, HSPFragment
 from GutFunFind.toolkit.utility import read_config, check_path_existence
 
 class emappperTabParser:
-    """Parser for the emappper table format."""
+    """Class for a Parser of the emappper table format.
+
+       Attributes:
+          handle: str
+              open file object
+          line: str
+              next line in the file
+
+       Methods: 
+          __iter__: Function to iterate over file and return QueryResults
+          _parse_row: Function to parse and split a row in the file
+          _parse_qresult: Function to take row data and make QueryResult
+
+    """
 
     def __init__(self, handle):
-        """Initialize the class."""
+        """Initialize the class.
+        
+           Arguments: 
+               handle: open emapper tabular output file. 
+        """
         self.handle = handle
         self.line = self.handle.readline().rstrip("\n")
 
@@ -143,7 +160,15 @@ class emappperTabParser:
 
 
 def emappper_tab_parse(handle, **kwargs):
-    """Parse emappper table and yield results"""
+    """Parse emappper table and yield results
+
+       Arguments: 
+           handle: open emapper tabular file
+           kwargs: 
+
+       Yields: 
+           yields from iterator of the source file. 
+    """
     # get the iterator object and do error checking
     mod = __import__("GutFunFind.detect.emap_search", fromlist=[""])
     obj_name = "emappperTabParser"
@@ -156,7 +181,16 @@ def emappper_tab_parse(handle, **kwargs):
 
 
 def emappper_filter(config: dict, qres: QueryResult, basedir=str) -> QueryResult:
-    """Handle filtering of emappper query results"""
+    """Handle filtering of emappper query results
+    
+       Arguments:
+           config: configuration dictionary
+           qres: QueryResult object
+           basedir: Path to where filtering files are located
+
+       Returns: 
+           filtered QureyResult object
+    """
     # Parse global evalue and threhsold values
     global_evalue = float(config['filter']['evalue'])
 

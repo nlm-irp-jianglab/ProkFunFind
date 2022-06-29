@@ -13,6 +13,20 @@ def pipeline(config: dict,
              protein_file: Union[str, IO],
              outprefix: str,
              basedir: str, q_list: dict, OrthScore_dict: dict) -> List[QueryResult]:
+    """Main pipeline function for performing blast-based searches
+
+       Arguments: 
+           config: 
+           protein_file:
+           outprefix:
+           basedir: 
+           q_list: 
+           OrthScore_dict:
+
+       Returns:
+           q_list: updated list of QueryResult objects. 
+
+    """
 
     # 1. Check for query file
     query_path = check_path_existence(basedir+config['blast']['blast.query'])

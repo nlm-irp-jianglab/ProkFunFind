@@ -10,13 +10,13 @@ def extract_gene(contig, location, genType, translate=False):
     """ Extract gene sequence given a contig and location
 
         Arguments:
-            contig:
-            location:
-            genType:
-            translate:
+            contig: A GutFunFind.annotate.contig object
+            location: A Bio.SeqFeature.FeatureLocation object
+            genType: A string specifying the gene type property
+            translate: Bool, if true then translate the gene seq
 
         Returns:
-            None
+            seq: A nucleotide or amino acid Bio.Seq.Seq object 
     """
     f = SeqFeature(FeatureLocation(location.start, location.end,
                    strand=location.strand), type=genType)
@@ -28,15 +28,15 @@ def extract_gene(contig, location, genType, translate=False):
 
 
 def create_genome_object(gff_file=None, fna_file=None, gff_gz_file=None):
-    """
+    """Generates a genome object given a GFF and Fasta file. 
 
         Arguments:
-            gff_file:
-            fna_file:
-            gff_gz_file:
+            gff_file: Path to the GFF annotation file
+            fna_file: Path to the genome fasta file
+            gff_gz_file: Path to combined gzipped GFF+Fasta file
 
         Returns:
-            None
+            genomeObj: GutFunFind.annotate.Genome object
     """
     if gff_gz_file:
         genomeObj = GetGenomeFromGzipGFF(gzipfile=gff_gz_file)
@@ -47,13 +47,13 @@ def create_genome_object(gff_file=None, fna_file=None, gff_gz_file=None):
 
 
 def parse_gtab(genome_tab: str):
-    """
+    """Parses a genome input table file
 
         Arguments:
-            genome_tab
+            genome_tab: Path to the genome input table
 
         Returns:
-            None
+            gtab: A dictionary linking genome IDs to names
     """
     # Add in check to make sure that file exists.
     gtab = {}
