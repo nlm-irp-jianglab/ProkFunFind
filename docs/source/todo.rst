@@ -1,4 +1,4 @@
-.. GutFunFind - Detection of genes of functional interest in genomes
+.. ProkFunFind - Detection of genes of functional interest in genomes
 
 .. _todolist:
 

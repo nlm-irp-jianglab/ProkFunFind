@@ -17,7 +17,7 @@
 
 # -- Project information -----------------------------------------------------
 
-project = 'GutFunFind'
+project = 'ProkFunFind'
 copyright = '2020, Xiaofang Jiang'
 author = 'Xiaofang Jiang'
 

@@ -1,7 +1,7 @@
-# GutFunFind: A pipeline to detect genes of functional interest
+# ProkFunFind: A pipeline to detect genes of functional interest
 
 ## Overview
-  GutFunFind is a pipeline that can be used to predict genes related to function of interest.
+  ProkFunFind is a pipeline that can be used to predict genes related to function of interest.
   Criteria for function detection include presence of gene, and genomic co-localization.
 
 ## Prerequisites
@@ -15,13 +15,13 @@
 ```
 conda create -n GutFun python=3
 conda activate GutFun
-git clone git@github.com:XiaofangJ/GutFunFind.git
-cd GutFunFind && python setup.py install
+git clone git@github.com:XiaofangJ/ProkFunFind.git
+cd ProkFunFind && python setup.py install
 ```
 
 ## Quick Start
 ```
-run_GutFunFind.py -b data.folder -f Mucic_and_Saccharic_Acid -g input.folder/MGYG-HGUT-02439 -o output.folder/prefix
+prokfunfind.py -b data.folder -f Mucic_and_Saccharic_Acid -g input.folder/MGYG-HGUT-02439 -o output.folder/prefix
 ```
 
 ## Updates
