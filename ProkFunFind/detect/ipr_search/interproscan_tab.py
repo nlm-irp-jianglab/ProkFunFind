@@ -162,7 +162,8 @@ def ipr_tab_parse(handle, **kwargs):
            handle: IPR file object.
     """
     # get the iterator object and do error checking
-    mod = __import__("ProkFunFind.detect.ipr_search", fromlist=[""])
+    mod = __import__("ProkFunFind.detect.ipr_search.interproscan_tab",
+                     fromlist=[""])
     obj_name = "InterproscanTabParser"
     iterator = getattr(mod, obj_name)
 

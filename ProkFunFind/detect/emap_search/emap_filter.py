@@ -159,7 +159,8 @@ def emappper_tab_parse(handle, **kwargs):
            yields from iterator of the source file.
     """
     # get the iterator object and do error checking
-    mod = __import__("ProkFunFind.detect.emap_search", fromlist=[""])
+    mod = __import__("ProkFunFind.detect.emap_search.emap_filter",
+                     fromlist=[""])
     obj_name = "emappperTabParser"
     iterator = getattr(mod, obj_name)
 

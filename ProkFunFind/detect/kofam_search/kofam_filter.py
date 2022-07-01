@@ -134,7 +134,8 @@ class KofamscanTabParser:
 def kofam_tab_parse(handle, **kwargs):
     """Parse kofamscan table and tield results"""
     # get the iterator object and do error checking
-    mod = __import__("ProkFunFind.detect.kofam_search", fromlist=[""])
+    mod = __import__(
+        "ProkFunFind.detect.kofam_search.kofam_filter", fromlist=[""])
     obj_name = "KofamscanTabParser"
     iterator = getattr(mod, obj_name)
 
