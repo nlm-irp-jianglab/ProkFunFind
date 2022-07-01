@@ -1,30 +1,32 @@
-import os
 from typing import IO, List, Union
 import subprocess
 
 from Bio.SearchIO._model.query import QueryResult
 from Bio import SearchIO
 
-from ProkFunFind.toolkit.utility import *
-from ProkFunFind.detect.blast_search.blast_filter import blast_filter, blast_ortho
+from ProkFunFind.toolkit.utility import check_path_existence
+from ProkFunFind.detect.blast_search.blast_filter import \
+    blast_filter, blast_ortho
 
 
 def pipeline(config: dict,
              protein_file: Union[str, IO],
              outprefix: str,
-             basedir: str, q_list: dict, OrthScore_dict: dict) -> List[QueryResult]:
+             basedir: str,
+             q_list: dict,
+             OrthScore_dict: dict) -> List[QueryResult]:
     """Main pipeline function for performing blast-based searches
 
-       Arguments: 
-           config: 
+       Arguments:
+           config:
            protein_file:
            outprefix:
-           basedir: 
-           q_list: 
+           basedir:
+           q_list:
            OrthScore_dict:
 
        Returns:
-           q_list: updated list of QueryResult objects. 
+           q_list: updated list of QueryResult objects.
 
     """
 
@@ -46,7 +48,7 @@ def pipeline(config: dict,
         outprefix + ".blast.m6"]
 
     if config['blast'].get('blast.threads'):
-        cmd +=["-num_threads",config['blast']['blast.threads']]
+        cmd += ["-num_threads", config['blast']['blast.threads']]
 
     # 3. run command line
     res = subprocess.run(cmd)
@@ -55,7 +57,6 @@ def pipeline(config: dict,
 
     # 4. read the output from previous step
     qresults = SearchIO.parse(outprefix + ".blast.m6", "blast-tab")
-    #qresults = SearchIO.parse(protein_file+".blast.xml", 'blast-xml')
     tmp_list = [i for _, i in SearchIO.to_dict(qresults).items() if len(i) > 0]
 
     # 5. Apply blast filtering.

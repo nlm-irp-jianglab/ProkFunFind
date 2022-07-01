@@ -1,22 +1,11 @@
-# Copyright 2020 by Xiaofang Jiang. All rights reserved.
-#
-# This file is part of the Biopython distribution and governed by your
-# choice of the "Biopython License Agreement" or the "BSD 3-Clause License".
-# Please see the LICENSE file that should have been included as part of this
-# package.
-
-"""Bio.SearchIO parser for emappper tab output formats."""
-# for more info: https://github.com/ebi-pf-team/interpro/wiki/OutputFormats
-
-import os
 import operator
 import csv
 from collections import defaultdict
 
-from typing import IO, Union
 from Bio.File import as_handle
 from Bio.SearchIO._model import QueryResult, Hit, HSP, HSPFragment
-from ProkFunFind.toolkit.utility import read_config, check_path_existence
+from ProkFunFind.toolkit.utility import check_path_existence
+
 
 class emappperTabParser:
     """Class for a Parser of the emappper table format.
@@ -27,7 +16,7 @@ class emappperTabParser:
           line: str
               next line in the file
 
-       Methods: 
+       Methods:
           __iter__: Function to iterate over file and return QueryResults
           _parse_row: Function to parse and split a row in the file
           _parse_qresult: Function to take row data and make QueryResult
@@ -36,9 +25,9 @@ class emappperTabParser:
 
     def __init__(self, handle):
         """Initialize the class.
-        
-           Arguments: 
-               handle: open emapper tabular output file. 
+
+           Arguments:
+               handle: open emapper tabular output file.
         """
         self.handle = handle
         self.line = self.handle.readline().rstrip("\n")
@@ -137,7 +126,7 @@ class emappperTabParser:
                             setattr(hit, "id", cog)
                         else:
                             setattr(hit, attr, value)
-                    if not hit.id in [i.id for i in hit_list]:
+                    if hit.id not in [i.id for i in hit_list]:
                         hit_list.append(hit)
 
                 # create qresult and yield if we're at a new qresult or at EOF
@@ -162,12 +151,12 @@ class emappperTabParser:
 def emappper_tab_parse(handle, **kwargs):
     """Parse emappper table and yield results
 
-       Arguments: 
+       Arguments:
            handle: open emapper tabular file
-           kwargs: 
+           kwargs:
 
-       Yields: 
-           yields from iterator of the source file. 
+       Yields:
+           yields from iterator of the source file.
     """
     # get the iterator object and do error checking
     mod = __import__("ProkFunFind.detect.emap_search", fromlist=[""])
@@ -180,15 +169,17 @@ def emappper_tab_parse(handle, **kwargs):
         yield from generator
 
 
-def emappper_filter(config: dict, qres: QueryResult, basedir=str) -> QueryResult:
+def emappper_filter(config: dict,
+                    qres: QueryResult,
+                    basedir=str) -> QueryResult:
     """Handle filtering of emappper query results
-    
+
        Arguments:
            config: configuration dictionary
            qres: QueryResult object
            basedir: Path to where filtering files are located
 
-       Returns: 
+       Returns:
            filtered QureyResult object
     """
     # Parse global evalue and threhsold values
@@ -200,20 +191,23 @@ def emappper_filter(config: dict, qres: QueryResult, basedir=str) -> QueryResult
         '>': operator.gt,
         '<': operator.lt,
         '==': operator.eq,
-        '!=':operator.ne
+        '!=': operator.ne
     }
 
     filter_dict = defaultdict(list)
 
     # Parse local filter settings for specific KOs
     if config.has_option("filter", "filter_file"):
-        hit_filter_file = check_path_existence(basedir + config['filter']['filter_file'])
+        hit_filter_file = check_path_existence(
+            basedir + config['filter']['filter_file'])
         with open(hit_filter_file) as filter_file:
             for row in csv.reader(filter_file, delimiter="\t"):
                 filter_dict[row[0]].append(
-                    {'attr': row[1], 'cpfun': ops[row[2]], 'value': float(row[3])})
+                    {'attr': row[1], 'cpfun': ops[row[2]],
+                     'value': float(row[3])})
 
-    # Handle filtering by local and global thresholds. Only evalue filtering supported.
+    # Handle filtering by local and global thresholds.
+    # Only evalue filtering supported.
     def hsp_filter_func(hsp):
         status = True
         if hsp.hit_id in filter_dict:

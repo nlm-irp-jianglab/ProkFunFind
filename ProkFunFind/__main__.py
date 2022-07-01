@@ -13,8 +13,8 @@ from ProkFunFind import examine
 from ProkFunFind import report
 from ProkFunFind.read import Genome, GetGenomeFromGFF
 from ProkFunFind.toolkit.utility import (find_file_in_folder,
-                                        check_path_existence,
-                                        read2orthoDict)
+                                         check_path_existence,
+                                         read2orthoDict)
 from ProkFunFind.annotate.genomes import parse_gtab
 
 logging.basicConfig(level=logging.DEBUG)
@@ -71,8 +71,10 @@ def retrieve_function_pipeline(database: str, fun_name: str, args) -> Callable:
         search_list.append(prefix)
 
     # 1.5 Parse ortholog search table
-    ortho_file = check_path_existence(path_to_fun + config['main']['map.ortho_pair'])
-    OrthScore_dict, search_approaches = read2orthoDict(ortho_pair_file=ortho_file)
+    ortho_file = check_path_existence(path_to_fun +
+                                      config['main']['map.ortho_pair'])
+    OrthScore_dict, search_approaches \
+        = read2orthoDict(ortho_pair_file=ortho_file)
 
     # 2. Check for annotation file existence for all requested searches
     for detect_tool in search_approaches:
@@ -80,13 +82,16 @@ def retrieve_function_pipeline(database: str, fun_name: str, args) -> Callable:
             for genome, p in gids.items():
                 if detect_tool == "interproscan":
                     # Need to handle both tsv and xml outputs.
-                    check_path_existence(p + "/" + genome +
-                                         config['interproscan']['annot_suffix'])
+                    check_path_existence(
+                        p + "/" + genome +
+                        config['interproscan']['annot_suffix'])
                 elif detect_tool == "kofamscan":
-                    check_path_existence(p + "/" + genome + config['kofamscan']['annot_suffix'])
+                    check_path_existence(
+                        p + "/" + genome + config['kofamscan']['annot_suffix'])
                 elif detect_tool == "emapper":
-                    check_path_existence(p + '/' + genome +
-                                         config['emapper']['annot_suffix'])
+                    check_path_existence(
+                        p + '/' + genome +
+                        config['emapper']['annot_suffix'])
 
     # 3. Set up clustering and parse system file
     cluster_tool = config.get('main', 'cluster.tool')
@@ -127,10 +132,12 @@ def retrieve_function_pipeline(database: str, fun_name: str, args) -> Callable:
         # Run detect methods
         if "interproscan" in search_approaches:
             detect_module = importlib.import_module(
-                "ProkFunFind.detect" + "." + module_name('interproscan'), package=None)
+                "ProkFunFind.detect" + "." +
+                module_name('interproscan'), package=None)
             xml_file = genome_prefix + ".xml"
             if not os.path.isfile(xml_file):
-                tsv_file = genome_prefix + config['interproscan']['annot_suffix']
+                tsv_file = genome_prefix + \
+                    config['interproscan']['annot_suffix']
                 if not os.path.isfile(tsv_file):
                     sys.exit(
                         "Neither file {} nor file {} exists".format(
@@ -153,7 +160,8 @@ def retrieve_function_pipeline(database: str, fun_name: str, args) -> Callable:
                     q_list=detect_list)
         if "kofamscan" in search_approaches:
             detect_module = importlib.import_module(
-                "ProkFunFind.detect" + "." + module_name('kofamscan'), package=None)
+                "ProkFunFind.detect" + "." +
+                module_name('kofamscan'), package=None)
             kofam_file = genome_prefix + config['kofamscan']['annot_suffix']
             kofam_file = check_path_existence(kofam_file)
             detect_list = detect_module.pipeline(
@@ -164,7 +172,8 @@ def retrieve_function_pipeline(database: str, fun_name: str, args) -> Callable:
                 q_list=detect_list)
         if "emapper" in search_approaches:
             detect_module = importlib.import_module(
-                "ProkFunFind.detect" + "." + module_name('emapper'), package=None)
+                "ProkFunFind.detect" + "." +
+                module_name('emapper'), package=None)
             emap_file = genome_prefix + config['emapper']['annot_suffix']
             emap_file = check_path_existence(emap_file)
             detect_list = detect_module.pipeline(
@@ -176,7 +185,8 @@ def retrieve_function_pipeline(database: str, fun_name: str, args) -> Callable:
 
         if 'blast' in search_approaches:
             detect_module = importlib.import_module(
-                "ProkFunFind.detect" + "." + module_name('blast'), package=None)
+                "ProkFunFind.detect" + "." +
+                module_name('blast'), package=None)
             faa_file = genome_prefix + config['main']['faa_suffix']
             faa_file = check_path_existence(faa_file)
             detect_list = detect_module.pipeline(
@@ -188,7 +198,8 @@ def retrieve_function_pipeline(database: str, fun_name: str, args) -> Callable:
                 q_list=detect_list)
         if 'hmmer' in search_approaches:
             detect_module = importlib.import_module(
-                "ProkFunFind.detect" + "." + module_name('hmmer'), package=None)
+                "ProkFunFind.detect" + "." +
+                module_name('hmmer'), package=None)
             faa_file = genome_prefix + config['main']['faa_suffix']
             faa_file = check_path_existence(faa_file)
             detect_list = detect_module.pipeline(

@@ -1,5 +1,4 @@
 import csv
-import subprocess
 
 from Bio.SeqFeature import SeqFeature, FeatureLocation
 
@@ -16,7 +15,7 @@ def extract_gene(contig, location, genType, translate=False):
             translate: Bool, if true then translate the gene seq
 
         Returns:
-            seq: A nucleotide or amino acid Bio.Seq.Seq object 
+            seq: A nucleotide or amino acid Bio.Seq.Seq object
     """
     f = SeqFeature(FeatureLocation(location.start, location.end,
                    strand=location.strand), type=genType)
@@ -28,7 +27,7 @@ def extract_gene(contig, location, genType, translate=False):
 
 
 def create_genome_object(gff_file=None, fna_file=None, gff_gz_file=None):
-    """Generates a genome object given a GFF and Fasta file. 
+    """Generates a genome object given a GFF and Fasta file.
 
         Arguments:
             gff_file: Path to the GFF annotation file

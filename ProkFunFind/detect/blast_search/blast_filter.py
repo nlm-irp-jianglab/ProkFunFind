@@ -1,21 +1,20 @@
 import csv
-import os
 import operator
 from collections import defaultdict
 
-from typing import IO, Union
 from Bio.SearchIO._model.query import QueryResult
-from ProkFunFind.toolkit.utility import read_config, check_path_existence, read2orthoDict
+from ProkFunFind.toolkit.utility import check_path_existence
+
 
 def blast_filter(config: dict, qres: QueryResult, basedir=str) -> QueryResult:
     """Function to filter blast query results
 
-       Arguments: 
+       Arguments:
            config: A configuration dictionary
            qres: A Bio.SearchIO._model.query.QueryResult object
            basedir: A path to the directory containing the config files
 
-      Returns: 
+      Returns:
            Bool. If true then the hit has passed the filtering steps
 
     """
@@ -37,23 +36,28 @@ def blast_filter(config: dict, qres: QueryResult, basedir=str) -> QueryResult:
 
     filter_dict = defaultdict(list)
 
-    # if there is section filter.local and that section has filter_file, the info of the filter_file will be passed to  filter_dict; Otherwise filter_dict remains empty
+    # if there is section filter.local and that section has filter_file,
+    # the info of the filter_file will be passed to  filter_dict;
+    # Otherwise filter_dict remains empty
     if config.has_option("filter", "filter_file"):
-        hit_filter_file = check_path_existence(basedir + config['filter']['filter_file'])
+        hit_filter_file = check_path_existence(
+            basedir + config['filter']['filter_file'])
         # check if file exist or empty
         with open(hit_filter_file) as filter_file:
             for row in csv.reader(filter_file, delimiter="\t"):
                 filter_dict[row[0]].append(
-                    {"attr": row[1], "cpfun": ops[row[2]], "value": float(row[3])})
+                        {"attr": row[1],
+                         "cpfun": ops[row[2]],
+                         "value": float(row[3])})
 
     def hsp_filter_func(hsp):
         """Helper function to filter high scoring pairs
 
-           Arguments: 
+           Arguments:
               hsp: A QueryResult HSP object
-        
-           Returns: 
-              Bool, true if hit passes filtering. 
+
+           Returns:
+              Bool, true if hit passes filtering.
 
         """
         status = True
@@ -65,7 +69,8 @@ def blast_filter(config: dict, qres: QueryResult, basedir=str) -> QueryResult:
                     status = False
                     break
         else:
-            if hsp.evalue > float(global_evalue) or hsp.ident_pct < float(global_ident):
+            if hsp.evalue > float(global_evalue) or \
+                    hsp.ident_pct < float(global_ident):
                 status = False
         return status
 
@@ -75,11 +80,11 @@ def blast_filter(config: dict, qres: QueryResult, basedir=str) -> QueryResult:
 def blast_ortho(qres: QueryResult, OrthScore_dict: dict) -> QueryResult:
     """Function to sort and assign properties to blast results
 
-       Arguments: 
+       Arguments:
           qres: Bio.SearchIO._model.query.QueryResult object
-          OrthScore_dict: 
-  
-       Returns: 
+          OrthScore_dict:
+
+       Returns:
           qres: Updated QueryResult object
 
     """

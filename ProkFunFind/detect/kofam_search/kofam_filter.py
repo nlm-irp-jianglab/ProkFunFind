@@ -1,22 +1,11 @@
-# Copyright 2020 by Xiaofang Jiang. All rights reserved.
-#
-# This file is part of the Biopython distribution and governed by your
-# choice of the "Biopython License Agreement" or the "BSD 3-Clause License".
-# Please see the LICENSE file that should have been included as part of this
-# package.
-
-"""Bio.SearchIO parser for Kofamscan tab output formats."""
-# for more info: https://github.com/ebi-pf-team/interproscan/wiki/OutputFormats
-
-import os
 import operator
 import csv
 from collections import defaultdict
 
-from typing import IO, Union
 from Bio.File import as_handle
 from Bio.SearchIO._model import QueryResult, Hit, HSP, HSPFragment
-from ProkFunFind.toolkit.utility import read_config, check_path_existence
+from ProkFunFind.toolkit.utility import check_path_existence
+
 
 class KofamscanTabParser:
     """Parser for the Kofamscan table format."""
@@ -61,8 +50,6 @@ class KofamscanTabParser:
         hsp['score'] = float(cols[4])
 
         frag = {}
-        #frag["query_start"] = int(cols[6]) - 1  # query start, zero-based
-        #frag["query_end"] = int(cols[7])  # query end
 
         return {'qresult': qresult, 'hit': hit, 'hsp': hsp, 'frag': frag}
 
@@ -121,7 +108,7 @@ class KofamscanTabParser:
                 hit = Hit()
                 for attr, value in prev['hit'].items():
                     setattr(hit, attr, value)
-                if not hit.id in [i.id for i in hit_list]:
+                if hit.id not in [i.id for i in hit_list]:
                     hit_list.append(hit)
 
                 # create qresult and yield if we're at a new qresult or at EOF
@@ -169,18 +156,21 @@ def kofam_filter(config: dict, qres: QueryResult, basedir) -> QueryResult:
         '>': operator.gt,
         '<': operator.lt,
         '==': operator.eq,
-        '!=':operator.ne
+        '!=': operator.ne
     }
 
     filter_dict = defaultdict(list)
 
     # Parse local filter settings for specific KOs
     if config.has_option("filter", "filter_file"):
-        hit_filter_file = check_path_existence(basedir + config['filter']['filter_file'])
+        hit_filter_file = check_path_existence(basedir +
+                                               config['filter']['filter_file'])
         with open(hit_filter_file) as filter_file:
             for row in csv.reader(filter_file, delimiter="\t"):
                 filter_dict[row[0]].append(
-                    {'attr': row[1], 'cpfun': ops[row[2]], 'value': float(row[3])})
+                    {'attr': row[1],
+                     'cpfun': ops[row[2]],
+                     'value': float(row[3])})
 
     # Handle filtering by local and global thresholds
     def hsp_filter_func(hsp):
@@ -193,9 +183,11 @@ def kofam_filter(config: dict, qres: QueryResult, basedir) -> QueryResult:
                     status = False
                     break
         else:
-            # Adjusted threshold = original threshold for KO * global threshold factor
+            # Adjusted threshold = original threshold for
+            # KO * global threshold factor
             adjusted_threshold = hsp.threshold*global_threshold
-            if hsp.evalue > float(global_evalue) or hsp.score < adjusted_threshold:
+            if hsp.evalue > float(global_evalue) or \
+                    hsp.score < adjusted_threshold:
                 status = False
         return status
 

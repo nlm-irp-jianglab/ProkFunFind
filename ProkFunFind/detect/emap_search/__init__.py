@@ -1,11 +1,10 @@
 from typing import IO, List, Union
-from configparser import ConfigParser
+import os
 
-from Bio import SearchIO
 from Bio.SearchIO._model.query import QueryResult
 
-from ProkFunFind.toolkit.utility import *
-from ProkFunFind.detect.emap_search.emap_filter import *
+from ProkFunFind.detect.emap_search.emap_filter import \
+    emappper_filter, emappper_tab_parse
 
 
 def pipeline(config: dict,
@@ -33,6 +32,7 @@ def pipeline(config: dict,
     for qres in qresults:
         # remove and query results that do not hit to searched KOs
         i = qres.hsp_filter(lambda hsp: hsp.hit_id in OrthScore_dict.keys())
+
         def sort_key(hit):
             return hit.hsps[0].evalue
 
@@ -49,7 +49,8 @@ def pipeline(config: dict,
 
     # 3. filter results based on evalue and thresholds
     if config['filter']:
-        filter_res = [emappper_filter(config=config, qres=i, basedir=basedir) for i in tmp_list]
+        filter_res = [emappper_filter(
+            config=config, qres=i, basedir=basedir) for i in tmp_list]
     else:
         filter_res = tmp_list
 

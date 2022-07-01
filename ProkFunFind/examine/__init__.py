@@ -1,6 +1,7 @@
 import json
 import logging
 
+
 def read_json(system_file):
     with open(system_file) as f:
         system_dict = json.load(f)
@@ -8,7 +9,7 @@ def read_json(system_file):
 
 
 def find_gene_with_orthoID(orthoID, genomeObject, detect_tools):
-    """TODO: find the genes in the genomeObject with the orthoID assigned by detect_tool
+    """TODO: find the genes in the genomeObject with the orthoID
     :returns: A list of genes fit the above requirement
     """
     gene_list = []
@@ -61,7 +62,10 @@ def check_gene_in_subsystem(system_dict,
                 'essential_presence'] and completeness['essential'] > 0:
             status = 1
         if system_dict['completeness']['essential'] == 0:
-            logging.warning("Component {} was defined without any essential subcomponents. Please define at least one subcomponent as essential.".format(system_dict['name']))
+            logging.warning("Component {} was defined without any essential \
+                            subcomponents. Please define at least one \
+                            subcomponent as essential.".format(
+                            system_dict['name']))
             quit()
 
     elif "orthoID" in system_dict:
@@ -73,9 +77,11 @@ def check_gene_in_subsystem(system_dict,
             system_dict['genes'] = gene_list
             for gene in gene_list:
                 if hasattr(genomeObject.genes[gene], "Functions"):
-                    genomeObject.genes[gene].Functions.append( "/".join(fun_list))
+                    genomeObject.genes[gene].Functions.append(
+                        "/".join(fun_list))
                 else:
-                    setattr(genomeObject.genes[gene], "Functions", ["/".join(fun_list)])
+                    setattr(genomeObject.genes[gene],
+                            "Functions", ["/".join(fun_list)])
 
     return (system_dict, status)
 

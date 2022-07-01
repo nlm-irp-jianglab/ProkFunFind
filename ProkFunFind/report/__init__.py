@@ -1,7 +1,8 @@
 import json
 from typing import Any, Dict
 
-from ProkFunFind.read import *
+from ProkFunFind.read import Genome
+
 
 def export_pickle(genomeObj: Genome, outprefix: str) -> None:
     import pickle
@@ -34,8 +35,10 @@ def export_gene_tab(
         for detect_tool in detect_tools:
             if hasattr(gene, detect_tool):
                 cluster_annot = gene.contig + ":Cl_" + \
-                    str(getattr(gene, cluster_tool)) if hasattr(gene, cluster_tool) else "NA"
-                function_annot = ";".join(set(gene.Functions)) if hasattr(gene, "Functions") else "Unassigned Function"
+                    str(getattr(gene, cluster_tool)) \
+                    if hasattr(gene, cluster_tool) else "NA"
+                function_annot = ";".join(set(gene.Functions)) \
+                    if hasattr(gene, "Functions") else "Unassigned Function"
                 s = gene.id + "\t" + cluster_annot + "\t" + function_annot+"\n"
                 f_set.add(s)
     for i in sorted(f_set):
@@ -62,7 +65,10 @@ def export_gene_gff(
                         gene, cluster_tool) else "NA"
 
                 if detect_tool == "blast":
-                    f.write("{ct}\tGuFunFind\t{tp}\t{start}\t{end}\t.\t{strand}\t.\tID={id};Name={orthoID};ClusterID={cluster_ID};Target={Target};pct_identity={pct_identity};evalue={evalue}".format(
+                    f.write("{ct}\tGuFunFind\t{tp}\t{start}\t{end}\
+                        \t.\t{strand}\t.\tID={id};Name={orthoID};\
+                        ClusterID={cluster_ID};Target={Target};\
+                        pct_identity={pct_identity};evalue={evalue}".format(
                         ct=gene.contig,
                         tp=gene.type,
                         start=gene.location.start+1,
@@ -71,7 +77,8 @@ def export_gene_gff(
                         id=gene.id,
                         orthoID=qry.orthoID,
                         cluster_ID=cluster_annot,
-                        Target=hsp.hit_id + " " + str(hsp.hit_start) + " " + str(hsp.hit_end),
+                        Target=hsp.hit_id + " " +
+                        str(hsp.hit_start) + " " + str(hsp.hit_end),
                         pct_identity=hsp.ident_pct,
                         evalue=hsp.evalue
                         ))
@@ -79,15 +86,26 @@ def export_gene_gff(
                     if hasattr(gene, "pangenome_group"):
                         gene_group = gene.pangenome_group
                         if gene_group.method == "Roary":
-                            f.write(";pan_annot="+gene_group.annotation)
-                            f.write(";pan_isolates="+gene_group.number['isolates'])
-                            f.write(";pan_avg_seq=" + gene_group.number['Avg sequences'])
-                            f.write(";pan_accessory=True") if hasattr(gene_group, "accessory") else f.write(";pan_core=True")
+                            f.write(";pan_annot=" + gene_group.annotation)
+                            f.write(";pan_isolates=" +
+                                    gene_group.number['isolates'])
+                            f.write(";pan_avg_seq=" +
+                                    gene_group.number['Avg sequences'])
+                            if hasattr(gene_group, "accessory"):
+                                f.write(";pan_accessory=True")
+                            else:
+                                f.write(";pan_core=True")
 
                     f.write("\n")
 
-                elif detect_tool == "interproscan" or detect_tool == "hmmer" or detect_tool == "kofamscan" or detect_tool == "emapper":
-                    f.write("{ct}\tGuFunFind\t{tp}\t{start}\t{end}\t.\t{strand}\t.\tID={id};Name={orthoID};ClusterID={cluster_ID};Target={Target}{evalue}".format(
+                elif detect_tool == "interproscan" \
+                        or detect_tool == "hmmer" \
+                        or detect_tool == "kofamscan" \
+                        or detect_tool == "emapper":
+                    f.write("{ct}\tGuFunFind\t{tp}\t{start}\t{end}\t.\
+                            \t{strand}\t.\tID={id};Name={orthoID};\
+                            ClusterID={cluster_ID};\
+                            Target={Target}{evalue}".format(
                         ct=gene.contig,
                         tp=gene.type,
                         start=gene.location.start+1,
@@ -97,18 +115,21 @@ def export_gene_gff(
                         orthoID=qry.orthoID,
                         cluster_ID=cluster_annot,
                         Target=hsp.hit_id,
-                        evalue=";evalue=" + str(hsp.evalue) if hasattr(hsp, "evalue") else ""
-                        ))
+                        evalue=";evalue=" + str(hsp.evalue)
+                            if hasattr(hsp, "evalue") else ""
+                            ))
 
                     if hasattr(gene, "pangenome_group"):
                         gene_group = gene.pangenome_group
                         if gene_group.method == "Roary":
-                            f.write(";pan_annot="+gene_group.annotation)
-                            f.write(";pan_isolates="+gene_group.number['isolates'])
+                            f.write(";pan_annot=" + gene_group.annotation)
+                            f.write(";pan_isolates=" +
+                                    gene_group.number['isolates'])
                             f.write(";pan_avg_seq=" +
                                     gene_group.number['Avg sequences'])
-                            f.write(";pan_accessory=True") if hasattr(
-                                gene_group, "accessory") else f.write("pan_core=True")
+                            f.write(";pan_accessory=True") \
+                                if hasattr(gene_group, "accessory") \
+                                else f.write("pan_core=True")
 
                     f.write("\n")
 

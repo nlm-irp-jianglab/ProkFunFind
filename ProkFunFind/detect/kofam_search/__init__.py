@@ -1,11 +1,9 @@
 from typing import IO, List, Union
-from configparser import ConfigParser
 
-from Bio import SearchIO
 from Bio.SearchIO._model.query import QueryResult
 
-from ProkFunFind.toolkit.utility import *
-from ProkFunFind.detect.kofam_search.kofam_filter import *
+from ProkFunFind.detect.kofam_search.kofam_filter import \
+    kofam_tab_parse, kofam_filter
 
 
 def pipeline(config: dict,
@@ -49,7 +47,8 @@ def pipeline(config: dict,
 
     # 3. filter results based on evalue and thresholds
     if config['filter']:
-        filter_res = [kofam_filter(config=config, qres=i, basedir=basedir) for i in tmp_list]
+        filter_res = [kofam_filter(config=config,
+                                   qres=i, basedir=basedir) for i in tmp_list]
     else:
         filter_res = tmp_list
 

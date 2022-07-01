@@ -132,7 +132,7 @@ class InterproscanTabParser:
                 hit = Hit()
                 for attr, value in prev['hit'].items():
                     setattr(hit, attr, value)
-                if not hit.id in [i.id for i in hit_list]:
+                if hit.id not in [i.id for i in hit_list]:
                     hit_list.append(hit)
 
                 # create qresult and yield if we're at a new qresult or at EOF
@@ -159,7 +159,7 @@ def ipr_tab_parse(handle, **kwargs):
     """Fucntion to handle parsing of IPR file
 
        Arguments:
-           handle: IPR file object. 
+           handle: IPR file object.
     """
     # get the iterator object and do error checking
     mod = __import__("ProkFunFind.detect.ipr_search", fromlist=[""])

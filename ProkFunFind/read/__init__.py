@@ -1,24 +1,17 @@
 import gzip
-import csv
 from collections import OrderedDict
-from typing import MutableMapping, List
+from typing import MutableMapping
 
 from Bio import SeqIO
 from Bio.SeqFeature import SeqFeature
 from Bio.Seq import Seq
 from BCBio import GFF
 
-####################################################################################################
 
 class Gene(SeqFeature):
     def __init__(self, contig: str, id: str, **kwds) -> None:
         super().__init__(id=id, **kwds)
         self.contig = contig
-        #self.id = id
-        #self.type = type
-        #self.nt = nt
-        #self.aa = aa
-        #self.location = location
 
     def __repr__(self):
         answer = "%s(%s" % (self.__class__.__name__, repr(self.location))
@@ -109,8 +102,6 @@ class Genome:
     def __contains__(self, key: str):
         return key in self.contigs.keys()
 
-####################################################################################################
-
 
 def GetGenomeFromGFF(gff3file: str, fnafile: str) -> Genome:
 
@@ -197,7 +188,6 @@ def GetGenomeFromGzipGFF(gzipfile: str) -> Genome:
 
     try:
         in_seq_handle = gzip.open(gzipfile, "rt")
-        # gff_records = list(parse(in_seq_handle))
         gff_records = GFF.parse(in_seq_handle)
         for rec in gff_records:
             ct = g1[rec.id]
@@ -223,128 +213,3 @@ def GetGenomeFromGzipGFF(gzipfile: str) -> Genome:
     in_seq_handle.close()
 
     return g1
-
-#
-# ####################################################################################################
-#
-# class PanGene:
-#     def __init__(self, id: str, GenomeID: str, GeneGroup: str) -> None:
-#         self.id = id
-#         self.GenomeID = GenomeID
-#         self.GeneGroup = GeneGroup
-#
-#     def __repr__(self):
-#         return "{0}(id={1!r}, GenomeID:{2!r}, GeneGroup:{3!r})".format(
-#             self.__class__.__name__,
-#             self.id,
-#             self.GenomeID,
-#             self.GeneGroup
-#         )
-#
-#
-# class GeneGroup:
-#     def __init__(self,
-#                  id: str,
-#                  pangenes: MutableMapping[str, List[str]]
-#                  ) -> None:
-#         self.id = id
-#         self.pangenes = pangenes
-#
-#     def __repr__(self):
-#         return "{0}(id={1!r}, #isolates={2!r}, #sequences={3!r})".format(
-#             self.__class__.__name__,
-#             self.id,
-#             len(self.pangenes),
-#             sum([len(self.pangenes[i]) for i in self.pangenes])
-#         )
-#
-#     def __getitem__(self, key: str) -> List[str]:
-#         return self.pangenes[key]
-#
-#     def __setitem__(self, key: str, genelist: List) -> None:
-#         self.pangenes.update({key: genelist})
-#
-#     def __delitem__(self, key: str) -> None:
-#         try:
-#             del self.pangenes[key]
-#         except KeyError:
-#             print("Gene:{} not found".format(KeyError))
-#
-#     def __iter__(self):
-#         return iter(self.pangenes)
-#
-#     def __contains__(self, key: str):
-#         return key in self.pangenes.keys()
-#
-#
-# class PanGenome:
-#     """Docstring for Genome. """
-#
-#     def __init__(self, gene_groups: MutableMapping[str, GeneGroup] = OrderedDict(), genomes: List = []) -> None:
-#         self.gene_groups = gene_groups
-#         self.genomes = genomes
-#
-#     def __repr__(self):
-#         return "{0}(#gene_groups={1} #genomes={2})".format(
-#             self.__class__.__name__,
-#             len(self.gene_groups),
-#             len(self.genomes)
-#         )
-#
-#     @property
-#     def pangenes(self):
-#         return {gene: PanGene(id=gene, GenomeID=key, GeneGroup=gene_group)
-#                 for gene_group in self.gene_groups.values()
-#                 for key in gene_group
-#                 for gene in gene_group[key]
-#                 }
-#
-#     def __getitem__(self, key: str):
-#         return self.gene_groups[key]
-#
-#     def __setitem__(self, key: str, value: GeneGroup):
-#         self.gene_groups.update({key: value})
-#
-#     def __delitem__(self, key: str) -> None:
-#         try:
-#             del self.gene_groups[key]
-#         except KeyError:
-#             print("GeneGroup:{} not found".format(KeyError))
-#
-#     def __contains__(self, key: str):
-#         return key in self.gene_groups.keys()
-#
-#     def __iter__(self):
-#         return iter(self.gene_groups)
-#
-#     def get_genegroup(self, genename):
-#         genegroup = self.pangenes[genename].GeneGroup
-#         return genegroup
-#
-#
-# def Roarycsv2pangenome(in_file):
-#     with open(in_file, newline='\n') as csvfile:
-#         reader = csv.reader(csvfile, delimiter=',', quotechar='"')
-#         headers = next(reader, None)
-#         pg = PanGenome(genomes=headers[14:])
-#         ncol = len(headers)
-#         for row in reader:
-#             geneG = GeneGroup(
-#                 id=row[0],
-#                 pangenes={headers[idx]: row[idx].split(
-#                     "\t") for idx in range(14, ncol, 1) if row[idx]}
-#             )
-#             # set Roary-specific annotation attributes
-#             setattr(geneG, "method", "Roary")
-#             setattr(geneG, "common_name", row[1])
-#             setattr(geneG, "annotation", row[2])
-#             setattr(geneG, "number", {"isolates": row[3], "sequences": row[4], "Avg sequences": row[5]})
-#             setattr(geneG, "overall", {"Fragment": row[6], "Order": row[7]})
-#             if row[8]:
-#                 setattr(geneG, "accessory", {"Fragment": row[8], "Order": row[9]})
-#             if row[10]:
-#                 setattr(geneG, "QC", row[10])
-#             setattr(geneG, "group_size", {"min": row[11], "max": row[12], "avg": row[13]})
-#
-#             pg[row[0]] = geneG
-#     return pg

@@ -16,11 +16,11 @@ def DBSCANCluster(
        Arguments:
            pos:
            weight:
-           eps: 
+           eps:
            min_samples:
 
        Returns:
-           list of cluster labels for genes 
+           list of cluster labels for genes
     """
     pos = np.array(pos).reshape(-1, 1)
     cluster = DBSCAN(
@@ -32,10 +32,10 @@ def pipeline(config: dict, genome_object, detect_tools: set) -> Genome:
     """Main pipeline function for DBSCAN clustering analysis
 
        Arguments:
-           config: A config dictionary 
+           config: A config dictionary
            genome_object: A ProkFunFind.annotate.Genome object
            detect_tools: list of gene hit detection tools used
-       Returns: 
+       Returns:
            genome_object: ProkFunFind.annotate.Genome object with cluster info
     """
     for ct in genome_object.contigs.values():

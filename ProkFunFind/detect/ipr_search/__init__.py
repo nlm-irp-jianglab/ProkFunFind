@@ -1,17 +1,17 @@
 from typing import IO, List, Union
-from configparser import ConfigParser
 
 from Bio import SearchIO
 from Bio.SearchIO._model.query import QueryResult
 
-from ProkFunFind.toolkit.utility import *
-from ProkFunFind.detect.ipr_search.interproscan_tab import InterproscanTabParser, ipr_tab_parse
+from ProkFunFind.detect.ipr_search.interproscan_tab import ipr_tab_parse
 
 
 def pipeline(config: dict,
              in_file: Union[str, IO],
              fmt: str,
-             basedir: str, OrthScore_dict: dict, q_list: dict) -> List[QueryResult]:
+             basedir: str,
+             OrthScore_dict: dict,
+             q_list: dict) -> List[QueryResult]:
     """Main function for running IPR based search
 
        Arguments:
@@ -34,14 +34,16 @@ def pipeline(config: dict,
     # 2. Process all QueryResult
     for qres in qresults:
 
-        # remove QueryResult that doest not hit any domain in function-related domain list
+        # remove QueryResult that doest not hit any domain in
+        # function-related domain list
         i = qres.hsp_filter(lambda hsp: hsp.hit_id in OrthScore_dict.keys())
 
         # for those without any hit match to the domain
         if len(i) > 0:
             # sort the hits by precision
             i.sort(
-                key=lambda hit: OrthScore_dict[hit.id]['precision'], reverse=True)
+                key=lambda hit: OrthScore_dict[hit.id]['precision'],
+                reverse=True)
 
             max_dict = OrthScore_dict[i.hits[0].id]
 
