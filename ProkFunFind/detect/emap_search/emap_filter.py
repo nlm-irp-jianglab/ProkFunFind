@@ -7,8 +7,8 @@ from Bio.SearchIO._model import QueryResult, Hit, HSP, HSPFragment
 from ProkFunFind.toolkit.utility import check_path_existence
 
 
-class emappperTabParser:
-    """Class for a Parser of the emappper table format.
+class emapperTabParser:
+    """Class for a Parser of the emapper table format.
 
        Attributes:
           handle: str
@@ -33,7 +33,7 @@ class emappperTabParser:
         self.line = self.handle.readline().rstrip("\n")
 
     def __iter__(self):
-        """Iterate over emappperTabParser, yields query results."""
+        """Iterate over emapperTabParser, yields query results."""
         header_mark = "#"
         # read through the header if it exists
         while self.line.startswith(header_mark):
@@ -46,14 +46,14 @@ class emappperTabParser:
         """Return a dictionary of parsed row values (PRIVATE)."""
         cols = self.line.strip("\n").split("\t")
 
-        # Number of columns should be 7 in the standard emappper table
+        # Number of columns should be 7 in the standard emapper table
         if len(cols) != 21:
             raise ValueError("Less columns than expected, only %i" % len(cols))
 
         # assign parsed column data into qresult, hit, and hsp dicts
         qresult = {}
         qresult['id'] = cols[0]  # gene name
-        qresult['program'] = "emappper"
+        qresult['program'] = "emapper"
 
         hit = {}
         cogs_full = cols[4].split(",")
@@ -148,8 +148,8 @@ class emappperTabParser:
             self.line = self.handle.readline()
 
 
-def emappper_tab_parse(handle, **kwargs):
-    """Parse emappper table and yield results
+def emapper_tab_parse(handle, **kwargs):
+    """Parse emapper table and yield results
 
        Arguments:
            handle: open emapper tabular file
@@ -161,7 +161,7 @@ def emappper_tab_parse(handle, **kwargs):
     # get the iterator object and do error checking
     mod = __import__("ProkFunFind.detect.emap_search.emap_filter",
                      fromlist=[""])
-    obj_name = "emappperTabParser"
+    obj_name = "emapperTabParser"
     iterator = getattr(mod, obj_name)
 
     # and start iterating
@@ -170,10 +170,10 @@ def emappper_tab_parse(handle, **kwargs):
         yield from generator
 
 
-def emappper_filter(config: dict,
+def emapper_filter(config: dict,
                     qres: QueryResult,
                     basedir=str) -> QueryResult:
-    """Handle filtering of emappper query results
+    """Handle filtering of emapper query results
 
        Arguments:
            config: configuration dictionary

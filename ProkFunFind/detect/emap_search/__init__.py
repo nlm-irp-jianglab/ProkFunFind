@@ -4,7 +4,7 @@ import os
 from Bio.SearchIO._model.query import QueryResult
 
 from ProkFunFind.detect.emap_search.emap_filter import \
-    emappper_filter, emappper_tab_parse
+    emapper_filter, emapper_tab_parse
 
 
 def pipeline(config: dict,
@@ -23,9 +23,9 @@ def pipeline(config: dict,
        Returns:
            q_list: An updated list of QueryResults
     """
-    # 1. Read emappperscan tsv file and parse results
+    # 1. Read emapperscan tsv file and parse results
     basedir = os.path.abspath(basedir)+"/"
-    qresults = emappper_tab_parse(in_file)
+    qresults = emapper_tab_parse(in_file)
 
     # 2. Process all QueryResult
     tmp_list = []
@@ -49,7 +49,7 @@ def pipeline(config: dict,
 
     # 3. filter results based on evalue and thresholds
     if config['filter']:
-        filter_res = [emappper_filter(
+        filter_res = [emapper_filter(
             config=config, qres=i, basedir=basedir) for i in tmp_list]
     else:
         filter_res = tmp_list
