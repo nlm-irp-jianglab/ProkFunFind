@@ -72,7 +72,7 @@ def retrieve_function_pipeline(database: str, fun_name: str, args) -> Callable:
 
     # 1.5 Parse ortholog search table
     ortho_file = check_path_existence(path_to_fun +
-                                      config['main']['map.ortho_pair'])
+                                      config['main']['search_term'])
     OrthScore_dict, search_approaches \
         = read2orthoDict(ortho_pair_file=ortho_file)
 
