@@ -65,10 +65,10 @@ def export_gene_gff(
                         gene, cluster_tool) else "NA"
 
                 if detect_tool == "blast":
-                    f.write("{ct}\tGuFunFind\t{tp}\t{start}\t{end}\
-                        \t.\t{strand}\t.\tID={id};Name={queryID};\
-                        ClusterID={cluster_ID};Target={Target};\
-                        pct_identity={pct_identity};evalue={evalue}".format(
+                    f.write("{ct}\tGuFunFind\t{tp}\t{start}\t{end}" \
+                        "\t.\t{strand}\t.\tID={id};Name={queryID};" \
+                        "ClusterID={cluster_ID};Target={Target};" \
+                        "pct_identity={pct_identity};evalue={evalue}".format(
                         ct=gene.contig,
                         tp=gene.type,
                         start=gene.location.start+1,
@@ -102,10 +102,10 @@ def export_gene_gff(
                         or detect_tool == "hmmer" \
                         or detect_tool == "kofamscan" \
                         or detect_tool == "emapper":
-                    f.write("{ct}\tGuFunFind\t{tp}\t{start}\t{end}\t.\
-                            \t{strand}\t.\tID={id};Name={queryID};\
-                            ClusterID={cluster_ID};\
-                            Target={Target}{evalue}".format(
+                    f.write("{ct}\tGuFunFind\t{tp}\t{start}\t{end}\t." \
+                            "\t{strand}\t.\tID={id};Name={queryID};" \
+                            "ClusterID={cluster_ID};" \
+                            "Target={Target}{evalue}".format(
                         ct=gene.contig,
                         tp=gene.type,
                         start=gene.location.start+1,

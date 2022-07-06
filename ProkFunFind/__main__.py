@@ -238,9 +238,9 @@ def retrieve_function_pipeline(database: str, fun_name: str, args) -> Callable:
 
         if status:
             print(
-                "Detect function:{fun_name} in genome {genome_prefix}\n{mp} \
-                out of {m} essential components present\n{ap} out of {a} \
-                nonessential components present ".format(
+                "Detected function:{fun_name} in genome {genome_prefix}\n{mp}" \
+                " out of {m} essential components present\n{ap} out of {a}" \
+                " nonessential components present ".format(
                     genome_prefix=genome_prefix,
                     fun_name=system_dict['name'],
                     mp=system_dict['completeness']['essential_presence'],
@@ -249,10 +249,10 @@ def retrieve_function_pipeline(database: str, fun_name: str, args) -> Callable:
                     a=system_dict['completeness']['nonessential']))
         else:
             print(
-                "Failed to detect function:{fun_name} in \
-                genome {genome_prefix}\n{mp} out of {m} essential \
-                components present\n{ap} out of {a} nonessential \
-                components present ".format(
+                "Failed to detect function:{fun_name} in" \
+                " genome {genome_prefix}\n{mp} out of {m} essential" \
+                " components present\n{ap} out of {a} nonessential" \
+                " components present".format(
                     genome_prefix=genome_prefix,
                     fun_name=system_dict['name'],
                     mp=system_dict['completeness']['essential_presence'],
