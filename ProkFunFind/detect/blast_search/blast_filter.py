@@ -97,12 +97,12 @@ def blast_ortho(qres: QueryResult, OrthScore_dict: dict) -> QueryResult:
 
     qres.sort(key=sort_key, reverse=True, in_place=False)
 
-    # Use the top matched hit to assgin orthoID to gene
+    # Use the top matched hit to assgin queryID to gene
     hit_key = qres.hit_keys[0]
     max_dict = OrthScore_dict[hit_key]
 
-    setattr(qres, "orthoID", max_dict['orthoID'])
-    setattr(qres, "orthoID_weight", max_dict['precision'])
+    setattr(qres, "queryID", max_dict['queryID'])
+    setattr(qres, "queryID_weight", max_dict['precision'])
     setattr(qres, "detect_tool", "blast")
 
     return qres

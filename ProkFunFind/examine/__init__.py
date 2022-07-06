@@ -8,8 +8,8 @@ def read_json(system_file):
     return system_dict
 
 
-def find_gene_with_orthoID(orthoID, genomeObject, detect_tools):
-    """TODO: find the genes in the genomeObject with the orthoID
+def find_gene_with_queryID(queryID, genomeObject, detect_tools):
+    """TODO: find the genes in the genomeObject with the queryID
     :returns: A list of genes fit the above requirement
     """
     gene_list = []
@@ -17,7 +17,7 @@ def find_gene_with_orthoID(orthoID, genomeObject, detect_tools):
         gene_list += [
             gene.id for gene in genomeObject.genes.values()
             if hasattr(gene, detect_tool)
-            and getattr(getattr(gene, detect_tool), "orthoID") == orthoID
+            and getattr(getattr(gene, detect_tool), "queryID") == queryID
         ]
     return gene_list
 
@@ -27,7 +27,7 @@ def check_gene_in_subsystem(system_dict,
                             detect_tools,
                             fun_string=[]):
     """
-    Assign genes assigned with orthoID to the system_dict
+    Assign genes assigned with queryID to the system_dict
     """
 
     completeness = {
@@ -68,9 +68,9 @@ def check_gene_in_subsystem(system_dict,
                             system_dict['name']))
             quit()
 
-    elif "orthoID" in system_dict:
-        fun_list.append(system_dict['orthoID'])
-        gene_list = find_gene_with_orthoID(system_dict['orthoID'],
+    elif "queryID" in system_dict:
+        fun_list.append(system_dict['queryID'])
+        gene_list = find_gene_with_queryID(system_dict['queryID'],
                                            genomeObject, detect_tools)
         if gene_list:
             status = 1

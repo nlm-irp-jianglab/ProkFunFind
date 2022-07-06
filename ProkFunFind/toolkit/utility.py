@@ -47,16 +47,16 @@ def read2orthoDict(ortho_pair_file: Union[str, IO]) -> Dict:
         col_num = len(header)
         if col_num == 3:
             OrthScore_dict[header[2]][header[1]] = \
-                {'orthoID': header[0], 'precision': 1}
+                {'queryID': header[0], 'precision': 1}
             for row in csv_reader:
                 OrthScore_dict[row[2]][row[1]] = \
-                    {'orthoID': row[0], 'precision': 1}
+                    {'queryID': row[0], 'precision': 1}
         else:
             OrthScore_dict[header[2]][header[1]] = {
-                'orthoID': header[0], 'precision': float(header[3])}
+                'queryID': header[0], 'precision': float(header[3])}
             for row in csv_reader:
                 OrthScore_dict[row[2]][row[1]] = {
-                    'orthoID': row[0], 'precision': float(row[3])}
+                    'queryID': row[0], 'precision': float(row[3])}
     search_set = set()
     for i in OrthScore_dict.keys():
         if i not in ['kofamscan', 'interproscan', 'emapper', 'blast', 'hmmer']:
