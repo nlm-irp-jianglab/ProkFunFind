@@ -72,7 +72,7 @@ def retrieve_function_pipeline(database: str, fun_name: str, args) -> Callable:
 
     # 1.5 Parse ortholog search table
     ortho_file = check_path_existence(path_to_fun +
-                                      config['main']['search_term'])
+                                      config['main']['search_terms'])
     OrthScore_dict, search_approaches \
         = read2orthoDict(ortho_pair_file=ortho_file)
 
@@ -274,37 +274,39 @@ def main_individual(args):
 def main():
     parser = ArgumentParser(
         description="Identify genes related function of interest")
-    subparsers = parser.add_subparsers(dest="command")
+    # subparsers = parser.add_subparsers(dest="command")
 
-    parser_rep = subparsers.add_parser(
-        "rep", help="Analyze an individual genome")
+    # parser_rep = subparsers.add_parser(
+        # "rep", help="Analyze an individual genome")
 
-    parser_rep.add_argument(
+    parser.add_argument(
         "-b",
         "--databasedir",
         help="The base dir of function",
         required=True,
         dest="database",
         metavar="")
-    parser_rep.add_argument(
+    parser.add_argument(
         "-f",
         "--function",
         help="Name of the function",
         required=True,
         dest="fun_name",
         metavar="")
-    parser_rep.add_argument(
+    parser.add_argument(
         "-o",
         "--outputprefix",
-        help="The output prefix",
+        help="The output file name prefix",
         required=True,
         dest="outprefix",
         metavar="")
-    parser_rep.add_argument(
-        "--gdir", )
-    parser_rep.add_argument(
-        "--gtab")
-    parser_rep.set_defaults(func=main_individual)
+    parser.add_argument(
+        "--gtab",
+        help="Table of genomes to search",
+        required=True,
+        dest="gtab",
+        metavar="")
+    parser.set_defaults(func=main_individual)
 
     options = parser.parse_args()
     options.func(options)
