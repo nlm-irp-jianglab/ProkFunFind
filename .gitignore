@@ -3,3 +3,4 @@ dist/*
 *.egg-info
 logs/*
 results/*
+*__pycache__*

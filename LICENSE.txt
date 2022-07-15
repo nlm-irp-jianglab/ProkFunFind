@@ -1,4 +1,4 @@
-GutFunFind: a pipeline to identify genes of function of interest in genome.
+ProkFunFind: a pipeline to identify genes of function of interest in genome.
 Copyright © 2020 Xiaofang Jiang
 
 Permission is hereby granted, free of charge, to any person obtaining

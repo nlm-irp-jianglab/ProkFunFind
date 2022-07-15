@@ -1,4 +1,4 @@
-.. GutFunFind
+.. ProkFunFind
 
 .. _outputs:
 
@@ -11,7 +11,7 @@ Output dataset
 Output format overview
 ======================
 
-  GutFunFind will output files with the same prefix. ``annot.gff``, ``json``, ``tsv``, ``pkl`` formatted files will be outputed every time.
+  ProkFunFind will output files with the same prefix. ``annot.gff``, ``json``, ``tsv``, ``pkl`` formatted files will be outputed every time.
   Other formatted file will be reported based on detection method.
 
 
@@ -129,4 +129,4 @@ What to do next?
 
   1. Import the ``prefix.annot.gff`` to Geneious software and start the manually curation process
   2. Based on the curated result to change different parameters in ``detect.ini``, ``filter.ini`` and ``cluster.ini``
-  3. Re-run ``run_GutFunFind.py`` to test if the change parameters can improve annotation
+  3. Re-run ``prokfunfind.py`` to test if the change parameters can improve annotation

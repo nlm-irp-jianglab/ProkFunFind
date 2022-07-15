@@ -1,4 +1,4 @@
-.. GutFunFind - Detection of genes of functional interest in genomes
+.. ProkFunFind - Detection of genes of functional interest in genomes
 
 .. _installation:
 
@@ -7,15 +7,15 @@ Installation
 ************
 
 ========================
-GutFunFind dependencies
+ProkFunFind dependencies
 ========================
 
-  GutFunFind has several dependencies:
+  ProkFunFind has several dependencies:
   
    - The Blast suite of program (https://ftp.ncbi.nlm.nih.gov/blast/executables/blast+/LATEST/)
    - The program *Hmmer* version 3.1 (http://hmmer.janelia.org/).
   
-  All these programs should be installed (e.g., in the ``$PATH``) in order to use GutFunFind.
+  All these programs should be installed (e.g., in the ``$PATH``) in order to use ProkFunFind.
   
   .. Attention::
   
@@ -29,13 +29,13 @@ Installation procedure
 Archive overview
 =================
   
-  Fold structure in GutFunFind package:
+  Fold structure in ProkFunFind package:
   
-  * bin => contain the executable (run_GutFunFind.py)
+  * bin => contain the executable (prokfunfind.py)
   * data => the preconfigured data for each function
   * doc => the documentation in html and pdf
   * test => all needed for unit tests
-  * GutFunFind => the GutFunFind python library
+  * ProkFunFind => the ProkFunFind python library
   * setup.py => the installation script
 
 
@@ -75,25 +75,25 @@ Install python package
 Perform the installation
 =========================
 
-Download GutFunFind 
+Download ProkFunFind 
 """"""""""""""""""""
   
   .. code-block:: bash
   
-     git clone git@github.com:XiaofangJ/GutFunFind.git
+     git clone git@github.com:XiaofangJ/ProkFunFind.git
 
 
-Install GutFunFind
+Install ProkFunFind
 """"""""""""""""""""
 
   .. code-block:: bash
 
      conda create -n GutFun python=3
      conda activate GutFun
-     cd GutFunFind 
+     cd ProkFunFind 
      python setup.py install
 
-Test GutFunFind
+Test ProkFunFind
 """"""""""""""""
 
   .. Attention::

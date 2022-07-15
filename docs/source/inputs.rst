@@ -1,4 +1,4 @@
-.. GutFunFind
+.. ProkFunFind
 
 .. _inputs:
 
@@ -19,8 +19,8 @@ Single genome mode(``rep``)
 
   ::
 
-    $ run_GutFunFind.py rep -h
-    > usage: run_GutFunFind.py rep [-h] -b  -f  -g  -o
+    $ prokfunfind.py rep -h
+    > usage: prokfunfind.py rep [-h] -b  -f  -g  -o
     > 
     > optional arguments:
     >   -h, --help            show this help message and exit
@@ -35,8 +35,8 @@ Pangenome mode(``pan``)
 
   ::
 
-    $ run_GutFunFind.py pan  -h
-    > usage: run_GutFunFind.py pan [-h] -b  -f  -p  -g  -d
+    $ prokfunfind.py pan  -h
+    > usage: prokfunfind.py pan [-h] -b  -f  -p  -g  -d
     > 
     > optional arguments:
     >   -h, --help           show this help message and exit
@@ -392,7 +392,7 @@ system.json
   +-----------------------------------+------------------------------------+
   |  Example Structure                |     JSON formatted file            |
   +===================================+====================================+
-  | .. image:: images/GutFunFind.jpg  |  .. literalinclude:: example.json  |
+  | .. image:: images/ProkFunFind.jpg  |  .. literalinclude:: example.json  |
   |    :width: 550px                  |     :language: JSON                |
   |    :align: left                   |                                    |
   |    :alt: alternate text           |                                    |
