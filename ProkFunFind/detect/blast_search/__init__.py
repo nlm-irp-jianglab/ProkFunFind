@@ -60,12 +60,9 @@ def pipeline(config: dict,
     tmp_list = [i for _, i in SearchIO.to_dict(qresults).items() if len(i) > 0]
 
     # 5. Apply blast filtering.
-    if config['filter']:
-        filter_res = [blast_filter(
-            config=config, qres=i, basedir=basedir) for i in tmp_list]
-        res_list = [i for i in filter_res if len(i) > 0]
-    else:
-        res_list = tmp_list
+    filter_res = [blast_filter(
+        config=config, qres=i, basedir=basedir) for i in tmp_list]
+    res_list = [i for i in filter_res if len(i) > 0]
 
     for i in res_list:
         q_list.append(blast_ortho(OrthScore_dict=OrthScore_dict, qres=i))

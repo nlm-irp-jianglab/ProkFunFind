@@ -19,8 +19,8 @@ def blast_filter(config: dict, qres: QueryResult, basedir=str) -> QueryResult:
 
     """
 
-    global_evalue = config['filter']['evalue']
-    global_ident = config['filter']['ident_pct']
+    global_evalue = config['blast'].get('evalue', 0.01)
+    global_ident = config['blast'].get('ident_pct', 30)
 
     ##################################################################
     #  User can customize the filter function to remove QueryResult  #
@@ -39,9 +39,9 @@ def blast_filter(config: dict, qres: QueryResult, basedir=str) -> QueryResult:
     # if there is section filter.local and that section has filter_file,
     # the info of the filter_file will be passed to  filter_dict;
     # Otherwise filter_dict remains empty
-    if config.has_option("filter", "filter_file"):
+    if config.has_option("blast", "filter_file"):
         hit_filter_file = check_path_existence(
-            basedir + config['filter']['filter_file'])
+            basedir + config['blast']['filter_file'])
         # check if file exist or empty
         with open(hit_filter_file) as filter_file:
             for row in csv.reader(filter_file, delimiter="\t"):

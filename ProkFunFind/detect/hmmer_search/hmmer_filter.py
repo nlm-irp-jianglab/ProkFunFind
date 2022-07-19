@@ -17,10 +17,8 @@ def hmmer_filter(config: dict, qres: QueryResult, basedir=str) -> QueryResult:
        Returns:
            status: True if query passes filtering.
     """
-    global_evalue = config['filter']['evalue'] if \
-        config['filter'].get('evalue') else 10
-    global_bitscore = config['filter']['bitscore'] if \
-        config['filter'].get('bitscore') else 0
+    global_evalue = config['hmmer'].get('evalue', 0.01)
+    global_bitscore = config['hmmer'].get('bitscore', 0)
 
     ##################################################################
     #  User can customize the filter function to remove QueryResult  #
@@ -41,9 +39,9 @@ def hmmer_filter(config: dict, qres: QueryResult, basedir=str) -> QueryResult:
     # if there is section filter.local and that section has filter_file,
     # the info of the filter_file will be passed to
     # filter_dict; Otherwise filter_dict remains empty
-    if config.has_option("filter", "filter_file"):
+    if config.has_option("hmmer", "filter_file"):
         hit_filter_file = check_path_existence(basedir +
-                                               config['filter']['filter_file'])
+                                               config['hmmer']['filter_file'])
         with open(hit_filter_file) as filter_file:
             for row in csv.reader(filter_file, delimiter="\t"):
                 filter_dict[row[0]].append({'attr': row[1],

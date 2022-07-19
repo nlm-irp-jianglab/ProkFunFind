@@ -184,7 +184,7 @@ def emapper_filter(config: dict,
            filtered QureyResult object
     """
     # Parse global evalue and threhsold values
-    global_evalue = float(config['filter']['evalue'])
+    global_evalue = float(config['emapper'].get('evalue', 0.01))
 
     ops = {
         '<=': operator.le,
@@ -198,9 +198,9 @@ def emapper_filter(config: dict,
     filter_dict = defaultdict(list)
 
     # Parse local filter settings for specific KOs
-    if config.has_option("filter", "filter_file"):
+    if config.has_option("emapper", "filter_file"):
         hit_filter_file = check_path_existence(
-            basedir + config['filter']['filter_file'])
+            basedir + config['emapper']['filter_file'])
         with open(hit_filter_file) as filter_file:
             for row in csv.reader(filter_file, delimiter="\t"):
                 filter_dict[row[0]].append(

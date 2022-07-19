@@ -148,8 +148,8 @@ def kofam_tab_parse(handle, **kwargs):
 def kofam_filter(config: dict, qres: QueryResult, basedir) -> QueryResult:
     """Handle filtering of kofamscan query results"""
     # Parse global evalue and threhsold values
-    global_evalue = float(config['filter'].get('evalue', 1e-3))
-    global_threshold = float(config['filter'].get('threshold', 1))
+    global_evalue = float(config['kofamscan'].get('evalue', 0.01))
+    global_threshold = float(config['kofamscan'].get('threshold', 1))
 
     ops = {
         '<=': operator.le,
@@ -163,9 +163,9 @@ def kofam_filter(config: dict, qres: QueryResult, basedir) -> QueryResult:
     filter_dict = defaultdict(list)
 
     # Parse local filter settings for specific KOs
-    if config.has_option("filter", "filter_file"):
+    if config.has_option("kofamscan", "filter_file"):
         hit_filter_file = check_path_existence(basedir +
-                                               config['filter']['filter_file'])
+                                               config['kofamscan']['filter_file'])
         with open(hit_filter_file) as filter_file:
             for row in csv.reader(filter_file, delimiter="\t"):
                 filter_dict[row[0]].append(

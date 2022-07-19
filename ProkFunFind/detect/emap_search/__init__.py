@@ -48,11 +48,9 @@ def pipeline(config: dict,
             tmp_list.append(i)
 
     # 3. filter results based on evalue and thresholds
-    if config['filter']:
-        filter_res = [emapper_filter(
-            config=config, qres=i, basedir=basedir) for i in tmp_list]
-    else:
-        filter_res = tmp_list
+    filter_res = [emapper_filter(
+        config=config, qres=i, basedir=basedir) for i in tmp_list]
+
 
     # 4. Append hits to overall q_list
     for i in filter_res:
