@@ -1,4 +1,5 @@
-# ProkFunFind Tutorial
+ProkFunFind Tutorial
+********************
 
 This tutorial will walk you through how to use the ProkFunFind tool to search
 for putative functions within microbial genomes. This tutorial will cover
@@ -11,12 +12,12 @@ going through the tutorial.
 ## Tutorial Sections
 
 .. toctree::
-maxdepth: 1
-caption: Tutorial Sections
+  :maxdepth: 1
+  :caption: Tutorial Sections
 
-Installation <2-install>
-Queries and Configuration <3-queries>
-Sequence and Profile Searches <4-seqsearch>
-Annotation Searches <5-annotsearch>
-Mixed Methods Sarches <6-mixedsearch>
-ProkFunAnnotate <7-pff.md>
+  2-install
+  3-queries
+  4-seqsearch
+  5-annotsearch
+  6-mixedsearch
+  7-pfa
