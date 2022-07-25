@@ -48,7 +48,7 @@ See the example below for the general format of the genome input files:
 
 The genomes input is provided to the `ProkFunFind` program through a tab separated
 two column table that includes the genome file prefixes and the paths to the
-genome directories:
+genome directories. This table should be provided throuygh the `--gtab` argument:
 
 .. code-block::
 

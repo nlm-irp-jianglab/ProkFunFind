@@ -26,9 +26,16 @@ This protein fasta file needs to be indexed using the `makeblastdb` tool before
 performing a search. These input files are in the 'queries/blast-search/'
 directory.
 
-## Equol Gene Cluster Query
-The query for this tutorial is a set of features that can be used to identify
-a gene cluster that encodes a biosynthesis pathway for the metabolite S-Equol
-and multiple other genes that have been observed to be in the same gene cluster.
-The function definition is broken up into four components with one of them being
-essential for the function to be considered present.
+## Query Sequences
+
+## Search
+
+prokfunfind -b queries -f blast-search --gtab ./genome-list.tsv --outputprefix ./out/ipr-blast/blast
+
+
+
+# HMMER-based searches
+
+## Search
+
+prokfunfind -b queries -f hmmer-search --gtab ./genome-list.tsv --outputprefix ./out/hmmer-search/hmmer

@@ -6,11 +6,11 @@
             "presence": "essential",
             "components": [
                 {
-                    "orthoID": "g1",
+                    "queryID": "g1",
                     "presence": "essential"
                 },
                 {
-                    "orthoID": "g2",
+                    "queryID": "g2",
                     "presence": "essential"
                 }
             ],
@@ -18,11 +18,11 @@
                 "name": "B2",
                 "components": [
                     {
-                        "orthoID": "g3",
+                        "queryID": "g3",
                         "presence": "essential"
                     },
                     {
-                        "orthoID": "g4",
+                        "queryID": "g4",
                         "presence": "nonessential"
                     }
                 ]
@@ -33,11 +33,11 @@
             "presence": "nonessential",
             "components": [
                 {
-                    "orthoID": "g5",
+                    "queryID": "g5",
                     "presence": "essential"
                 },
                 {
-                    "orthoID": "g6",
+                    "queryID": "g6",
                     "presence": "nonessential"
                 }
             ]
