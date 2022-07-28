@@ -34,6 +34,7 @@ def pipeline(config: dict,
     query_path = check_path_existence(basedir+config['blast']['blast.query'])
 
     # 2. Set up blast command.
+    print(outprefix)
     cmd = [
         config['blast']['blast.exec'],
         "-query",
@@ -41,7 +42,7 @@ def pipeline(config: dict,
         "-db",
         query_path,
         "-evalue",
-        config['blast']['blast.evalue'],
+        config['blast'].get('blast.evalue', '0.01'),
         "-outfmt",
         "6",
         "-out",

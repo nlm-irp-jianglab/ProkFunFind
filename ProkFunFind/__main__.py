@@ -115,6 +115,8 @@ def retrieve_function_pipeline(database: str, fun_name: str, args) -> Callable:
         outprefix = os.path.abspath(outprefix)
         out_base = os.path.basename(outprefix)
         out_dir = os.path.dirname(outprefix)
+        genome_name = genome_prefix.split("/")[len(genome_prefix.split("/"))-1]
+
         if not out_base and out_dir:
             sys.exit(
                      "Please provide prefix of output file, Not directory \
@@ -192,7 +194,7 @@ def retrieve_function_pipeline(database: str, fun_name: str, args) -> Callable:
             detect_list = detect_module.pipeline(
                 config=config,
                 protein_file=faa_file,
-                outprefix=outprefix,
+                outprefix=outprefix+'.'+genome_name,
                 basedir=path_to_fun,
                 OrthScore_dict=OrthScore_dict['blast'],
                 q_list=detect_list)
@@ -205,7 +207,7 @@ def retrieve_function_pipeline(database: str, fun_name: str, args) -> Callable:
             detect_list = detect_module.pipeline(
                 config=config,
                 protein_file=faa_file,
-                outprefix=outprefix,
+                outprefix=outprefix+'.'+genome_name,
                 basedir=path_to_fun,
                 OrthScore_dict=OrthScore_dict['hmmer'],
                 q_list=detect_list)
@@ -227,7 +229,6 @@ def retrieve_function_pipeline(database: str, fun_name: str, args) -> Callable:
         (system_dict, status, genomeObj) = examine.pipeline(
             system_file=system_file, genome_object=genomeObj,
             detect_tools=search_approaches)
-        genome_name = genome_prefix.split("/")[len(genome_prefix.split("/"))-1]
         report.report_all(
             system_dict=system_dict,
             status=status,
@@ -238,7 +239,7 @@ def retrieve_function_pipeline(database: str, fun_name: str, args) -> Callable:
 
         if status:
             print(
-                "Detected function:{fun_name} in genome {genome_prefix}\n{mp}" \
+                "Detected function: {fun_name} in genome {genome_prefix}\n{mp}" \
                 " out of {m} essential components present\n{ap} out of {a}" \
                 " nonessential components present ".format(
                     genome_prefix=genome_prefix,
@@ -249,7 +250,7 @@ def retrieve_function_pipeline(database: str, fun_name: str, args) -> Callable:
                     a=system_dict['completeness']['nonessential']))
         else:
             print(
-                "Failed to detect function:{fun_name} in" \
+                "Failed to detect function: {fun_name} in" \
                 " genome {genome_prefix}\n{mp} out of {m} essential" \
                 " components present\n{ap} out of {a} nonessential" \
                 " components present".format(
@@ -280,7 +281,7 @@ def main():
         # "rep", help="Analyze an individual genome")
 
     parser.add_argument(
-        "-b",
+        "-d",
         "--databasedir",
         help="The base dir of function",
         required=True,
@@ -301,6 +302,7 @@ def main():
         dest="outprefix",
         metavar="")
     parser.add_argument(
+        "-g",
         "--gtab",
         help="Table of genomes to search",
         required=True,
