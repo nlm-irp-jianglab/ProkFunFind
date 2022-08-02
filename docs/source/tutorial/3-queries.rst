@@ -161,14 +161,14 @@ still being considered to be in the same cluster. the 'cluster.min_samples'
 parameter is used to determine how many genes must be in the same region for
 them to be considered a cluster. See
 `DBSCAN <https://scikit-learn.org/stable/modules/generated/sklearn.cluster.DBSCAN.html>`_
- for more information on the DBSCAN implementation.
+for more information on the DBSCAN implementation.
 
- The other sections defined in the configuration file are search approach
- specific. These sections are used to define the file extensions for the
- annotation or query files as well as the filtering parameters for each search
- approach. See the other search specific toturial sections for examples and the
- 'inputs' section of the documentation for a complete table of all settigns
- allowed for each search approach.
+The other sections defined in the configuration file are search approach
+specific. These sections are used to define the file extensions for the
+annotation or query files as well as the filtering parameters for each search
+approach. See the other search specific toturial sections for examples and the
+'inputs' section of the documentation for a complete table of all settigns
+allowed for each search approach.
 
 
 # Search Space

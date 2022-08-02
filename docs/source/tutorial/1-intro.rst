@@ -9,6 +9,8 @@ so that each section can be run independently of the others. Each section will
 also include pre-generated input and output files for you to look at while
 going through the tutorial.
 
+For instructions on how to install ProkFunFind please see: :ref:`Installation`
+
 ## Tutorial Sections
 
 .. toctree::
