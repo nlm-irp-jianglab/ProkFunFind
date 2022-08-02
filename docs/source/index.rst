@@ -36,4 +36,5 @@ Welcome to ProkFunFind's documentation!
    outputs
    run_parallel
    todo
+   ebi-genomes
    tutorial/

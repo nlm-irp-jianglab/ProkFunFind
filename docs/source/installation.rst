@@ -88,8 +88,8 @@ Install ProkFunFind
 
   .. code-block:: bash
 
-     conda create -n GutFun python=3
-     conda activate GutFun
+     conda create -n ProkFun python=3
+     conda activate ProkFun
      cd ProkFunFind
      python setup.py install
 
