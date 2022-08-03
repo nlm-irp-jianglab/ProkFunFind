@@ -35,12 +35,20 @@ the table format is the BLAST ``-m 6`` format.
     GUT_GENOME143137_00903	cclostridioforme_gudB	34.647	482	311	3	17	496	19	498	2.31e-92	281
     GUT_GENOME143137_00918	cclostridioforme_GarL	22.378	286	216	4	3	284	6	289	4.03e-21	81.3
 
-*****.hmmtblout
+hmmtblout
 ===============
 The hmmscan output will be generated if hmmscan is used as part of the search approach.
-This table consists of ****
+This table consists of the targets (profile HMM IDs) in column 1, the gene IDs in column 3,
+and evalues in column 5.
 
 .. code-block::
+
+  #                                                                --- full sequence ---- --- best 1 domain ---- --- domain number estimation ----
+  # target name        accession  query name            accession    E-value  score  bias   E-value  score  bias   exp reg clu  ov env dom rep inc description of target
+  #------------------- ----------  -------------------- ---------- --------- ------ ----- --------- ------ -----   --- --- --- --- --- --- --- --- ---------------------
+  HNDD                 -          GCF_000478885.1_00103 -            0.00023    9.8   9.6    0.0039    5.7   9.6   1.9   1   1   0   1   1   1   1 -
+  HNDD                 -          GCF_000478885.1_00145 -            2.4e-05   13.1  22.2   0.00015   10.4   4.5   2.8   2   2   0   2   2   2   2 -
+  DEVR                 -          GCF_000478885.1_00174 -            3.6e-07   19.5   0.0   5.8e-07   18.8   0.0   1.2   1   0   0   1   1   1   1 -
 
 
 
@@ -157,9 +165,9 @@ Functions        What search terms and components a given hit was associated wit
 
 pkl
 ====
-  pickle_ object of the output Genome object, which can be loaded to python for further analysis.
+pickle_ object of the output Genome object, which can be loaded to python for further analysis.
 
-  .. _pickle: https://docs.python.org/3/library/pickle.html
+.. _pickle: https://docs.python.org/3/library/pickle.html
 
 
 ================

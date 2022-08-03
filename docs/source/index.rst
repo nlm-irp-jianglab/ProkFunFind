@@ -3,38 +3,38 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
+#######################################
 Welcome to ProkFunFind's documentation!
-======================================
-  ProkFunFind is a pipeline that can be used to predict genes related to function of interest.
-  Criteria for function detection include presence of detected genes, and genomic co-localization.
+#######################################
+ProkFunFind is a pipeline that can be used to predict genes related to function of interest.
+Criteria for function detection include presence of detected genes, and genomic co-localization.
 
-  **In order to identify the correct genes, the user needs:**
+In order to identify genes using ProkFunFind, the user needs:
 
-   - Select the correct method and filter parameters to detect genes
+#. Select the correct search approaches and filtering paramters to identify your genes of interest
 
-     - Blast
-     - Interproscan(Preconfigured)
-     - Hmmer
-     - ...
+   #. Protein sequences
 
-   - Choose the correct bait sequences/domain signatures/HMM protein profiles for the components of interest
-   - Specify the definition of gene cluster and cluster method
+   #. Profile HMMs
 
-     - DBSCAN
-     - ...
+   #. COGs
 
-   - Define the gene components for the function system in JSON format
+   #. KOs
 
+   #. Protein domain signatures
+
+#. Define the gene components for the function system in JSON format
+
+   #. Define the essential and non essential components of the overall function of interest.
 
 .. toctree::
    :maxdepth: 2
    :caption: Contents:
+   :glob:
 
    installation
    quickstart
    inputs
    outputs
-   run_parallel
-   todo
    ebi-genomes
-   tutorial/
+   tutorial/1-intro

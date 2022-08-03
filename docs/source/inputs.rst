@@ -7,40 +7,35 @@
 Input dataset
 *************
 
-====================
+
 Command-line options
-====================
+####################
 
   .. literalinclude:: help.txt
 
 
-A typical ProkFunFind command looks like the following:
+A typical ProkFunFind command looks like the following::
 
-.. code-block::
-
-   prokfunfind -b queries -f fun --gtab ./genome-list.tsv --outputprefix ./out/
+   prokfunfind -d queries -f fun -g ./genome-list.tsv -o ./out/search-out.
 
 The options provide the following information:
 
 ====================  =================================================================================================================
 Option                Description
 ====================  =================================================================================================================
--b, --databasedir
+-d, --databasedir     This option is used to provide the base directory where the query directories are stored.
 --------------------  -----------------------------------------------------------------------------------------------------------------
--f, --function
+-f, --function        This option is used to provide the name of the query directory.
 --------------------  -----------------------------------------------------------------------------------------------------------------
--b, --outputprefix
+-o, --outputprefix    This option is used to give the output file name prefix.
 --------------------  -----------------------------------------------------------------------------------------------------------------
--b, --databasedir
---------------------  -----------------------------------------------------------------------------------------------------------------
+-g, --gtab            This option is used to provide the path to an input search genome table.
+====================  =================================================================================================================
 
 
-=============================
+
 Input genomic data sets
-=============================
-
-Single genome mode
-===========================
+########################
 
 The genome input data should be organized so that all of the files associated
 with one genome are in the same directory. Multiple genomes can be stored in the
@@ -70,7 +65,7 @@ See the example below for the general format of the genome input files:
 
 The genomes input is provided to the `ProkFunFind` program through a tab separated
 two column table that includes the genome file prefixes and the paths to the
-genome directories. This table should be provided throuygh the `--gtab` argument:
+genome directories. This table should be provided through the `--gtab` argument:
 
 .. code-block::
 
@@ -80,9 +75,9 @@ genome directories. This table should be provided throuygh the `--gtab` argument
 Any number of genomes inputs can be provided in this file and ProkFunFind will
 run all searches on the provided genomes sequentially.
 
-=============================
+
 Input function configuration
-=============================
+############################
 
 ``-b`` should be followed by the data folder(``${data}``) that contains the configuration files for all functions.
 
@@ -110,16 +105,19 @@ Input function configuration
 
 .. NOTE::
 
- Please remember to make bait.fa file blastable by running command line
- `makeblastdb -in bait.fa -dbtype prot`
+ Please remember to make fasta file blastable by running the command
+ `makeblastdb -in {query.fasta} -dbtype prot`
+
+ Similarly if profile HMMs are being used in the search they need to
+ prepared for the search using the command `hmmpress {query.hmm}`
 
 
-=================================
+
 Configuration File
-=================================
+##################
 
 config.ini
-==========
+**********
 The configuration files ``config.ini`` is where the settings for the ProkFunFind
 search are specified. This file is made up of a main section and multiple other
 sections related to specfic search approachces and filtering.
@@ -154,12 +152,13 @@ sections related to specfic search approachces and filtering.
 
 
 main
-----
+****
 The main section of the configuration file contains general information about
 the annotation file suffixes and points to the feature model file and search
 terms table.
 
 .. code-block::
+
   [main]
   cluster.tool   = DBSCAN
   system.file    = system.json
@@ -190,11 +189,11 @@ gff_suffix        The suffix of the file that contains the GFF gene annotations 
 
 
 DBSCAN
--------
+******
 If multiple hits are found in the genomes during the ProkFunFind searches, the
 hits will be checked to see if they are in the same genomic region. This is done
 using Density-Based Spatial Clustering of Applications with Noise (DBSCAN). For
-more information on the scikit-learn DBSCAN implementation see [DBSCAN].
+more information on the scikit-learn DBSCAN implementation see `DBSCAN`_.
 
 .. code-block::
 
@@ -212,11 +211,11 @@ cluster.min_samples   Minimum number of genes of interest within range set by cl
                       a core member of a cluster.
 ====================  =================================================================================================================
 
-[DBSCAN]: https://scikit-learn.org/stable/modules/generated/sklearn.cluster.DBSCAN.html
+.. _DBSCAN: https://scikit-learn.org/stable/modules/generated/sklearn.cluster.DBSCAN.html
 
 
 Search Approach Settings
-------------------------
+************************
 The remaining sections of the configuration file are used to defined search
 approach specific settings. The settings allowed in each section are detailed
 below.
@@ -269,7 +268,7 @@ filter_file       The file name of additional filtering settings for specific se
     bitscore = 0
     filter_file = hit_filter.tab
 
-==============  ================================================================================================================================
+===============  ================================================================================================================================
 Name              Description
 ===============  ================================================================================================================================
 hmmer.query       The name of the profile HMM file file.
@@ -301,7 +300,7 @@ filter_file       The file name of additional filtering settings for specific se
     threshold = 1
     filter_file = hit_filter.tab
 
-==============  ================================================================================================================================
+===============  ================================================================================================================================
 Name              Description
 ===============  ================================================================================================================================
 annot_suffix      The file extension for the kofamscan prediction output.
@@ -313,6 +312,8 @@ threshold         The threshold value is used to adjust the score thresholds whi
                   predetermined value for that KO, then the protein is putatively assigned to that KO. This score can be adjusted using this
                   threshold setting, which will be used to multiply the score needed to make it more or less strict.
                   Example:
+                  .. code-block::
+
                     K00001  gene1  score: 10    KO_value: 12
                     - if the threshold is set to 1, then this gene would not be assigned to K00001
                     - if the threshold is set to 0.5, then the KO_value needed would be adjusted to 6 (12*0.5), resulting in the gene being
@@ -329,7 +330,7 @@ filter_file       The file name of additional filtering settings for specific se
   [interproscan]
   annot_suffix = _InterProScan.tsv
 
-==============  ================================================================================================================================
+===============  ================================================================================================================================
 Name              Description
 ===============  ================================================================================================================================
 annot_suffix      The name of the profile HMM file file.
@@ -346,7 +347,7 @@ annot_suffix      The name of the profile HMM file file.
     evalue = 1e-3
     filter_file = hit_filter.tab
 
-==============  ================================================================================================================================
+===============  ================================================================================================================================
 Name              Description
 ===============  ================================================================================================================================
 annot_suffix      The file extension for the EGGNog-mapper prediction output.
@@ -358,7 +359,7 @@ filter_file       The file name of additional filtering settings for specific se
 
 
 Filter file
-===========
+###########
 Separate search term specific filtering files can be provided as tab separated
 tables that specify specific filtering parameters for any query. These
 settings will be applied instead of the global filtering parameters that are set
@@ -383,7 +384,7 @@ file section of these docs. The fourth column contains the filtering logic
 filtering.
 
 search terms
-============
+#############
 The search terms file specifies the relationship between individual queries and
 the broader search term IDs. This file is a three column table consiting of the
 search terms IDs, query IDs, and search methods.
@@ -395,18 +396,12 @@ search terms IDs, query IDs, and search methods.
     gene2  COG1   emapper
 
 system
-======
+#######
 
 Json formatted file that specify how the components are organized to perform a function.
 
-+-----------------------------------+------------------------------------+
-|  Example Structure                |     JSON formatted file            |
-+===================================+====================================+
-| .. image:: images/ProkFunFind.jpg  |  .. literalinclude:: example.json  |
-|    :width: 550px                  |     :language: JSON                |
-|    :align: left                   |                                    |
-|    :alt: alternate text           |                                    |
-+-----------------------------------+------------------------------------+
+  .. literalinclude:: example.json
+
 
 
 ======================  ========================================================

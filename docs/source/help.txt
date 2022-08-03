@@ -2,14 +2,9 @@ usage: prokfunfind [-h] {rep,pan} ...
 
 Identify genes related function of interest
 
-positional arguments:
-  {rep,pan}
-    rep       Analyze an individual genome
-    pan       Analyze genomes of the same pangenome
-
 optional arguments:
   -h, --help            show this help message and exit
-  -b , --databasedir    The base dir of function
+  -d , --databasedir    The base dir of function
   -f , --function       Name of the function
   -o , --outputprefix   The output file name prefix
   -g, --gtab            Table of genomes to search
