@@ -1,7 +1,8 @@
+*****************************
 Annotation-based Searches
 *****************************
 
-This tutotorial section focuses on performing searches based on precomputed
+This tutorial section focuses on performing searches based on precomputed
 annotation data for a genome. These methods allow you to take an annotation
 file for a genome of interest and perform searches on that using common
 annotation features including KEGG Orthology (KO) identifiers, Clusters of
@@ -12,7 +13,8 @@ each kind of annotation feature individually, but they can be mixed
 together as well to allow for more complex searches. These type of
 mixed query searches are covered in the Mixed Search tutorial section.
 
-# Protein Domain-Based Searches
+Protein Domain-Based Searches
+#############################
 Protein domains are structural or functional regions of a larger protein. Knowing
 what domains are present on a predicted protein can provide valuable clues about
 what that proteins functions might be. Similarly, searching for protein domains
@@ -20,7 +22,7 @@ within the proteins predicted for a genome can help with the idenfication of
 specific genes and pathways.
 
 In ProkFunFind we currently support annotations of protein domains using the
-`InterProScan <interproscan-docs.readthedocs.io/en/lastest/index.html>`.
+`InterProScan <interproscan-docs.readthedocs.io/en/lastest/index.html>`_.
 ProkFunFind can incoperate these annotations in the tsv output format from
 InterProScan. An example of InterProScan output for the tutorial genomes can
 be seen in the `./genomes/GTDB18040_InterProScan.tsv`:
@@ -37,7 +39,8 @@ for ProkFunFind are going to be column 1, the protein acession, and column 5,
 the domain signature ID. ProkFunFind supports searching by any of the domain
 signature types reported by InterProScan.
 
-## Queries
+Queries
+*******
 The query files for this search are included in the `./queries/ipr-search/`
 directory. Unlike the sequence and profile based searches, an additional query
 file is not required for domain-based searches. Instead the domains of
@@ -68,7 +71,8 @@ search method (interproscan) is provided in column 3. As described in the Querie
 tutorial section, multiple domains can be associated with one query ID by
 providing them on multiple lines.
 
-## Search
+Search
+******
 The domain-based search can be run with the following command from the base
 directory of the tutorial repository.
 
@@ -107,8 +111,8 @@ cofactor binding or dehydrogenase functions. In the next section we will take
 look at the search output and see if there are any clues about that we could
 use to interpret this result.
 
-## Output
-
+Output
+******
 In this example we searched for a set of genes related to a the production
 of the metabolite equol. It is often common for genes related to the same
 function to be found in the same region of the genome, and based on what is
@@ -177,11 +181,12 @@ same gene cluster, so your interpretation of these results may vary based on
 your scientific question.
 
 
-# KEGG Orthology-Based Searches
+KEGG Orthology-Based Searches
+#############################
 The KEGG database groups genes into manually defined functional ortholog groups.
 The KO database has become a popular resource to link genes to their functions
 within larger metabolic pathways and subsystems. For more information on the
-KO database see `KEGG Ortholog <genome.jp/kegg/ko.html>`.
+KO database see `KEGG Ortholog <genome.jp/kegg/ko.html>`_.
 
 In ProkFunFind the KO assignments are parsed from KofamScan tabular output. An
 example of this output for the tutorial genomes can be seen in `./genomes/GTDB18040.kofam.tsv`:
@@ -193,10 +198,11 @@ example of this output for the tutorial genomes can be seen in `./genomes/GTDB18
   	  GCF_000478885.1_00001	K02315	138.67	64.8	8.1e-19	"DNA replication protein DnaC"
 
 
-## Queries
+Queries
+*******
 KO based searches are done using KO identifiers as search terms. More information
 on how KO identifiers are assigned and full references of all KO identifiers please
-see the KEGG database here: `KEGG <https://www.genome.jp/kegg/ko.html>`.
+see the KEGG database here: `KEGG <https://www.genome.jp/kegg/ko.html>`_.
 
 For this query KO identifiers for each of the components of the equol gene clusters
 were assigned KO identifiers. This can be seen in the
@@ -254,7 +260,8 @@ This score threshold and the evalue parameter may need to be adjusted in
 different searches to fine tune your search, especially when there are not
 great KO matches for your genes of interest.
 
-## Search
+Search
+******
 
 The KO based search can be done from the root directory of the tutorial
 repository using the following command.
@@ -283,13 +290,15 @@ but only the three non-essential components in the second genome:
   0 out of 1 essential components present
   3 out of 3 nonessential components present
 
-## Output
+Output
+******
 
 The output for this type of search is the same as the other approaches providing
 information about the putative gene hits and clusters of genes found during the
 search.
 
-# COG-Based Searches
+COG-Based Searches
+##################
 
 ProkFunFind also supports searching by Clusters of Orthologous Genes (COGs). COGs
 are widely used ortholog groupings. For ProkFunFind searches we use EGGNog-mapper
@@ -306,8 +315,8 @@ The orthology assignments in this output can be seen in the fifth column of the 
 This column gives ortholog assignments at different taxonomic levels in this output
 and any of these IDs can be used to search through ProkFunFind.
 
-## Query
-
+Query
+*****
 Similar to the KO-based search, the COG based searches define the queries based on the ortholog IDs, in
 this case COG IDs. The search term input can be found in the `./queries/emap-search/search-terms.tsv` file:
 
@@ -357,7 +366,8 @@ The filtering file can be found in the `./queries/emap-search/filter.tsv` file:
   COG1894	evalue	<=	1e-250
   COG1053	evalue	<=	1e-100
 
-## Search
+Search
+******
 The search can be performed using the following command:
 
 .. code-block::
@@ -385,9 +395,9 @@ in both genomes:
 
 What happens is similar to the issue seen in the domain-based
 search, where we have non-specific hits to additional genes in the second genome.
-You can check the tsv or GFF ouput in the `./out/emap-search/` directory to
+You can check the tsv or GFF output in the `./out/emap-search/` directory to
 confirm this by looking for larger clusters of putative hits on both genomes.
 This does highlight one of the benefits of using the ProkFunFind search tool to
 perform mixed searches using combinations of different approaches. A walkthrough
-on how to set up and run those searches can be found in the `Mixed Search <6-mixedsearch.rst>`
-tutorial section. 
+on how to set up and run those searches can be found in the :doc:`6-mixedsearch`
+tutorial section.

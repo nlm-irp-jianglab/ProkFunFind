@@ -1,10 +1,12 @@
+**************************
 Queries and Search Genomes
 **************************
 
 This tutorial section will cover how to format the queries and the
 information for the genomes that you are going to search.
 
-# Queries
+Queries
+#######
 
 The query format used by *ProkFunFind* is designed around the concept of what we
 refer to as a *feature model*. This feature model is a collection of search
@@ -15,18 +17,26 @@ relationships between different components of the biological system.
 The tutorial materials for this section are located in the
 ./queries/ directory.
 
-## Types of Search Terms
+Types of Search Terms
+**********************
 *ProkFunFind* supports multiple types of queries and additional support for new search approaches is actively being worked on.
 
 You can perform searches using *ProkFunFind* with the following kinds of
 search terms:
 
-| Type of Search | Search Term |
-|----------------|-------------|
-| Protein Sequence | Amino Acid Sequence |
-| Hidden Markov Model | Protein Profile HMMs |
-| Protein Domains | Supported domains predicted by InterProScan (SEE: [InterProScan]). Including Pfam and TIGRFAM|
-| Ortholog Groups | Kegg Orthology (KO) and Clusters of Orthologous Groups (COGs) |
+=====================   ========================================================
+Type of Search          Search Term
+=====================   ========================================================
+Protein Sequence        Amino Acid Sequence
+---------------------   --------------------------------------------------------
+Hidden Markov Model     Protein Profile HMMs
+---------------------   --------------------------------------------------------
+Protein                 Domains Supported domains predicted by InterProScan
+                        (SEE: [InterProScan]). Including Pfam and TIGRFAM
+---------------------   --------------------------------------------------------
+Ortholog Groups         Kegg Orthology (KO) and Clusters of
+                        Orthologous Groups (COGs)
+=====================   ========================================================
 
 [InterProScan]: https://interproscan-docs.readthedocs.io/en/latest/HowToRun.html#included-analyses
 
@@ -36,13 +46,14 @@ a COG, ID, and a set of protein domains. These IDs are linked to the individual
 search terms names through a two column table. This table can be seen in the
 `search-term.tsv` file:
 
-```
+.. code-block::
+
   enzyme1	Sequence1	blast
   enzyme1	PF07969	interproscan	1
   enzyme2	Profile1	hmmer
   enzyme2	COG0670	emapper
   enzyme2	K00554	kofamscan
-```
+
 This input table must have three columns, with an optional fourth column. The
 first column specifies the search term ID, the second column specifies the
 query associated with the search term, and the third column specifies the
@@ -51,7 +62,8 @@ protein domains, emapper for COGs, or kofamscan for KOs). The last column can
 be used to specify the domain precision *****
 
 
-## Feature Model Definition
+Feature Model Definition
+*************************
 The search terms in *ProkFunFind* are organized in a hierarchical representation
 of the biological function. A visual representation of this can be seen here:
 
@@ -77,7 +89,8 @@ The feature model is provided to the *ProkFunFind* pipeline as a JSON formatted
 file. An example of a feature model input for the toy example in the above
 image can be seen in the `systems.json` file:
 
-```
+.. code-block::
+
   {
       "name": "Pathway",
       "components": [
@@ -105,21 +118,24 @@ image can be seen in the `systems.json` file:
           }
       ]
   }
-```
+
+
 This is just a toy example meant to show the format, but more complex
 relationships can be represented as well. Examples of a more complex feature
 model can be seen in the `systems-complex.json` file and additional examples
 can also be seen in the other tutorial sections ({doc}`Sequence Searches <4-seqsearch>`
 and {doc}`Annotation Searches <5-annotsearch>`).
 
-# Search Configuration
+Search Configuration
+####################
 The configuration file is where all of the search parameters are defined. This
 central file should be named 'config.ini'. This file is broken up into different
 sections where filtering thresholds and file naming patterns are defined. An
 example of a config.ini file can be found in the `config.ini` file in the examples
 directory.
 
-```
+.. code-block::
+
   [main]
   cluster.tool   = DBSCAN
   system.file    = system.json
@@ -139,7 +155,7 @@ directory.
 
   [kofamscan]
   annot_suffix = .kofam.tsv
-```
+
 
 This example file is set up for running a search using EGGNog-mapper and
 KOfamscan annotation results.
@@ -171,7 +187,8 @@ approach. See the other search specific toturial sections for examples and the
 allowed for each search approach.
 
 
-# Search Space
+Search Space
+##############
 The last component of the `ProkFunFind` approach is the genomes being searched.
 The set of information needed for each genome depends on what kinds of searches
 are being performed. At minimum each genome needs a genome fasta file, a GFF

@@ -1,3 +1,4 @@
+*****************************
 Sequence and Profile Searches
 *****************************
 
@@ -15,8 +16,11 @@ search approaches within ProkFunFind comes from the ability to combine these
 searches with other annotation-based searches. This process will be detailed
 in the later Mixed Searches section of the tutorial.
 
-# BLAST-based Searches
-## Input
+BLAST-based Searches
+######################
+
+Input
+*****
 To perform a BLAST-based search with ProkFunFind you will need a protein
 sequences for your search terms and need the genome fasta, protein fasta, and
 GFF files for your search genomes.
@@ -34,8 +38,8 @@ The protein fasta file needs to be indexed using the `makeblastdb` tool before
 performing a search (this has already been done for these sequences).
 These input files are in the 'queries/blast-search/' directory.
 
-## Search
-
+Search
+******
 To perform a BLAST-based search for the equol gene cluster you can use the following
 ProkFunFind command from the base directory of the tutorial repository.
 
@@ -79,8 +83,8 @@ genome. Instead you will want to examine the additional output files to get
 a better idea of what genes were found, if those genes were found in gene
 clusters, and what function components they belonged to.
 
-## Output
-
+Output
+******
 The search command will produce three output files for each genome in the
 ./out/blast-search/ directory.
 - A GFF file
@@ -130,7 +134,8 @@ can see that only one set of genes, the hydrogenase maturase component, was
 detected in that genome.
 
 
-## Other things to try
+Other things to try
+*******************
 If you want to explore this search approach more consider doing some of the
 following and seeing how it affects the search results for each genome.
 - Change the blast filtering parameters in the config.ini file to make them
@@ -139,7 +144,8 @@ more or less stringent.
 observe how that changes the search results.
 
 
-# HMMER-based searches
+HMMER-based searches
+####################
 A HMMER-based search using ProkFunFind is performed in a similar way to a BLAST-based
 search, but instead of using protein sequences as your search terms, you use
 profile HMMs.
@@ -154,7 +160,8 @@ For this search the query files can be found in the `queries/hmmer-search/`
 directory. The queries consist of the standard configuration and systems files,
 and the profile HMMs are contained in the `profiles.hmm` file.
 
-## Search
+Search
+*******
 To run the profile HMM search within ProkFunFind you can use the following command
 from the base directory of the tutorial repository:
 
@@ -191,13 +198,15 @@ behind ProkFunFind, demonstrating that single search approaches, for example
 just a BLAST search, may not be sufficient to get a full picture of the presence
 or absence of functions.
 
-## Output
+Output
+******
 
 For this section of the tutorial we are going to focus on the GFF output files
-from the search. These can be seen in the './out/hmmer-search/*.gff' files. The
+from the search. These can be seen in the `./out/hmmer-search/*.gff` files. The
 output from the first genome can be seen in the `./out/hmmer-search/hmmer.GTDB18040.annot.gff`
 
 .. code-block::
+
   ...
   GCF_000478885.1_1	GuFunFind	CDS	2774610	2776022	.	-	.	ID=GCF_000478885.1_02267;Name=HYDF;ClusterID=Cl_36;Target=HYDF;evalue=5.9e-242
   GCF_000478885.1_1	GuFunFind	CDS	2776166	2777611	.	-	.	ID=GCF_000478885.1_02268;Name=HYDG;ClusterID=Cl_36;Target=HYDG;evalue=4.2e-306
@@ -226,7 +235,8 @@ Depending on the type of function beign searched for you may expect alot of
 just a few hits, and the total number of hits may be a good inital way to assess
 if your filtering parameters are too strict or too lenient.
 
-## Other things to try
-- Try adjusting the e-value threshold in the config.ini file to get fewer
+Other things to try
+*******************
+Try adjusting the e-value threshold in the config.ini file to get fewer
 hits returned by the search, but still return hits to the actual equol gene
 cluster (genes 02268-02281).

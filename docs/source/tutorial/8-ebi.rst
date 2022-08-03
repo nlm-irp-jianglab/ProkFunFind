@@ -1,3 +1,4 @@
+*************************
 Using Existing Databases
 *************************
 
@@ -8,17 +9,18 @@ these large genome collections.
 
 One example of this can be seen in the EMBL-EBI MGnify Genomes collections. This
 collection can be found here:
-`MGnify Genomes FTP <http://ftp.ebi.ac.uk/pub/databases/metagenomics/mgnify_genomes/>`
+`MGnify Genomes FTP <http://ftp.ebi.ac.uk/pub/databases/metagenomics/mgnify_genomes/>`_
 Within these genomes collections each of the genomes included in the species
-catalogues (for example this one: `MGYG000000001 <http://ftp.ebi.ac.uk/pub/databases/metagenomics/mgnify_genomes/human-gut/v2.0/species_catalogue/MGYG0000000/MGYG000000001/genome/>`).
+catalogues (for example this one: `MGYG000000001 <http://ftp.ebi.ac.uk/pub/databases/metagenomics/mgnify_genomes/human-gut/v2.0/species_catalogue/MGYG0000000/MGYG000000001/genome/>`_).
 
-The EBI species catalogue genomes come with EGGNog-mapper output in the *_eggNOG.tsv
-file and InterProScan predictions in the *_InterProScan.tsv file. This information
+The EBI species catalogue genomes come with EGGNog-mapper output in the `*_eggNOG.tsv`
+file and InterProScan predictions in the `*_InterProScan.tsv` file. This information
 along with the genome fasta, protein fasta, and gff files included for each genome
 let us perform searches with the EBI genomes based on sequences, profile HMMs,
 protein domains, and COGs.
 
-# Setting up configuration files for EBI Genomes
+Setting up configuration files for EBI Genomes
+###############################################
 The configuration files that would be used for EBI genome searches are largely
 the same as the ones that have been used for the other searches in this tutorial.
 The only major changes needed compared to the other examples are altering the
@@ -88,7 +90,8 @@ the specific query item (sequence ID, profile ID, domain, or COG) is
 specified in the second column, and the search method is specified in
 the last column.
 
-## Search
+Search
+######
 An example search can be performed from the root directory of the tutorial
 repository using the following command:
 
@@ -110,4 +113,4 @@ the functions were found in the search:
   2 out of 3 nonessential components present
 
 The remaining output is the same as has been detailed in the previous tutorial
-sections. 
+sections.

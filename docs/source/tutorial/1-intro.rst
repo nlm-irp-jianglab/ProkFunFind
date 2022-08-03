@@ -1,3 +1,4 @@
+********************
 ProkFunFind Tutorial
 ********************
 
@@ -9,17 +10,15 @@ so that each section can be run independently of the others. Each section will
 also include pre-generated input and output files for you to look at while
 going through the tutorial.
 
-For instructions on how to install ProkFunFind please see: :ref:`Installation`
-
-## Tutorial Sections
+For instructions on how to install ProkFunFind please see: :doc:`../installation`
 
 .. toctree::
   :maxdepth: 1
   :caption: Tutorial Sections
 
-  2-install
   3-queries
   4-seqsearch
   5-annotsearch
   6-mixedsearch
   7-pfa
+  8-ebi
