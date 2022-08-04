@@ -11,7 +11,7 @@ Orthologous genes (COGs) identifiers, and protein domain IDs.
 This section of the tutorial will focus on how to run searches for
 each kind of annotation feature individually, but they can be mixed
 together as well to allow for more complex searches. These type of
-mixed query searches are covered in the Mixed Search tutorial section.
+mixed query searches are covered in the :doc:`Mixed Search <./6-mixedsearch>` tutorial section.
 
 Protein Domain-Based Searches
 #############################
@@ -22,7 +22,7 @@ within the proteins predicted for a genome can help with the idenfication of
 specific genes and pathways.
 
 In ProkFunFind we currently support annotations of protein domains using the
-`InterProScan <interproscan-docs.readthedocs.io/en/lastest/index.html>`_.
+`InterProScan <https://interproscan-docs.readthedocs.io/en/latest/>`_.
 ProkFunFind can incoperate these annotations in the tsv output format from
 InterProScan. An example of InterProScan output for the tutorial genomes can
 be seen in the `./genomes/GTDB18040_InterProScan.tsv`:
@@ -67,8 +67,8 @@ search terms are defined in the `./queries/ipr-search/search-terms.tsv` file.
 
 In this file the query ID is provided in column 1, the specific search term
 ID (in this case a protein domain accession) is provided in column 2, and the
-search method (interproscan) is provided in column 3. As described in the Queries
-tutorial section, multiple domains can be associated with one query ID by
+search method (interproscan) is provided in column 3. As described in the `Queries
+<./3-queries>`tutorial section, multiple domains can be associated with one query ID by
 providing them on multiple lines.
 
 Search
@@ -101,7 +101,7 @@ different components in the function definition:
 
 In this search we find that both genomes have all components of the function
 detected. If you have done the previous tutorial section related to
-`Sequence-based Searches <4-seqsearch.rst>` then you will have seen that these
+:doc:`Sequence-based Searches <4-seqsearch.rst>` then you will have seen that these
 genes actually do not appear to be present in the second, GTDB16128, genome.
 The reason why these results differ when basing the search largely off of PFAM
 domains is that a domain-based search can be less specific than a sequence or
@@ -186,7 +186,7 @@ KEGG Orthology-Based Searches
 The KEGG database groups genes into manually defined functional ortholog groups.
 The KO database has become a popular resource to link genes to their functions
 within larger metabolic pathways and subsystems. For more information on the
-KO database see `KEGG Ortholog <genome.jp/kegg/ko.html>`_.
+KO database see `KEGG Ortholog <https://www.genome.jp/kegg/ko.html>`_.
 
 In ProkFunFind the KO assignments are parsed from KofamScan tabular output. An
 example of this output for the tutorial genomes can be seen in `./genomes/GTDB18040.kofam.tsv`:

@@ -32,13 +32,13 @@ Protein Sequence        Amino Acid Sequence
 Hidden Markov Model     Protein Profile HMMs
 ---------------------   --------------------------------------------------------
 Protein                 Domains Supported domains predicted by InterProScan
-                        (SEE: [InterProScan]). Including Pfam and TIGRFAM
+                        (SEE: `InterProScan`_). Including Pfam and TIGRFAM
 ---------------------   --------------------------------------------------------
 Ortholog Groups         Kegg Orthology (KO) and Clusters of
                         Orthologous Groups (COGs)
 =====================   ========================================================
 
-[InterProScan]: https://interproscan-docs.readthedocs.io/en/latest/HowToRun.html#included-analyses
+.. _InterProScan: https://interproscan-docs.readthedocs.io/en/latest/HowToRun.html#included-analyses
 
 Multiple queries can be associated with a single search term ID. For example
 one component of your feature can be associated with multiple protein sequences,
@@ -86,8 +86,8 @@ or absence of a the feature is assessed based on the specified essentiality
 and what search terms were detected in the search.
 
 The feature model is provided to the *ProkFunFind* pipeline as a JSON formatted
-file. An example of a feature model input for the toy example in the above
-image can be seen in the `systems.json` file:
+file. An example of a feature model input for ProkFunFind
+can be seen in the `./queries/examples/systems.json` file:
 
 .. code-block::
 
@@ -122,9 +122,9 @@ image can be seen in the `systems.json` file:
 
 This is just a toy example meant to show the format, but more complex
 relationships can be represented as well. Examples of a more complex feature
-model can be seen in the `systems-complex.json` file and additional examples
-can also be seen in the other tutorial sections ({doc}`Sequence Searches <4-seqsearch>`
-and {doc}`Annotation Searches <5-annotsearch>`).
+model can be seen in the `./queries/examples/systems-complex.json` file and additional examples
+can also be seen in the other tutorial sections (:doc:`Sequence Searches <4-seqsearch>`
+and :doc:`Annotation Searches <5-annotsearch>`).
 
 Search Configuration
 ####################
@@ -196,6 +196,6 @@ file containing the predicted genes, and a protein fasta file of the predicted
 protein sequences. With just this information searches can be performed using
 BLAST or HMMER. To search using additional features, files containing the results
 of running EGGNog-mapper, InterProScan, or KOfamscan also need to be present. See
-the documentation sections and PFA tutorial section for more information on these
+the :doc:`Inputs <../inputs>` and :doc:`PFA Tutorial <./7-pfa>` sections for more information on these
 annotation formats and the ProkFunAnnotate pipeline that can be used to generate
 them.

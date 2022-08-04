@@ -12,15 +12,16 @@ the ability to utilize multiple different types of queries during a search. For
 example one gene may be best represented by a profile HMM while another may
 be part of a well defined KO or COG group.
 
-# Mixed Search Terms
+Mixed Search Terms
+#####################
 In ProkFunFind mixed searches you can incorporate any of the support search
 term types in any combination. The only limitation is based on what
 files you have available for each genome. For example in order to perform searches
 based on protein sequences and COG identifiers you will need to have the protein
 fasta files and EGGNog-mapper results available for each genome being searched.
 
-## Queries
-
+Queries
+^^^^^^^^
 The two most important files for configuring a mixed search in ProkFunFind are
 the configuration file and search-terms file. The configuration file is going to
 be formatted like it has been in previous examples, but it needs to include
@@ -90,7 +91,8 @@ search terms file for this tutorial search can be seen in the `./queries/mixed-s
 This search is going to use a mix of 3 profile HMMs, 1 protein sequence, 2 KOs,
 4 domain signatures, and 4 COGs.
 
-## Search
+Search
+^^^^^^^^
 To perform the search from the root directory of the tutorial repository you can
 run the following command:
 
@@ -117,7 +119,8 @@ absence:
   0 out of 1 essential components present
   3 out of 3 nonessential components present
 
-## Output
+Output
+^^^^^^^^
 The output is the same as what is produced by other searches. Because the
 search is done using multiple search terms it can also be useful to check the
 output to see what search terms are producing hits to certain genes in the

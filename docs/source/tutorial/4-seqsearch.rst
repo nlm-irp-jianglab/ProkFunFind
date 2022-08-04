@@ -6,7 +6,7 @@ This tutorial section will walk you through how to set up a search using BLAST o
 HMMER within ProkFunFind. The materials for this section of the tutorial are
 going to be in the `queries/blast-search/`, `queries/hmmer-search/`, and
 the `genomes/` directories of the prokfunfind-tutorial repository. Pre-generated
-output is provided for all commands in the `pregen-out/` directory
+output is provided for all commands in the `precomputed-out/` directory
 
 These two search approaches on their own are no different from running BLAST or
 hmmscan and then applying different filtering to the results. In this case
@@ -14,7 +14,7 @@ ProkFunFind is just providing an easy way to perform the search and facilitate
 the filtering within on platform. A major benefit of having access to these
 search approaches within ProkFunFind comes from the ability to combine these
 searches with other annotation-based searches. This process will be detailed
-in the later Mixed Searches section of the tutorial.
+in the later :doc:`Mixed Searches <./6-mixedsearch>` section of the tutorial.
 
 BLAST-based Searches
 ######################
@@ -36,7 +36,7 @@ The query for the search consists of the standard configuration file and
 function defintion along with a protein fasta file containing the query sequences.
 The protein fasta file needs to be indexed using the `makeblastdb` tool before
 performing a search (this has already been done for these sequences).
-These input files are in the 'queries/blast-search/' directory.
+These input files are in the `queries/blast-search/` directory.
 
 Search
 ******
@@ -87,11 +87,11 @@ Output
 ******
 The search command will produce three output files for each genome in the
 ./out/blast-search/ directory.
-- A GFF file
-- A TSV file
-- A blast output tabular file
-- A genome pkl file
-- a .json summary file of the component presence and absence.
+* A GFF file
+* A TSV file
+* A blast output tabular file
+* A genome pkl file
+* A json summary file of the component presence and absence.
 
 For more information on each of the output formats please see the `Outputs <outputs.rst>`
 documentation section. Each tutorial section will provide additional information
@@ -138,10 +138,10 @@ Other things to try
 *******************
 If you want to explore this search approach more consider doing some of the
 following and seeing how it affects the search results for each genome.
-- Change the blast filtering parameters in the config.ini file to make them
-more or less stringent.
-- Modify some of the essentiality requirements in the systems.json file and
-observe how that changes the search results.
+* Change the blast filtering parameters in the config.ini file to make them
+  more or less stringent.
+* Modify some of the essentiality requirements in the systems.json file and
+  observe how that changes the search results.
 
 
 HMMER-based searches
@@ -154,7 +154,7 @@ Profile HMMs are probabilistic models of the conservation of a set of sequences.
 They can be used with tools like `HMMER's` `hmmscan` to perform searches against
 protein databases to find sequences that are similar to the profile. For more
 information on how to generate and use profile HMMs please see the HMMER
-documentation here: `HMMER Docs <eddylab.org/software/hmmer/Userguide.pdf>`
+documentation here: `HMMER Docs <eddylab.org/software/hmmer/Userguide.pdf>`_
 
 For this search the query files can be found in the `queries/hmmer-search/`
 directory. The queries consist of the standard configuration and systems files,
