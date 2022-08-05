@@ -67,7 +67,8 @@ Feature Model Definition
 The search terms in *ProkFunFind* are organized in a hierarchical representation
 of the biological function. A visual representation of this can be seen here:
 
-![](./figures/feature-model.png)
+.. image:: ./figures/Function-based-searches.png
+   :width: 600
 
 At the highest level of this organization is the overall biological feature
 that you want to search for. This would typically be something like a biological

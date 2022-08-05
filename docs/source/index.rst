@@ -9,6 +9,11 @@ Welcome to ProkFunFind's documentation!
 ProkFunFind is a pipeline that can be used to predict genes related to function of interest.
 Criteria for function detection include presence of detected genes, and genomic co-localization.
 
+
+.. image:: tutorial/figures/main-panel-figure.png
+   :width: 600
+
+
 In order to identify genes using ProkFunFind, the user needs:
 
 #. Select the correct search approaches and filtering paramters to identify your genes of interest

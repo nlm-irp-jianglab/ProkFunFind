@@ -87,10 +87,15 @@ Output
 ******
 The search command will produce three output files for each genome in the
 ./out/blast-search/ directory.
+
 * A GFF file
+
 * A TSV file
+
 * A blast output tabular file
+
 * A genome pkl file
+
 * A json summary file of the component presence and absence.
 
 For more information on each of the output formats please see the `Outputs <outputs.rst>`
@@ -138,10 +143,10 @@ Other things to try
 *******************
 If you want to explore this search approach more consider doing some of the
 following and seeing how it affects the search results for each genome.
-* Change the blast filtering parameters in the config.ini file to make them
-  more or less stringent.
-* Modify some of the essentiality requirements in the systems.json file and
-  observe how that changes the search results.
+
+* Change the blast filtering parameters in the config.ini file to make them more or less stringent.
+
+* Modify some of the essentiality requirements in the systems.json file and observe how that changes the search results.
 
 
 HMMER-based searches

@@ -35,7 +35,7 @@ be seen in the `./genomes/GTDB18040_InterProScan.tsv`:
 
 
 This format consists of multiple columns, but the essential ones
-for ProkFunFind are going to be column 1, the protein acession, and column 5,
+for ProkFunFind are going to be column 1, the protein accession, and column 5,
 the domain signature ID. ProkFunFind supports searching by any of the domain
 signature types reported by InterProScan.
 
@@ -64,11 +64,10 @@ search terms are defined in the `./queries/ipr-search/search-terms.tsv` file.
   FIXA	PF01012	interproscan
   FIXB	PF00766	interproscan
 
-
-In this file the query ID is provided in column 1, the specific search term
-ID (in this case a protein domain accession) is provided in column 2, and the
-search method (interproscan) is provided in column 3. As described in the `Queries
-<./3-queries>`tutorial section, multiple domains can be associated with one query ID by
+In this file the query ID is provided in column 1, the specific search term ID
+(in this case a protein domain accession) is provided in column 2, and the
+search method (interproscan) is provided in column 3.
+As described in the :doc:`Queries <./3-queries>` tutorial section, multiple domains can be associated with one query ID by
 providing them on multiple lines.
 
 Search
@@ -101,7 +100,7 @@ different components in the function definition:
 
 In this search we find that both genomes have all components of the function
 detected. If you have done the previous tutorial section related to
-:doc:`Sequence-based Searches <4-seqsearch.rst>` then you will have seen that these
+:doc:`Sequence-based Searches <4-seqsearch>` then you will have seen that these
 genes actually do not appear to be present in the second, GTDB16128, genome.
 The reason why these results differ when basing the search largely off of PFAM
 domains is that a domain-based search can be less specific than a sequence or
