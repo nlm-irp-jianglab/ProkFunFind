@@ -26,10 +26,10 @@ prokfunfind.py -d data.folder -f Mucic_and_Saccharic_Acid -g input.folder/MGYG-H
 
 ## Documentation and Tutorial
 The documentation for ProkFunFind can be found here: 
-- prokfunfind.readthedocs.io/en/latest/
+- https://prokfunfind.readthedocs.io/en/latest/
 
 A tutorial describing how to run ProkFunFind searches can be found here: 
-- prokfunfind.readthedocs.io/en/docs-and-tests/tutorial/1-intro.html
+- https://prokfunfind.readthedocs.io/en/docs-and-tests/tutorial/1-intro.html
 
 ## Updates
 
