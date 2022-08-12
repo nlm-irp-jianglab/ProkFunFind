@@ -47,7 +47,7 @@ class InterproscanTabParser:
     def _parse_row(self):
         """Return a dictionary of parsed row values (PRIVATE)."""
         cols = self.line.strip("\n").split("\t")
-        if len(cols) != 15 and len(cols) != 11:
+        if len(cols) <5:
             raise ValueError("Less columns than expected, only %i" % len(cols))
 
         # assign parsed column data into qresult, hit, and hsp dicts

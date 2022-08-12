@@ -32,6 +32,16 @@ In order to identify genes using ProkFunFind, the user needs:
 
    #. Define the essential and non essential components of the overall function of interest.
 
+#. Perform the search for the functions in your genomes of interest using ProkFunFind
+
+#. Analyze the search results
+
+  #. Assess completness of function in different organisms
+
+  #. Identify potential gene clusters
+
+  #. Analyze species distribution
+
 .. toctree::
    :maxdepth: 2
    :caption: Contents:

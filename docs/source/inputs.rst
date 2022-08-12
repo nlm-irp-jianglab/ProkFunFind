@@ -51,6 +51,23 @@ to run ProkFunFind, for example if a search is being performed only using protei
 sequences and profile HMMs, then no additional annotation files are required (see
 below for more information).
 
+The annotation files can be generated using the EGGNog-mapper, KOFamScan, and
+InterProScan programs. The output form these programs does not require any
+additional formatting to be used by ProkFunFind. Example commands to generate
+the anntoation files are:
+
+.. code-block::
+
+  interproscan -t p -iprlookup --goterms --pathways -f tsv {fasta}.faa IPR
+
+  exec_annotation --tmp-dir {path to tmp directory} -f detail-tsv  \
+    -p {path to KofamScan profiles} -o {path to output file} {fasta}.faa
+
+  emapper.py -i $infile -o {prefix} --temp_dir {path to tmp directory} \
+    --data_dir {path to EGGNog-mapper data} --tax_scope {taxonomic scope} \
+    --override --cpu {CPUS} --output_dir {path to output}
+
+
 See the example below for the general format of the genome input files:
 
 .. code-block::

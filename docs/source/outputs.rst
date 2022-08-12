@@ -165,9 +165,11 @@ Functions        What search terms and components a given hit was associated wit
 
 pkl
 ====
-pickle_ object of the output Genome object, which can be loaded to python for further analysis.
+Pickle_ object of the output Genome object, which can be loaded to python for
+further analysis. This can be de-serialized using the python pickle module
+to access and interact with the genome object data. 
 
-.. _pickle: https://docs.python.org/3/library/pickle.html
+.. _Pickle: https://docs.python.org/3/library/pickle.html
 
 
 ================
