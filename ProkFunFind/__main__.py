@@ -43,13 +43,13 @@ def module_name(arg: str) -> str:
 
 
 # Write a funtion pipeline for function of interest for a individual genome
-def retrieve_function_pipeline(database: str, fun_name: str, args) -> Callable:
+def retrieve_function_pipeline(fun_name: str, args) -> Callable:
 
     # 1. Parse configuration files and search files
     # 1.1 Obtain the configuration and check the exec as well as the database
     # required
     logging.info("Checking configuration files")
-    path_to_fun = database.rstrip("/") + "/" + fun_name + "/"
+    path_to_fun = fun_name + "/"
 
     # 1.2 check the existance of the function
     if not os.path.exists(path_to_fun):
@@ -266,7 +266,7 @@ def retrieve_function_pipeline(database: str, fun_name: str, args) -> Callable:
 
 def main_individual(args):
     detect_fun, search_list = retrieve_function_pipeline(
-        database=args.database, fun_name=args.fun_name, args=args)
+        fun_name=args.fun_name, args=args)
 
     for prefix in search_list:
         detect_fun(genome_prefix=prefix, outprefix=args.outprefix)
@@ -280,13 +280,6 @@ def main():
     # parser_rep = subparsers.add_parser(
         # "rep", help="Analyze an individual genome")
 
-    parser.add_argument(
-        "-d",
-        "--databasedir",
-        help="The base dir of function",
-        required=True,
-        dest="database",
-        metavar="")
     parser.add_argument(
         "-f",
         "--function",
