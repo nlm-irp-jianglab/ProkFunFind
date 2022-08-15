@@ -65,7 +65,7 @@ def export_gene_gff(
                         gene, cluster_tool) else "NA"
 
                 if detect_tool == "blast":
-                    f.write("{ct}\tGuFunFind\t{tp}\t{start}\t{end}" \
+                    f.write("{ct}\ProkFunFind\t{tp}\t{start}\t{end}" \
                         "\t.\t{strand}\t.\tID={id};Name={queryID};" \
                         "ClusterID={cluster_ID};Target={Target};" \
                         "pct_identity={pct_identity};evalue={evalue}".format(
@@ -102,7 +102,7 @@ def export_gene_gff(
                         or detect_tool == "hmmer" \
                         or detect_tool == "kofamscan" \
                         or detect_tool == "emapper":
-                    f.write("{ct}\tGuFunFind\t{tp}\t{start}\t{end}\t." \
+                    f.write("{ct}\tProkFunFind\t{tp}\t{start}\t{end}\t." \
                             "\t{strand}\t.\tID={id};Name={queryID};" \
                             "ClusterID={cluster_ID};" \
                             "Target={Target}{evalue}".format(

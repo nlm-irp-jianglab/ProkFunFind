@@ -72,7 +72,7 @@ Download ProkFunFind
 
   .. code-block:: bash
 
-     git clone git@github.com:nlm-irp-jianglab/ProkFunFind.git
+     git clone https://github.com/nlm-irp-jianglab/ProkFunFind.git
 
 
 Install ProkFunFind

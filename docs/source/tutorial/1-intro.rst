@@ -12,13 +12,13 @@ going through the tutorial.
 
 The tutorial materials are available on Github here: `PFF Tutorial <https://github.com/nlm-irp-jianglab/prokfunfind_tutorial>`_
 
-These materials can be downloaded using the following command: 
+These materials can be downloaded using the following command:
 
-.. code-block:: 
+.. code-block::
 
-   git clone git@github.com:nlm-irp-jianglab/prokfunfind_tutorial.git
+   git clone https://github.com/nlm-irp-jianglab/ProkFunFind.git
 
-All tutorial steps can be run from within the root directory of the repository. 
+All tutorial steps can be run from within the root directory of the repository.
 From this root directory you should see the following files and directories:
 
 ================   ===================================================
@@ -40,9 +40,9 @@ ebi-list.tsv       Search genome table for EBI genome tutorial
 genome-list.tsv    Search genome table for main tutorial materials
 ================   ===================================================
 
-A complete set of precomputed output from each step in the tutorial is 
+A complete set of precomputed output from each step in the tutorial is
 included in the `precomputed-out/` directory. This directory mirrors what
-would be generated during the tutorial in the `out/` directory. 
+would be generated during the tutorial in the `out/` directory.
 
 For instructions on how to install ProkFunFind please see: :doc:`../installation`
 

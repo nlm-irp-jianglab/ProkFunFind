@@ -45,7 +45,7 @@ ProkFunFind command from the base directory of the tutorial repository.
 
 .. code-block::
 
-   prokfunfind -d queries -f blast-search -g ./genome-list.tsv --outputprefix ./out/blast-blast/blast
+   prokfunfind -d queries -f blast-search -g ./genome-list.tsv --outputprefix ./out/blast-search/blast
 
 This command will first print an overall summary of how many function
 components were detected in each genome. This output will summarize how many

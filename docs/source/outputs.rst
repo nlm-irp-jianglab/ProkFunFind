@@ -60,16 +60,16 @@ This file can be imported into programs like Geneious for subsequent visualiatio
 
 .. code-block::
 
-    GUT_GENOME143137_1	GuFunFind	CDS	187675	188575	.	-	.	ID=GUT_GENOME143137_00182;Name=garR;Parent=Cl_0;Target=ecoli_garR 2 294;pct_identity=52.203;evalue=3.8e-104
-    GUT_GENOME143137_2	GuFunFind	CDS	38455	39622	.	+	.	ID=GUT_GENOME143137_00419;Name=garD;Parent=Cl_0;Target=ecoli_garD 121 501;pct_identity=30.208;evalue=2.39e-52
-    GUT_GENOME143137_2	GuFunFind	CDS	296187	297321	.	+	.	ID=GUT_GENOME143137_00648;Name=gudA;Parent=Cl_1;Target=cclostridioforme_gudA 45 338;pct_identity=28.041;evalue=1.34e-36
-    GUT_GENOME143137_2	GuFunFind	CDS	297794	299288	.	+	.	ID=GUT_GENOME143137_00650;Name=gudB;Parent=Cl_1;Target=cclostridioforme_gudB 16 503;pct_identity=41.837;evalue=3.93e-117
-    GUT_GENOME143137_3	GuFunFind	CDS	239793	240903	.	+	.	ID=GUT_GENOME143137_00901;Name=gudA;Parent=Cl_0;Target=cclostridioforme_gudA 45 271;pct_identity=25.2;evalue=1.78e-12
-    GUT_GENOME143137_3	GuFunFind	CDS	241398	242916	.	+	.	ID=GUT_GENOME143137_00903;Name=gudB;Parent=Cl_0;Target=cclostridioforme_gudB 18 498;pct_identity=34.647;evalue=2.31e-92
-    GUT_GENOME143137_3	GuFunFind	CDS	262245	263112	.	+	.	ID=GUT_GENOME143137_00918;Name=garL;Parent=Cl_1;Target=cclostridioforme_GarL 5 289;pct_identity=22.378;evalue=4.03e-21
-    GUT_GENOME143137_4	GuFunFind	CDS	87018	88551	.	-	.	ID=GUT_GENOME143137_01073;Name=gudB;Parent=Cl_0;Target=cclostridioforme_gudB 18 507;pct_identity=36.531;evalue=6.07e-95
-    GUT_GENOME143137_4	GuFunFind	CDS	89063	90152	.	-	.	ID=GUT_GENOME143137_01075;Name=gudA;Parent=Cl_0;Target=cclostridioforme_gudA 47 301;pct_identity=26.515;evalue=1.06e-15
-    GUT_GENOME143137_5	GuFunFind	CDS	36139	37639	.	-	.	ID=GUT_GENOME143137_01304;Name=gudB;Parent=Cl_0;Target=cclostridioforme_gudB 3 480;pct_identity=40.167;evalue=3.42e-120
+    GUT_GENOME143137_1	ProkFunFind	CDS	187675	188575	.	-	.	ID=GUT_GENOME143137_00182;Name=garR;Parent=Cl_0;Target=ecoli_garR 2 294;pct_identity=52.203;evalue=3.8e-104
+    GUT_GENOME143137_2	ProkFunFind	CDS	38455	39622	.	+	.	ID=GUT_GENOME143137_00419;Name=garD;Parent=Cl_0;Target=ecoli_garD 121 501;pct_identity=30.208;evalue=2.39e-52
+    GUT_GENOME143137_2	ProkFunFind	CDS	296187	297321	.	+	.	ID=GUT_GENOME143137_00648;Name=gudA;Parent=Cl_1;Target=cclostridioforme_gudA 45 338;pct_identity=28.041;evalue=1.34e-36
+    GUT_GENOME143137_2	ProkFunFind	CDS	297794	299288	.	+	.	ID=GUT_GENOME143137_00650;Name=gudB;Parent=Cl_1;Target=cclostridioforme_gudB 16 503;pct_identity=41.837;evalue=3.93e-117
+    GUT_GENOME143137_3	ProkFunFind	CDS	239793	240903	.	+	.	ID=GUT_GENOME143137_00901;Name=gudA;Parent=Cl_0;Target=cclostridioforme_gudA 45 271;pct_identity=25.2;evalue=1.78e-12
+    GUT_GENOME143137_3	ProkFunFind	CDS	241398	242916	.	+	.	ID=GUT_GENOME143137_00903;Name=gudB;Parent=Cl_0;Target=cclostridioforme_gudB 18 498;pct_identity=34.647;evalue=2.31e-92
+    GUT_GENOME143137_3	ProkFunFind	CDS	262245	263112	.	+	.	ID=GUT_GENOME143137_00918;Name=garL;Parent=Cl_1;Target=cclostridioforme_GarL 5 289;pct_identity=22.378;evalue=4.03e-21
+    GUT_GENOME143137_4	ProkFunFind	CDS	87018	88551	.	-	.	ID=GUT_GENOME143137_01073;Name=gudB;Parent=Cl_0;Target=cclostridioforme_gudB 18 507;pct_identity=36.531;evalue=6.07e-95
+    GUT_GENOME143137_4	ProkFunFind	CDS	89063	90152	.	-	.	ID=GUT_GENOME143137_01075;Name=gudA;Parent=Cl_0;Target=cclostridioforme_gudA 47 301;pct_identity=26.515;evalue=1.06e-15
+    GUT_GENOME143137_5	ProkFunFind	CDS	36139	37639	.	-	.	ID=GUT_GENOME143137_01304;Name=gudB;Parent=Cl_0;Target=cclostridioforme_gudB 3 480;pct_identity=40.167;evalue=3.42e-120
 
 
 json
@@ -167,7 +167,7 @@ pkl
 ====
 Pickle_ object of the output Genome object, which can be loaded to python for
 further analysis. This can be de-serialized using the python pickle module
-to access and interact with the genome object data. 
+to access and interact with the genome object data.
 
 .. _Pickle: https://docs.python.org/3/library/pickle.html
 
