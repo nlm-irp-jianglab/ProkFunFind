@@ -416,6 +416,9 @@ system
 #######
 
 Json formatted file that specify how the components are organized to perform a function.
+Json files have specific formatting requirements and it can sometimes be difficult to
+identify where formatting mistakes have been made in a file. It is recommended to
+use a JSON validator like the one found here: `JSON Lint <https://jsonlint.com/>`.
 
   .. literalinclude:: example.json
 
