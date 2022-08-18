@@ -9,7 +9,8 @@ from ProkFunFind.detect.emap_search.emap_filter import \
 
 def pipeline(config: dict,
              in_file: Union[str, IO],
-             basedir: Union[str, IO], OrthScore_dict: dict, q_list: dict
+             basedir: Union[str, IO], OrthScore_dict: dict, q_list: dict,
+             filter_dict: dict
              ) -> List[QueryResult]:
     """Run emapper COG analysis
 
@@ -49,7 +50,7 @@ def pipeline(config: dict,
 
     # 3. filter results based on evalue and thresholds
     filter_res = [emapper_filter(
-        config=config, qres=i, basedir=basedir) for i in tmp_list]
+        config=config, qres=i, basedir=basedir, filter_dict=filter_dict) for i in tmp_list]
 
 
     # 4. Append hits to overall q_list

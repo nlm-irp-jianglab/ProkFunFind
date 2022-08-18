@@ -86,8 +86,7 @@ def check_gene_in_subsystem(system_dict,
     return (system_dict, status)
 
 
-def pipeline(system_file, genome_object, detect_tools):
-    system_dict = read_json(system_file)
+def pipeline(system_dict, genome_object, detect_tools):
     system_dict, status = check_gene_in_subsystem(system_dict,
                                                   genomeObject=genome_object,
                                                   detect_tools=detect_tools)

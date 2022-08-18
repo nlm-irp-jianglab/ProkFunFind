@@ -1,4 +1,4 @@
-import json
+import yaml
 from typing import Any, Dict
 
 from ProkFunFind.read import Genome
@@ -11,13 +11,13 @@ def export_pickle(genomeObj: Genome, outprefix: str) -> None:
     handle.close()
 
 
-def export_json(variable: Dict[str, Any], outprefix: str) -> None:
-    """TODO: Docstring for export_json.
+def export_yaml(variable: Dict[str, Any], outprefix: str) -> None:
+    """TODO: Docstring for export_yaml.
     :variable: TODO
     :returns: TODO
     """
-    with open(outprefix + ".json", "w") as outfile:
-        json.dump(variable, outfile, indent=4)
+    with open(outprefix + ".yaml", "w") as outfile:
+        yaml.dump(variable, outfile, sort_keys=False)
 
 
 def export_gene_tab(
@@ -144,6 +144,6 @@ def report_all(system_dict: Dict[str, Any],
                cluster_tool: str) -> None:
 
     export_pickle(genomeObj, outprefix)
-    export_json(system_dict, outprefix)
+    export_yaml(system_dict, outprefix)
     export_gene_tab(genomeObj, detect_tools, cluster_tool, outprefix)
     export_gene_gff(genomeObj, detect_tools, cluster_tool, outprefix)

@@ -3,6 +3,7 @@ import logging
 import os
 from collections import defaultdict
 import csv
+import operator
 from typing import Dict, IO, List, Union, AnyStr
 
 
@@ -65,3 +66,40 @@ def read2orthoDict(ortho_pair_file: Union[str, IO]) -> Dict:
         else:
             search_set.add(i)
     return OrthScore_dict, search_set
+
+def parse_system_yaml(system_dict):
+    ops = {
+        '<=': operator.le,
+        '>=': operator.ge,
+        '>': operator.gt,
+        '<': operator.lt,
+        '==': operator.eq,
+        '!=': operator.ne
+    }
+    search_set = set()
+    OrthScore_dict  = defaultdict(dict)
+    filter_dict = defaultdict(lambda: defaultdict(list))
+    curr_quer = ""
+    def recursedict(d, curr_quer):
+        for k,v in d.items():
+            if k == "queryID":
+                curr_quer = v
+            if isinstance(v, dict):
+                recursedict(v, curr_quer)
+            elif k == 'terms':
+                    for gene in v:
+                        search_set.add(gene['method'])
+                        method = gene['method']
+                        OrthScore_dict[method][gene['id']] = {'queryID': curr_quer, 'precision': gene.get('precision', 1)}
+                        if 'ident_pct' in gene:
+                            filter_dict[method][gene['id']].append({'attr': 'ident_pct', 'cpfun': ops['>='], 'value': float(gene['ident_pct'])})
+                        if 'evalue' in gene:
+                            filter_dict[method][gene['id']].append({'attr': 'evalue', 'cpfun': ops['<='], 'value':float(gene['evalue'])})
+                        if 'threshold' in gene:
+                            filter_dict[method][gene['id']].append({'attr': 'threshold', 'cpfun': ops['=='], 'value':float(gene['threshold'])})
+            elif isinstance(v, list):
+                for w in v:
+                    recursedict(w, curr_quer)
+
+    recursedict(system_dict, curr_quer)
+    return OrthScore_dict, search_set, filter_dict

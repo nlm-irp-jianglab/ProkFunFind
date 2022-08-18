@@ -13,7 +13,8 @@ def pipeline(config: dict,
              outprefix: str,
              basedir: str,
              OrthScore_dict: dict,
-             q_list: dict) -> List[QueryResult]:
+             q_list: dict,
+             filter_dict: dict) -> List[QueryResult]:
     """Run HMMER based search
 
        Arguments:
@@ -28,16 +29,16 @@ def pipeline(config: dict,
            q_list: An updated list of QueryResults
     """
     # 1. Read the query files
-    query_path = check_path_existence(basedir+config['hmmer']['hmmer.query'])
+    query_path = check_path_existence(basedir+config['hmmer']['hmmer_query'])
 
     tool_format_dict = dict({'hmmsearch': "hmmsearch3-domtab",
                              'hmmscan': "hmmscan3-domtab",
                              'phmmer': "phmmer3-domtab"})
-    outfmt = tool_format_dict[config['hmmer']['hmmer.exec']]
+    outfmt = tool_format_dict[config['hmmer']['hmmer_exec']]
 
     # 2. Format the hmmer command
     cmd = [
-        config['hmmer']['hmmer.exec'],
+        config['hmmer']['hmmer_exec'],
         "-o",
         outprefix + ".out",
         "--tblout",
@@ -48,9 +49,9 @@ def pipeline(config: dict,
         protein_file
         ]
 
-    if config['hmmer'].get('hmmer.threads'):
+    if config['hmmer'].get('hmmer_threads'):
         cmd.insert(1, "--cpu")
-        cmd.insert(2, config['hmmer']['hmmer.threads'])
+        cmd.insert(2, str(config['hmmer']['hmmer_threads']))
 
     # 3. run the hmmer command
     res = subprocess.run(cmd)
@@ -61,7 +62,7 @@ def pipeline(config: dict,
     qresults = SearchIO.parse(outprefix + ".domtblout", outfmt)
 
     filter_res = [hmmer_filter(
-        config=config, qres=i, basedir=basedir) for i in qresults]
+        config=config, qres=i, basedir=basedir, filter_dict=filter_dict) for i in qresults]
     tmp_list = [i for i in filter_res if len(i) > 0]
 
     # 5. Add the queries to the overall q_list

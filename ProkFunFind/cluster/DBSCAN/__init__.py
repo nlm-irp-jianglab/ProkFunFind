@@ -59,9 +59,9 @@ def pipeline(config: dict, genome_object, detect_tools: set) -> Genome:
         if len(poslist) >= 1:
             cl = DBSCANCluster(pos=poslist,
                                weight=weightlist,
-                               eps=float(config['DBSCAN']['cluster.eps']),
+                               eps=float(config['DBSCAN']['cluster_eps']),
                                min_samples=int(config['DBSCAN'][
-                                                 'cluster.min_samples']))
+                                                 'cluster_min_samples']))
 
             for gene, cl_label in zip(genelist, cl):
                 if cl_label == -1:

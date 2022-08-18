@@ -6,7 +6,7 @@ from Bio.SearchIO._model.query import QueryResult
 from ProkFunFind.toolkit.utility import check_path_existence
 
 
-def blast_filter(config: dict, qres: QueryResult, basedir=str) -> QueryResult:
+def blast_filter(config: dict, qres: QueryResult, basedir: str, filter_dict: dict) -> QueryResult:
     """Function to filter blast query results
 
        Arguments:
@@ -34,21 +34,21 @@ def blast_filter(config: dict, qres: QueryResult, basedir=str) -> QueryResult:
         '!=': operator.ne
     }
 
-    filter_dict = defaultdict(list)
-
-    # if there is section filter.local and that section has filter_file,
-    # the info of the filter_file will be passed to  filter_dict;
-    # Otherwise filter_dict remains empty
-    if config.has_option("blast", "filter_file"):
-        hit_filter_file = check_path_existence(
-            basedir + config['blast']['filter_file'])
-        # check if file exist or empty
-        with open(hit_filter_file) as filter_file:
-            for row in csv.reader(filter_file, delimiter="\t"):
-                filter_dict[row[0]].append(
-                        {"attr": row[1],
-                         "cpfun": ops[row[2]],
-                         "value": float(row[3])})
+    # filter_dict = defaultdict(list)
+    #
+    # # if there is section filter.local and that section has filter_file,
+    # # the info of the filter_file will be passed to  filter_dict;
+    # # Otherwise filter_dict remains empty
+    # if config["blast"].get("filter_file"):
+    #     hit_filter_file = check_path_existence(
+    #         basedir + config['blast']['filter_file'])
+    #     # check if file exist or empty
+    #     with open(hit_filter_file) as filter_file:
+    #         for row in csv.reader(filter_file, delimiter="\t"):
+    #             filter_dict[row[0]].append(
+    #                     {"attr": row[1],
+    #                      "cpfun": ops[row[2]],
+    #                      "value": float(row[3])})
 
     def hsp_filter_func(hsp):
         """Helper function to filter high scoring pairs
@@ -61,8 +61,10 @@ def blast_filter(config: dict, qres: QueryResult, basedir=str) -> QueryResult:
 
         """
         status = True
+
         if hsp.hit_id in filter_dict:
             for one in filter_dict[hsp.hit_id]:
+                print(one)
                 if one['cpfun'](getattr(hsp, one['attr']), one['value']):
                     pass
                 else:

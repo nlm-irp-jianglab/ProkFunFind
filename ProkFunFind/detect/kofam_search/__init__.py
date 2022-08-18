@@ -9,7 +9,7 @@ from ProkFunFind.detect.kofam_search.kofam_filter import \
 def pipeline(config: dict,
              in_file: Union[str, IO],
              basedir, OrthScore_dict: dict, q_list: dict,
-             ) -> List[QueryResult]:
+             filter_dict: dict) -> List[QueryResult]:
     """Run kofamscan analysis
 
        Arguments:
@@ -47,7 +47,7 @@ def pipeline(config: dict,
 
     # 3. filter results based on evalue and thresholds
     filter_res = [kofam_filter(config=config,
-                               qres=i, basedir=basedir) for i in tmp_list]
+                               qres=i, basedir=basedir, filter_dict=filter_dict) for i in tmp_list]
 
 
     # 4. Append significant hits to q_list

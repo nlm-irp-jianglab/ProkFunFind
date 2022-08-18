@@ -14,7 +14,8 @@ def pipeline(config: dict,
              outprefix: str,
              basedir: str,
              q_list: dict,
-             OrthScore_dict: dict) -> List[QueryResult]:
+             OrthScore_dict: dict,
+             filter_dict: dict) -> List[QueryResult]:
     """Main pipeline function for performing blast-based searches
 
        Arguments:
@@ -31,24 +32,24 @@ def pipeline(config: dict,
     """
 
     # 1. Check for query file
-    query_path = check_path_existence(basedir+config['blast']['blast.query'])
+    query_path = check_path_existence(basedir+config['blast']['blast_query'])
 
     # 2. Set up blast command.
     cmd = [
-        config['blast']['blast.exec'],
+        config['blast']['blast_exec'],
         "-query",
         protein_file,
         "-db",
         query_path,
         "-evalue",
-        config['blast'].get('blast.evalue', '0.01'),
+        config['blast'].get('blast_evalue', '0.01'),
         "-outfmt",
         "6",
         "-out",
-        outprefix + ".blast.m6"]
+        outprefix + ".blast_m6"]
 
-    if config['blast'].get('blast.threads'):
-        cmd += ["-num_threads", config['blast']['blast.threads']]
+    if config['blast'].get('blast_threads'):
+        cmd += ["-num_threads", str(config['blast']['blast_threads'])]
 
     # 3. run command line
     res = subprocess.run(cmd)
@@ -56,12 +57,12 @@ def pipeline(config: dict,
         raise RuntimeError("Failed to run: {}".format(" ".join(cmd)))
 
     # 4. read the output from previous step
-    qresults = SearchIO.parse(outprefix + ".blast.m6", "blast-tab")
+    qresults = SearchIO.parse(outprefix + ".blast_m6", "blast-tab")
     tmp_list = [i for _, i in SearchIO.to_dict(qresults).items() if len(i) > 0]
 
     # 5. Apply blast filtering.
     filter_res = [blast_filter(
-        config=config, qres=i, basedir=basedir) for i in tmp_list]
+        config=config, qres=i, basedir=basedir, filter_dict=filter_dict) for i in tmp_list]
     res_list = [i for i in filter_res if len(i) > 0]
 
     for i in res_list:
