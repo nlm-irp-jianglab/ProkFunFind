@@ -66,7 +66,7 @@ def export_gene_gff(
 
                 if detect_tool == "blast":
                     f.write("{ct}\ProkFunFind\t{tp}\t{start}\t{end}" \
-                        "\t.\t{strand}\t.\tID={id};Name={queryID};" \
+                        "\t.\t{strand}\t.\tID={id};Name={geneID};" \
                         "ClusterID={cluster_ID};Target={Target};" \
                         "pct_identity={pct_identity};evalue={evalue}".format(
                         ct=gene.contig,
@@ -75,7 +75,7 @@ def export_gene_gff(
                         end=gene.location.end,
                         strand="+" if gene.strand == 1 else "-",
                         id=gene.id,
-                        queryID=qry.queryID,
+                        geneID=qry.geneID,
                         cluster_ID=cluster_annot,
                         Target=hsp.hit_id + " " +
                         str(hsp.hit_start) + " " + str(hsp.hit_end),
@@ -103,7 +103,7 @@ def export_gene_gff(
                         or detect_tool == "kofamscan" \
                         or detect_tool == "emapper":
                     f.write("{ct}\tProkFunFind\t{tp}\t{start}\t{end}\t." \
-                            "\t{strand}\t.\tID={id};Name={queryID};" \
+                            "\t{strand}\t.\tID={id};Name={geneID};" \
                             "ClusterID={cluster_ID};" \
                             "Target={Target}{evalue}".format(
                         ct=gene.contig,
@@ -112,7 +112,7 @@ def export_gene_gff(
                         end=gene.location.end,
                         strand="+" if gene.strand == 1 else "-",
                         id=gene.id,
-                        queryID=qry.queryID,
+                        geneID=qry.geneID,
                         cluster_ID=cluster_annot,
                         Target=hsp.hit_id,
                         evalue=";evalue=" + str(hsp.evalue)
