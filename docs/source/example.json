@@ -6,11 +6,11 @@
             "presence": "essential",
             "components": [
                 {
-                    "orthoID": "g1",
+                    "geneID": "g1",
                     "presence": "essential"
                 },
                 {
-                    "orthoID": "g2",
+                    "geneID": "g2",
                     "presence": "essential"
                 }
             ],
@@ -18,11 +18,11 @@
                 "name": "B2",
                 "components": [
                     {
-                        "orthoID": "g3",
+                        "geneID": "g3",
                         "presence": "essential"
                     },
                     {
-                        "orthoID": "g4",
+                        "geneID": "g4",
                         "presence": "nonessential"
                     }
                 ]
@@ -33,11 +33,11 @@
             "presence": "nonessential",
             "components": [
                 {
-                    "orthoID": "g5",
+                    "geneID": "g5",
                     "presence": "essential"
                 },
                 {
-                    "orthoID": "g6",
+                    "geneID": "g6",
                     "presence": "nonessential"
                 }
             ]

@@ -9,7 +9,7 @@ from ProkFunFind.detect.kofam_search.kofam_filter import \
 def pipeline(config: dict,
              in_file: Union[str, IO],
              basedir, OrthScore_dict: dict, q_list: dict,
-             ) -> List[QueryResult]:
+             filter_dict: dict) -> List[QueryResult]:
     """Run kofamscan analysis
 
        Arguments:
@@ -40,17 +40,15 @@ def pipeline(config: dict,
             max_dict = OrthScore_dict[i.hits[0].id]
 
             # set the QueryResult attributes
-            setattr(i, "queryID", max_dict['queryID'])
-            setattr(i, "queryID_weight", max_dict['precision'])
+            setattr(i, "geneID", max_dict['geneID'])
+            setattr(i, "geneID_weight", max_dict['precision'])
             setattr(i, "detect_tool", "kofamscan")
             tmp_list.append(i)
 
     # 3. filter results based on evalue and thresholds
-    if config['filter']:
-        filter_res = [kofam_filter(config=config,
-                                   qres=i, basedir=basedir) for i in tmp_list]
-    else:
-        filter_res = tmp_list
+    filter_res = [kofam_filter(config=config,
+                               qres=i, basedir=basedir, filter_dict=filter_dict) for i in tmp_list]
+
 
     # 4. Append significant hits to q_list
     for i in filter_res:

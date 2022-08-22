@@ -1,4 +1,4 @@
-import json
+import yaml
 from typing import Any, Dict
 
 from ProkFunFind.read import Genome
@@ -11,13 +11,13 @@ def export_pickle(genomeObj: Genome, outprefix: str) -> None:
     handle.close()
 
 
-def export_json(variable: Dict[str, Any], outprefix: str) -> None:
-    """TODO: Docstring for export_json.
+def export_yaml(variable: Dict[str, Any], outprefix: str) -> None:
+    """TODO: Docstring for export_yaml.
     :variable: TODO
     :returns: TODO
     """
-    with open(outprefix + ".json", "w") as outfile:
-        json.dump(variable, outfile, indent=4)
+    with open(outprefix + ".yaml", "w") as outfile:
+        yaml.dump(variable, outfile, sort_keys=False)
 
 
 def export_gene_tab(
@@ -65,8 +65,8 @@ def export_gene_gff(
                         gene, cluster_tool) else "NA"
 
                 if detect_tool == "blast":
-                    f.write("{ct}\tGuFunFind\t{tp}\t{start}\t{end}" \
-                        "\t.\t{strand}\t.\tID={id};Name={queryID};" \
+                    f.write("{ct}\ProkFunFind\t{tp}\t{start}\t{end}" \
+                        "\t.\t{strand}\t.\tID={id};Name={geneID};" \
                         "ClusterID={cluster_ID};Target={Target};" \
                         "pct_identity={pct_identity};evalue={evalue}".format(
                         ct=gene.contig,
@@ -75,7 +75,7 @@ def export_gene_gff(
                         end=gene.location.end,
                         strand="+" if gene.strand == 1 else "-",
                         id=gene.id,
-                        queryID=qry.queryID,
+                        geneID=qry.geneID,
                         cluster_ID=cluster_annot,
                         Target=hsp.hit_id + " " +
                         str(hsp.hit_start) + " " + str(hsp.hit_end),
@@ -102,8 +102,8 @@ def export_gene_gff(
                         or detect_tool == "hmmer" \
                         or detect_tool == "kofamscan" \
                         or detect_tool == "emapper":
-                    f.write("{ct}\tGuFunFind\t{tp}\t{start}\t{end}\t." \
-                            "\t{strand}\t.\tID={id};Name={queryID};" \
+                    f.write("{ct}\tProkFunFind\t{tp}\t{start}\t{end}\t." \
+                            "\t{strand}\t.\tID={id};Name={geneID};" \
                             "ClusterID={cluster_ID};" \
                             "Target={Target}{evalue}".format(
                         ct=gene.contig,
@@ -112,7 +112,7 @@ def export_gene_gff(
                         end=gene.location.end,
                         strand="+" if gene.strand == 1 else "-",
                         id=gene.id,
-                        queryID=qry.queryID,
+                        geneID=qry.geneID,
                         cluster_ID=cluster_annot,
                         Target=hsp.hit_id,
                         evalue=";evalue=" + str(hsp.evalue)
@@ -144,6 +144,6 @@ def report_all(system_dict: Dict[str, Any],
                cluster_tool: str) -> None:
 
     export_pickle(genomeObj, outprefix)
-    export_json(system_dict, outprefix)
+    export_yaml(system_dict, outprefix)
     export_gene_tab(genomeObj, detect_tools, cluster_tool, outprefix)
     export_gene_gff(genomeObj, detect_tools, cluster_tool, outprefix)

@@ -172,7 +172,8 @@ def emapper_tab_parse(handle, **kwargs):
 
 def emapper_filter(config: dict,
                     qres: QueryResult,
-                    basedir=str) -> QueryResult:
+                    basedir: str,
+                    filter_dict: dict) -> QueryResult:
     """Handle filtering of emapper query results
 
        Arguments:
@@ -184,7 +185,7 @@ def emapper_filter(config: dict,
            filtered QureyResult object
     """
     # Parse global evalue and threhsold values
-    global_evalue = float(config['filter']['evalue'])
+    global_evalue = float(config['emapper'].get('evalue', 0.01))
 
     ops = {
         '<=': operator.le,
@@ -195,20 +196,6 @@ def emapper_filter(config: dict,
         '!=': operator.ne
     }
 
-    filter_dict = defaultdict(list)
-
-    # Parse local filter settings for specific KOs
-    if config.has_option("filter", "filter_file"):
-        hit_filter_file = check_path_existence(
-            basedir + config['filter']['filter_file'])
-        with open(hit_filter_file) as filter_file:
-            for row in csv.reader(filter_file, delimiter="\t"):
-                filter_dict[row[0]].append(
-                    {'attr': row[1], 'cpfun': ops[row[2]],
-                     'value': float(row[3])})
-
-    # Handle filtering by local and global thresholds.
-    # Only evalue filtering supported.
     def hsp_filter_func(hsp):
         status = True
         if hsp.hit_id in filter_dict:

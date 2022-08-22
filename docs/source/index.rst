@@ -3,37 +3,53 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
+#######################################
 Welcome to ProkFunFind's documentation!
-======================================
-  ProkFunFind is a pipeline that can be used to predict genes related to function of interest.
-  Criteria for function detection include presence of detected genes, and genomic co-localization.
+#######################################
+ProkFunFind is a pipeline that can be used to predict genes related to function of interest.
+Criteria for function detection include presence of detected genes, and genomic co-localization.
 
-  **In order to identify the correct genes, the user needs:**
 
-   - Select the correct method and filter parameters to detect genes
+.. image:: tutorial/figures/main-panel-figure.png
+   :width: 600
 
-     - Blast
-     - Interproscan(Preconfigured)
-     - Hmmer
-     - ...
 
-   - Choose the correct bait sequences/domain signatures/HMM protein profiles for the components of interest
-   - Specify the definition of gene cluster and cluster method
+In order to identify genes using ProkFunFind, the user needs:
 
-     - DBSCAN
-     - ...
+#. Select the correct search approaches and filtering paramters to identify your genes of interest
 
-   - Define the gene components for the function system in JSON format
+   #. Protein sequences
 
+   #. Profile HMMs
+
+   #. COGs
+
+   #. KOs
+
+   #. Protein domain signatures
+
+#. Define the gene components for the function system in JSON format
+
+   #. Define the essential and non essential components of the overall function of interest.
+
+#. Perform the search for the functions in your genomes of interest using ProkFunFind
+
+#. Analyze the search results
+
+  #. Assess completness of function in different organisms
+
+  #. Identify potential gene clusters
+
+  #. Analyze species distribution
 
 .. toctree::
    :maxdepth: 2
    :caption: Contents:
+   :glob:
 
    installation
    quickstart
    inputs
    outputs
-   run_parallel
-   todo
-   tutorial/
+   ebi-genomes
+   tutorial/1-intro

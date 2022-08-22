@@ -9,8 +9,8 @@ from ProkFunFind.read import Genome
 def DBSCANCluster(
         pos: List[int],
         weight: List[float] = None,
-        eps: float = 2,
-        min_samples: float = 0.9) -> List[int]:
+        eps: int = 2,
+        min_samples: int = 1) -> List[int]:
     """Wrapper function to run DBSCAN clustering
 
        Arguments:
@@ -53,15 +53,15 @@ def pipeline(config: dict, genome_object, detect_tools: set) -> Genome:
                             getattr(
                                 gene,
                                 detect_tool),
-                            "queryID_weight"))
+                            "geneID_weight"))
 
         # if there is a hit in the contig, run DBSCANCluster
         if len(poslist) >= 1:
             cl = DBSCANCluster(pos=poslist,
                                weight=weightlist,
-                               eps=float(config['DBSCAN']['cluster.eps']),
-                               min_samples=float(config['DBSCAN'][
-                                                 'cluster.min_samples']))
+                               eps=float(config['DBSCAN']['cluster_eps']),
+                               min_samples=int(config['DBSCAN'][
+                                                 'cluster_min_samples']))
 
             for gene, cl_label in zip(genelist, cl):
                 if cl_label == -1:

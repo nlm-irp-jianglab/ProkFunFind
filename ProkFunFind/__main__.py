@@ -4,6 +4,8 @@ import os
 import sys
 import importlib
 import logging
+import multiprocessing
+import yaml
 
 from typing import Callable, Tuple, Dict
 from configparser import ConfigParser
@@ -14,7 +16,7 @@ from ProkFunFind import report
 from ProkFunFind.read import Genome, GetGenomeFromGFF
 from ProkFunFind.toolkit.utility import (find_file_in_folder,
                                          check_path_existence,
-                                         read2orthoDict)
+                                         read2orthoDict, parse_system_yaml)
 from ProkFunFind.annotate.genomes import parse_gtab
 
 logging.basicConfig(level=logging.DEBUG)
@@ -43,24 +45,25 @@ def module_name(arg: str) -> str:
 
 
 # Write a funtion pipeline for function of interest for a individual genome
-def retrieve_function_pipeline(database: str, fun_name: str, args) -> Callable:
+def retrieve_function_pipeline(fun_name: str, args) -> Callable:
 
     # 1. Parse configuration files and search files
     # 1.1 Obtain the configuration and check the exec as well as the database
     # required
+    fun_path = fun_name.split('/')
     logging.info("Checking configuration files")
-    path_to_fun = database.rstrip("/") + "/" + fun_name + "/"
+    path_to_fun = '/'.join(fun_path[:-1])+'/'
 
     # 1.2 check the existance of the function
     if not os.path.exists(path_to_fun):
         sys.exit("Function {} doesn't exist in GutFun".format(fun_name))
 
     # 1.3 check the existance of function configuration
-    config = ConfigParser()
-    config_path = path_to_fun + "config.ini"
-    config_path = check_path_existence(config_path)
+    config_path = check_path_existence(fun_name)
 
-    config.read(config_path)
+    config, system = yaml.safe_load_all(open(fun_name))
+
+    OrthScore_dict, search_approaches, filter_dict = parse_system_yaml(system)
 
     # 1.4 Parse genome search table
     search_list = []
@@ -69,12 +72,6 @@ def retrieve_function_pipeline(database: str, fun_name: str, args) -> Callable:
         # fna_path = None
         prefix = p+"/"+genome
         search_list.append(prefix)
-
-    # 1.5 Parse ortholog search table
-    ortho_file = check_path_existence(path_to_fun +
-                                      config['main']['search_terms'])
-    OrthScore_dict, search_approaches \
-        = read2orthoDict(ortho_pair_file=ortho_file)
 
     # 2. Check for annotation file existence for all requested searches
     for detect_tool in search_approaches:
@@ -94,13 +91,10 @@ def retrieve_function_pipeline(database: str, fun_name: str, args) -> Callable:
                         config['emapper']['annot_suffix'])
 
     # 3. Set up clustering and parse system file
-    cluster_tool = config.get('main', 'cluster.tool')
+    cluster_tool = config['main']['cluster_tool']
 
     cluster_module = importlib.import_module(
         "ProkFunFind.cluster" + "." + module_name(cluster_tool), package=None)
-
-    system_file = path_to_fun + config.get('main', 'system.file')
-    system_file = check_path_existence(system_file)
 
     # Function to run analysis on a given genome
     def function_analysis(genome_prefix: str,
@@ -115,6 +109,8 @@ def retrieve_function_pipeline(database: str, fun_name: str, args) -> Callable:
         outprefix = os.path.abspath(outprefix)
         out_base = os.path.basename(outprefix)
         out_dir = os.path.dirname(outprefix)
+        genome_name = genome_prefix.split("/")[len(genome_prefix.split("/"))-1]
+
         if not out_base and out_dir:
             sys.exit(
                      "Please provide prefix of output file, Not directory \
@@ -169,7 +165,8 @@ def retrieve_function_pipeline(database: str, fun_name: str, args) -> Callable:
                 in_file=kofam_file,
                 basedir=path_to_fun,
                 OrthScore_dict=OrthScore_dict['kofamscan'],
-                q_list=detect_list)
+                q_list=detect_list,
+                filter_dict=filter_dict['kofamscan'])
         if "emapper" in search_approaches:
             detect_module = importlib.import_module(
                 "ProkFunFind.detect" + "." +
@@ -181,7 +178,8 @@ def retrieve_function_pipeline(database: str, fun_name: str, args) -> Callable:
                 in_file=emap_file,
                 basedir=path_to_fun,
                 OrthScore_dict=OrthScore_dict['emapper'],
-                q_list=detect_list)
+                q_list=detect_list,
+                filter_dict=filter_dict['emapper'])
 
         if 'blast' in search_approaches:
             detect_module = importlib.import_module(
@@ -192,10 +190,11 @@ def retrieve_function_pipeline(database: str, fun_name: str, args) -> Callable:
             detect_list = detect_module.pipeline(
                 config=config,
                 protein_file=faa_file,
-                outprefix=outprefix,
+                outprefix=outprefix+'.'+genome_name,
                 basedir=path_to_fun,
                 OrthScore_dict=OrthScore_dict['blast'],
-                q_list=detect_list)
+                q_list=detect_list,
+                filter_dict=filter_dict['blast'])
         if 'hmmer' in search_approaches:
             detect_module = importlib.import_module(
                 "ProkFunFind.detect" + "." +
@@ -205,10 +204,11 @@ def retrieve_function_pipeline(database: str, fun_name: str, args) -> Callable:
             detect_list = detect_module.pipeline(
                 config=config,
                 protein_file=faa_file,
-                outprefix=outprefix,
+                outprefix=outprefix+'.'+genome_name,
                 basedir=path_to_fun,
                 OrthScore_dict=OrthScore_dict['hmmer'],
-                q_list=detect_list)
+                q_list=detect_list,
+                filter_dict=filter_dict['hmmer'])
 
         # Attach search results to genome object
         for query in detect_list:
@@ -225,9 +225,8 @@ def retrieve_function_pipeline(database: str, fun_name: str, args) -> Callable:
         # related genes
         logging.info("Summarizing function presence and genes")
         (system_dict, status, genomeObj) = examine.pipeline(
-            system_file=system_file, genome_object=genomeObj,
+            system_dict=system, genome_object=genomeObj,
             detect_tools=search_approaches)
-        genome_name = genome_prefix.split("/")[len(genome_prefix.split("/"))-1]
         report.report_all(
             system_dict=system_dict,
             status=status,
@@ -238,7 +237,7 @@ def retrieve_function_pipeline(database: str, fun_name: str, args) -> Callable:
 
         if status:
             print(
-                "Detected function:{fun_name} in genome {genome_prefix}\n{mp}" \
+                "Detected function: {fun_name} in genome {genome_prefix}\n{mp}" \
                 " out of {m} essential components present\n{ap} out of {a}" \
                 " nonessential components present ".format(
                     genome_prefix=genome_prefix,
@@ -249,7 +248,7 @@ def retrieve_function_pipeline(database: str, fun_name: str, args) -> Callable:
                     a=system_dict['completeness']['nonessential']))
         else:
             print(
-                "Failed to detect function:{fun_name} in" \
+                "Failed to detect function: {fun_name} in" \
                 " genome {genome_prefix}\n{mp} out of {m} essential" \
                 " components present\n{ap} out of {a} nonessential" \
                 " components present".format(
@@ -265,31 +264,25 @@ def retrieve_function_pipeline(database: str, fun_name: str, args) -> Callable:
 
 def main_individual(args):
     detect_fun, search_list = retrieve_function_pipeline(
-        database=args.database, fun_name=args.fun_name, args=args)
+        fun_name=args.fun_name, args=args)
 
+    # Process args.processes number of genomes at the same time.
+    p = multiprocessing.Pool(int(args.processes))
+    process_list = []
     for prefix in search_list:
-        detect_fun(genome_prefix=prefix, outprefix=args.outprefix)
+        p.apply_async(detect_fun(genome_prefix=prefix,
+            outprefix=args.outprefix))
+    p.close()
+    p.join()
 
 
 def main():
     parser = ArgumentParser(
-        description="Identify genes related function of interest")
-    # subparsers = parser.add_subparsers(dest="command")
-
-    # parser_rep = subparsers.add_parser(
-        # "rep", help="Analyze an individual genome")
-
-    parser.add_argument(
-        "-b",
-        "--databasedir",
-        help="The base dir of function",
-        required=True,
-        dest="database",
-        metavar="")
+        description="Identify genes related functions of interest")
     parser.add_argument(
         "-f",
         "--function",
-        help="Name of the function",
+        help="Path to configuration file",
         required=True,
         dest="fun_name",
         metavar="")
@@ -301,6 +294,14 @@ def main():
         dest="outprefix",
         metavar="")
     parser.add_argument(
+        "-p",
+        "--processes",
+        help="Number of genomes to process concurrently (default=1)",
+        required=False,
+        default=1,
+        metavar="")
+    parser.add_argument(
+        "-g",
         "--gtab",
         help="Table of genomes to search",
         required=True,

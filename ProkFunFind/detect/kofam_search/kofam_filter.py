@@ -145,11 +145,11 @@ def kofam_tab_parse(handle, **kwargs):
         yield from generator
 
 
-def kofam_filter(config: dict, qres: QueryResult, basedir) -> QueryResult:
+def kofam_filter(config: dict, qres: QueryResult, basedir: str, filter_dict: dict) -> QueryResult:
     """Handle filtering of kofamscan query results"""
     # Parse global evalue and threhsold values
-    global_evalue = float(config['filter'].get('evalue', 1e-3))
-    global_threshold = float(config['filter'].get('threshold', 1))
+    global_evalue = float(config['kofamscan'].get('evalue', 0.01))
+    global_threshold = float(config['kofamscan'].get('threshold', 1))
 
     ops = {
         '<=': operator.le,
@@ -159,21 +159,7 @@ def kofam_filter(config: dict, qres: QueryResult, basedir) -> QueryResult:
         '==': operator.eq,
         '!=': operator.ne
     }
-
-    filter_dict = defaultdict(list)
-
-    # Parse local filter settings for specific KOs
-    if config.has_option("filter", "filter_file"):
-        hit_filter_file = check_path_existence(basedir +
-                                               config['filter']['filter_file'])
-        with open(hit_filter_file) as filter_file:
-            for row in csv.reader(filter_file, delimiter="\t"):
-                filter_dict[row[0]].append(
-                    {'attr': row[1],
-                     'cpfun': ops[row[2]],
-                     'value': float(row[3])})
-
-    # Handle filtering by local and global thresholds
+    
     def hsp_filter_func(hsp):
         status = True
         if hsp.hit_id in filter_dict:

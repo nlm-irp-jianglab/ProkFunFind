@@ -7,409 +7,424 @@
 Input dataset
 *************
 
-====================
+
 Command-line options
-====================
+####################
 
   .. literalinclude:: help.txt
 
 
-Single genome mode(``rep``)
-===========================
+A typical ProkFunFind command looks like the following::
 
-  ::
+   prokfunfind -f queries/fun/config.yaml -g ./genome-list.tsv -o ./out/search-out.
 
-    $ prokfunfind.py rep -h
-    > usage: prokfunfind.py rep [-h] -b  -f  -g  -o
-    > 
-    > optional arguments:
-    >   -h, --help            show this help message and exit
-    >   -b , --databasedir    The base dir of function
-    >   -f , --function       Name of the function
-    >   -g , --genomeprefix   The prefix of genome
-    >   -o , --outputprefix   The output prefix
+The options provide the following information:
+
+====================  =================================================================================================================
+Option                Description
+====================  =================================================================================================================
+-f, --function        This option is used to provide the path to the configuration yaml file.
+--------------------  -----------------------------------------------------------------------------------------------------------------
+-o, --outputprefix    This option is used to give the output file name prefix.
+--------------------  -----------------------------------------------------------------------------------------------------------------
+-g, --gtab            This option is used to provide the path to an input search genome table.
+====================  =================================================================================================================
 
 
-Pangenome mode(``pan``)
-=======================
 
-  ::
-
-    $ prokfunfind.py pan  -h
-    > usage: prokfunfind.py pan [-h] -b  -f  -p  -g  -d
-    > 
-    > optional arguments:
-    >   -h, --help           show this help message and exit
-    >   -b , --databasedir   The base dir of function
-    >   -f , --function      Name of the function
-    >   -p , --pangenome     The path to the pan-genome info dir
-    >   -g , --genomeset     the dir of gzipped gff file
-    >   -d , --outputdir     The output directory
-
-=============================
 Input genomic data sets
-=============================
+########################
 
-Single genome mode(``rep``)
-===========================
+The genome input data should be organized so that all of the files associated
+with one genome are in the same directory. Multiple genomes can be stored in the
+same directory.
 
-  ``-g`` should be followed by the prefix of genome ``${prefix}``.
-  
-  The folder should include: genome sequences(``${prefix}.fna``), protein sequences(``${prefix}.faa``), annotation(``${prefix}.gff``) and Interproscan xml(``${prefix}.xml``: optional; or Interproscan tsv ``${prefix}.tsv``).
-  
-  In the example below:
-  
-  ::
-  
-    $ ls input.folder/
-    > MGYG-HGUT-03390.faa   # protein sequences
-    > MGYG-HGUT-03390.fna   # genome sequences
-    > MGYG-HGUT-03390.gff   # annotations
-    > MGYG-HGUT-03390.xml   # Interproscan xml output (only need for interproscan)
-    > MGYG-HGUT-03390_InterProScan.tsv   # Interproscan tsv output (only need if Interproscan xml-formatted file is absent)
-  
-  The prefix should be ``input.folder/MGYG-HGUT-03390``
-  
-  If we need to analyze other genome(not included in the UHGG database),  we can use Prokka_ to annotate the genome.
-  
-  .. _Prokka: https://github.com/tseemann/prokka
+The directoy should include the genome sequences(``${prefix}.fna``),
+protein sequences(``${prefix}.faa``), annotation(``${prefix}.gff``) and
+associated annotation files.
+The annotation files can include InterProScan tsv annotations (``${prefix}.tsv``),
+KOfamScan tsv output (``${prefix}.kofam.tsv``), or EGGNog-mapper tsv output
+(``${prefix}.emapper.annotations``). Note not all annotation files are required
+to run ProkFunFind, for example if a search is being performed only using protein
+sequences and profile HMMs, then no additional annotation files are required (see
+below for more information).
 
+The annotation files can be generated using the EGGNog-mapper, KOFamScan, and
+InterProScan programs. The output form these programs does not require any
+additional formatting to be used by ProkFunFind. Example commands to generate
+the anntoation files are:
 
-Pangenome mode(``pan``)
-=======================
+.. code-block::
 
-  .. Attention::
-  
-     Not every representive species of UHGG has `pan-genome/` folder. Check before you run the command line. 
+  interproscan -t p -iprlookup --goterms --pathways -f tsv {fasta}.faa IPR
+
+  exec_annotation --tmp-dir {path to tmp directory} -f detail-tsv  \
+    -p {path to KofamScan profiles} -o {path to output file} {fasta}.faa
+
+  emapper.py -i $infile -o {prefix} --temp_dir {path to tmp directory} \
+    --data_dir {path to EGGNog-mapper data} --tax_scope {taxonomic scope} \
+    --override --cpu {CPUS} --output_dir {path to output}
 
 
-  ``-p`` should be followed by the path to the dir of pangenome information
+See the example below for the general format of the genome input files:
 
-  In the example below, ``-p`` should be followed by ``UHGG/uhgg_catalogue/MGYG-HGUT-014/MGYG-HGUT-01463/pan-genome/``.
+.. code-block::
 
-  ::
+  $ ls input.folder/
+  MGYG-HGUT-03390.faa   # protein sequences
+  MGYG-HGUT-03390.fna   # genome sequences
+  MGYG-HGUT-03390.gff   # annotations
+  MGYG-HGUT-03390_InterProScan.tsv   # Interproscan tsv output
+  MGYG-HGUT-03390.kofam.tsv   # KOfamScan annotations
+  MGYG-HGUT-03390.emapper.annotations   # EGGNog-mapper annotations
 
-    $ ls UHGG/uhgg_catalogue/MGYG-HGUT-014/MGYG-HGUT-01463/pan-genome/
-    > genes_presence-absence_locus.csv  # csv file that specify the pangenome information
-    > pan-genome.faa                    # protein sequences in the pangenome (required for blastp)
-    > pan-genome_InterProScan.tsv       # Interproscan tsv file (required for interproscan)
+The genomes input is provided to the `ProkFunFind` program through a tab separated
+two column table that includes the genome file prefixes and the paths to the
+genome directories. This table should be provided through the `--gtab` argument:
 
-  ``-g`` should be followed by the path to a dir of all gzipped gff files
+.. code-block::
 
-  In the example below, ``-g`` should be followed by ``UHGG/all_genomes/MGYG-HGUT-014/MGYG-HGUT-01463``
+  MGYG-HGUT-03390	./input.directory/
+  MGYG-HGUT-03391	./input.directory/
 
-  ::
-
-    $ tree UHGG/all_genomes/MGYG-HGUT-014/MGYG-HGUT-01463
-    > UHGG/all_genomes/MGYG-HGUT-014/MGYG-HGUT-01463
-    > └── genomes1
-    >     ├── GUT_GENOME096417.gff.gz
-    >     ├── GUT_GENOME179203.gff.gz
-    >     └── GUT_GENOME179220.gff.gz
-    > 
-    > 1 directory, 3 files
-
-=============================
-Input function configuration 
-=============================
-
-  ``-b`` should be followed by the data folder(``${data}``) that contains the configuration files for all functions.
-  
-  ::
-  
-    $ ls data/
-    > Flagellar                   # Where the configuration file for Flagellar stored
-    > Mucic_and_Saccharic_Acid    # Where the configuration file for Mucic_and_Saccharic_Acid stored
-  
-  
-  ``-f`` should be followed by the name of the function(``${function}``). 
-  
-  ::
-  
-    $ ls data/Mucic_and_Saccharic_Acid/
-    > bait.fa
-    > bait.fa.phr
-    > bait.fa.pin
-    > bait.fa.psq
-    > cluster.ini
-    > config.ini
-    > detect.ini
-    > filter.ini
-    > ortho_query_pair.tsv
-    > system.json
+Any number of genomes inputs can be provided in this file and ProkFunFind will
+run all searches on the provided genomes sequentially.
 
 
-.. Attention::
+Input function configuration
+############################
+``-f`` should be followed by the path to the configuration yaml file (``${function}``).
 
-   Please remember to make bait.fa file blastable by running command line `makeblastdb -in bait.fa -dbtype prot`
+.. code-block::
 
-
-=================================
-Configuration file specification
-=================================
-
-config.ini
-==========
-  
-  ::
-  
-    [main]
-    detect.tool    = blast
-    detect.config  = detect.ini
-    cluster.tool   = DBSCAN
-    cluster.config = cluster.ini
-    system.file    = system.json
-  
-  
-  
-  ===============  ==============================================================================
-  Name              Description
-  ===============  ==============================================================================
-  detect.tool       The method used to detect the genes
-                    option:
-                   
-                    * blast
-                    * hmmer
-                    * interproscan
-                    * kofamscan
-  ---------------  ------------------------------------------------------------------------------
-  detect.config     The name of the configuration file that store the detect method information
-  ---------------  ------------------------------------------------------------------------------
-  cluster.tool      The method used to cluster the genes
-                    option:
-                   
-                    * DBSCAN
-  ---------------  ------------------------------------------------------------------------------
-  system.file       The name of the file that describe the structure of the function system
-  ===============  ==============================================================================
+  $ ls data/Mucic_and_Saccharic_Acid/
+  config.yaml
+  query.fa
+  query.fa.phr
+  query.fa.pin
+  query.fa.psq
+  query.hmm
 
 
-detect.ini
-==========
-  
-Blast Configuration
---------------------
+.. NOTE::
 
-  ::
-  
-     [blast]
-     blast.query    = bait.fa
-     blast.exec     = blastp
-     blast.evalue   = 1e-4
-     blast.threads  = 8
-     filter.config  = filter.ini
-     map.ortho_pair = ortho_query_pair.tsv
-  
-  
-  ===============  ================================================================================================================================
-  Name              Description
-  ===============  ================================================================================================================================
-  ``[blast]``       The header of the detect configuration. Should be consistent with ``detect.tool`` in the ``config.ini`` file.
-  ---------------  --------------------------------------------------------------------------------------------------------------------------------
-  blast.exec        The executable tool will be passed to the cmd to run blast
-  ---------------  --------------------------------------------------------------------------------------------------------------------------------
-  blast.evalue      The evalue will be passed to the cmd to run blast
-  ---------------  --------------------------------------------------------------------------------------------------------------------------------
-  blast.threads     The number of threads will be passed to the cmd to run blast ([TODO]_: optional)
-  ---------------  --------------------------------------------------------------------------------------------------------------------------------
-  filter.config     The name of the configuration file that store the filter configuration 
-  ---------------  --------------------------------------------------------------------------------------------------------------------------------
-  map.ortho_pair    The name of the file that specify how the name(unique) of sequence in ``blast.query`` corrspond to  *orthoID*
+ Please remember to make fasta file blastable by running the command
+ `makeblastdb -in {query.fasta} -dbtype prot`
 
-                    An example of the map.ortho_query_pair files(separated by tab):
-                   
-                    ::
-                   
-                      $ cat ortho_query_pair.tsv
-                      > gudD	ecoli_gudD
-                      > gudP	ecoli_gudP
-                      > garK	ecoli_garK
-                      > garD	ecoli_garD
-                      > garL	ecoli_garL
-                      > garP	ecoli_garP
-                      > garR	ecoli_garR
-                      > gudD	cclostridioforme_GudD1
-                      > garD	cclostridioforme_GarD
-                      > gudA	cclostridioforme_gudA
-                      > gudB	cclostridioforme_gudB
-                      > gudC	cclostridioforme_gudC
-                      > gudD	cclostridioforme_GudD2
-                      > garL	cclostridioforme_GarL
-                      > garR	cclostridioforme_GarR
-  ===============  ================================================================================================================================
-    
-
-**filter.ini**
-  
-    ::
-    
-       [filter.global]
-       evalue = 1e-6
-       ident_pct = 30
-  
-       [filter.local]
-       filter_file = hit_filter.tab
-    
-    ====================  =================================================================================================================
-    Name                  Description
-    ====================  =================================================================================================================
-    ``[filter.global]``    Use to specify filter criteria that will apply to all hits
-    --------------------  -----------------------------------------------------------------------------------------------------------------
-     evalue                Use to specify filter evalue(maximal) criteria that will apply to all hits
-    --------------------  -----------------------------------------------------------------------------------------------------------------
-     ident_pct             Use to specify filter identity(minimal) criteria that will apply to all hits
-    --------------------  -----------------------------------------------------------------------------------------------------------------
-    ``[filter.local]``     Use to specify filter criteria for individual hit
-    --------------------  -----------------------------------------------------------------------------------------------------------------
-     filter_file           The relative path the the file containing filter information for individual hit
-  
-  
-                           All the four columns:
-  
-                           1. hit_name(should be the same as access name of bait.fa) 
-                           2. Attributes that can be used as criteria:
-                              ``evalue/ident_pct/hit_start/hit_end/bitscore``
-                           3. operator:">", "<", ">=", "<=", "==","!="
-                           4. value that will beused as cutoff
-  
-                           An example of the filter_file file(separated by tab):
-  
-                           :: 
-                            
-                              $ cat hit_filter.tab
-                              > cclostridioforme_GarR	evalue	<=	1e-110
-                              > cclostridioforme_GarR	ident_pct	>=	50
-  
-    ====================  =================================================================================================================
-
-.. Note::
-
-   The parameters in ``detect.inc`` and ``filter.ini`` is detection method specific.
-
-Interproscan Configuration
----------------------------
-
-  ::
-  
-     [interproscan]
-     orthoID_domain_precision = domain_precision.txt
+ Similarly if profile HMMs are being used in the search they need to
+ prepared for the search using the command `hmmpress {query.hmm}`
 
 
-  ==========================  =================================================================================================================
-  Name                        Description
-  ==========================  =================================================================================================================
-  ``[Interproscan]``          The header of the detect configuration. Should be consistent with ``detect.tool`` in the ``config.ini`` file.
-  --------------------------  -----------------------------------------------------------------------------------------------------------------
-  orthoID_domain_precision    The name of the file that specify the precision of the domain corrspond to  *orthoID*
 
-                              An example(separated by tab):
+Configuration File
+##################
+The configuration file (``config.yaml``) is the main input for each query. This file is used to
+provide general settings like file extensions and filtering thresholds, and to
+provide the definition of the function being searched for. This file is split
+into two sections separated by '---' with the first section containing
+the
 
-                              ::
+configuration section
+**********************
+The configuration section of the ``config.yaml`` file is where the settings for the ProkFunFind
+search are specified. This file is made up of a main section and multiple other
+sections related to the specific search approaches and filtering.
 
-                                $ cat domain_precision.txt
-                                > K00575	G3DSA:1.10.155.10	0.908991
-                                > K00575	PF01739	0.705724
-                                > K00575	PF03705	0.704411
-                                > K00575	PIRSF000410	0.99
-                                > K00575	PR00996	0.708515
-                                > K00575	PS50123	0.706645
-                                > K00575	PTHR24422	0.634774
-                                > ...
-  ==========================  =================================================================================================================
+.. code-block::
 
-Kofamscan Configuration
------------------------
-
-================  ========================================================================================
-``[kofamscan]``   The header of the detect file. Should be consistent between detect and config.yml files
-================  ========================================================================================
-map.ortho_pair    tab separated mapping of orholog IDs to KO numbers:
-                  
-                  ::
-                   
-                   $ cat ortho_pair.tsv
-                   adh      K00001
-                   adh2     K00002
-                   ...
-----------------  ----------------------------------------------------------------------------------------
-filter.ini        Filtering of the kofamscan results can be done based on the score or evalue
-                  that is associated with a comparison of one query to one KO. 
-                  For each KO the score of that query:KO comparison is compared to a predefined
-                  threshold, which is different for each KO. The strictness of these thresholds
-                  can be adjusted globally through the 'thrsehold' setting in the filter.ini file. 
-                  The factor provided through this setting will be used to multiply all scores making
-                  them more or less strict. For example if 2 is provided as the threshold setting, 
-                  then all thresholds will be multiplied by 2, meaning that scores will need to be
-                  twice as high to pass the thresholds. 
-
-                  ::
-
-                   $ cat filter.ini
-                   [filter.global]
-                   evalue = 1e-6
-                   threshold = 2
-
-                   Local filter settings can also be specificed for specific KOs. For these 
-                   settings the score thresholds can be set directly instead of being adjusted
-                   by a given factor. 
-
-                   ::
-                  
-                    $ cat hit_filter.tsv
-                    K00001     threshold    >=    110
-================  ========================================================================================
+    ---
+    main:
+      cluster_tool: DBSCAN
+      faa_suffix: .faa
+      gff_suffix: .gff
+      fna_suffix: .fna
+    DBSCAN:
+      cluster_eps: 4
+      cluster_min_samples: 2
+    hmmer:
+      hmmer_query: query.hmm
+      hmmer_exec: hmmscan
+      hmmer_threads: 1
+      evalue: 1e-3
+    blast:
+      blast_query: query.fa
+      blast_exec: blastp
+      blast_threads: 1
+      evalue: 1e-3
+    kofamscan:
+      annot_suffix: .kofam.tsv
+      threshold: 0.5
+    emapper:
+      annot_suffix: .emapper.annotations
+    interproscan:
+      annot_suffix: _InterProScan.tsv
 
 
-cluster.ini
-===========
-
-  ::
-  
-     [DBSCAN]
-     # Parameter pass to sklearn.cluster.DBSCAN
-     cluster.eps         = 4
-     # Parameter pass to sklearn.cluster.DBSCAN; The number of function-related-genes (or total weight) in a neighborhood for a point to be considered as a core point.
-     cluster.min_samples = 1
-  
-  ====================  =================================================================================================================
-  Name                  Description
-  ====================  =================================================================================================================
-  ``[DBSCAN]``          The header of the cluster configuration. Should be consistent with ``cluster.tool`` in the ``config.ini`` file.
-  --------------------  -----------------------------------------------------------------------------------------------------------------
-  cluster.eps           Parameters required for DBSCAN to run
-  cluster.min_samples  
-  ====================  =================================================================================================================
-  
-.. Note::
-
-   The parameters in ``cluster.inc`` is cluster method specific. Currently DBSCAN is the only detection method supported.
-  
-system.json
-===========
-  
-  Json formatted file that specify how the components are organized to perform a function.
-  
-  +-----------------------------------+------------------------------------+
-  |  Example Structure                |     JSON formatted file            |
-  +===================================+====================================+
-  | .. image:: images/ProkFunFind.jpg  |  .. literalinclude:: example.json  |
-  |    :width: 550px                  |     :language: JSON                |
-  |    :align: left                   |                                    |
-  |    :alt: alternate text           |                                    |
-  +-----------------------------------+------------------------------------+
-  
-  
-  ======================  ========================================================
-  Name                    Description
-  ======================  ========================================================
-  name/orthoID:(*str*)    The name of the components/ The orthoID 
-  ----------------------  --------------------------------------------------------
-  components:(*list*)      The list of subcomponents
-  ----------------------  --------------------------------------------------------
-  presence:(*option*)     "essential", "nonessential" or ([TODO]_) "forbidden"
-  ----------------------  --------------------------------------------------------
-  analogs:(*dict*)        Followed an equivalent component
-  ======================  ========================================================
 
 
-.. [TODO] To implementation later.
+main
+****
+The main section of the configuration file contains general information about
+the annotation file suffixes and points to the feature model file and search
+terms table.
+
+.. code-block::
+
+  main:
+    cluster_tool: DBSCAN
+    faa_suffix: .faa
+    gff_suffix: .gff
+    fna_suffix: .fna
+
+===============  ==============================================================================
+Name              Description
+===============  ==============================================================================
+search_terms      The name of the file that relates search term IDs and query IDs (see below)
+---------------  ------------------------------------------------------------------------------
+cluster.tool      The method used to cluster the genes
+                  options:
+
+                  * DBSCAN
+---------------  ------------------------------------------------------------------------------
+system.file       The name of the file that describe the structure of the function system
+---------------  ------------------------------------------------------------------------------
+faa_suffix        The suffix of the fasta file that contains the predicted amino acid
+                  gene sequences
+---------------  ------------------------------------------------------------------------------
+fna_suffix        The suffix of the fasta file that contains the genome sequence(s)
+---------------  ------------------------------------------------------------------------------
+gff_suffix        The suffix of the file that contains the GFF gene annotations for the genome
+===============  ==============================================================================
+
+
+DBSCAN
+******
+If multiple hits are found in the genomes during the ProkFunFind searches, the
+hits will be checked to see if they are in the same genomic region. This is done
+using Density-Based Spatial Clustering of Applications with Noise (DBSCAN). For
+more information on the scikit-learn DBSCAN implementation see `DBSCAN`_.
+
+.. code-block::
+
+  DBSCAN:
+    cluster_eps: 4
+    cluster_min_samples: 2
+
+====================  =================================================================================================================
+Name                  Description
+====================  =================================================================================================================
+cluster.eps           How close two genes should be in order for them to be considered to be in the same cluster. Distance is in
+                      number of genes.
+--------------------  -----------------------------------------------------------------------------------------------------------------
+cluster.min_samples   Minimum number of genes of interest within range set by cluster.eps required for a given gene to be considered
+                      a core member of a cluster.
+====================  =================================================================================================================
+
+.. _DBSCAN: https://scikit-learn.org/stable/modules/generated/sklearn.cluster.DBSCAN.html
+
+
+Search Approach Settings
+************************
+The remaining sections of the configuration file are used to defined search
+approach specific settings. The settings allowed in each section are detailed
+below.
+
+'blast'
+^^^^^^^
+.. code-block::
+
+
+    blast:
+      blast_query: bait.fa
+      blast_exec: blastp
+      blast_evalue: 1e-4
+      blast_threads: 1
+      evalue: 1e-3
+      ident_pct: 30
+
+
+
+===============  ================================================================================================================================
+Name              Description
+===============  ================================================================================================================================
+blast_query       The name of the protein fasta file containing the query sequences. This fasta file needs to be indexed using the 'makeblastdb'
+                  command.
+---------------  --------------------------------------------------------------------------------------------------------------------------------
+blast_exec        The executable tool will be passed to the cmd to run blast. Currently blastp is the only supported blast method.
+---------------  --------------------------------------------------------------------------------------------------------------------------------
+blast_evalue      The evalue will be passed to the cmd to run blast. Only hits below this will be returned from the blast program. Default is 10.
+---------------  --------------------------------------------------------------------------------------------------------------------------------
+blast_threads     The number of threads will be passed to the cmd to run blast. Default is 1.
+---------------  --------------------------------------------------------------------------------------------------------------------------------
+evalue            The evalue threshold used to filter the blast results after they are generated. This does not affect the raw BLAST output, but
+                  is instead used to filter the results after they are generated. Default is 0.01
+---------------  --------------------------------------------------------------------------------------------------------------------------------
+ident_pct         The identity threshold used to filter blast hits. The default value is 30 (30% identity).
+===============  ================================================================================================================================
+
+'hmmer'
+^^^^^^^
+
+.. code-block::
+
+    hmmer:
+      hmmer_query: Hdc.hmm
+      hmmer_exec: hmmscan
+      hmmer_evalue: 1e-4
+      hmmer_threads: 1
+      evalue: 1e-3
+      bitscore: 0
+
+===============  ================================================================================================================================
+Name              Description
+===============  ================================================================================================================================
+hmmer.query       The name of the profile HMM file file.
+---------------  --------------------------------------------------------------------------------------------------------------------------------
+hmmer.exec        The executable tool will be passed to the cmd to run blast. Currently hmmscan is the only supported HMMER method.
+---------------  --------------------------------------------------------------------------------------------------------------------------------
+hmmer.evalue      The evalue will be passed to the cmd to run hmmscan. Only hits below this will be returned from the hmmscan program.
+                  Default is 10.
+---------------  --------------------------------------------------------------------------------------------------------------------------------
+hmmer.threads     The number of threads will be passed to the cmd to run hmmscan. Default is the number of cpu cores detected on your machine.
+---------------  --------------------------------------------------------------------------------------------------------------------------------
+evalue            The evalue threshold used to filter the hmmscan results after they are generated. This does not affect the raw hmmscan
+                  output, but is instead used to filter the results after they are generated. Default is 0.01
+---------------  --------------------------------------------------------------------------------------------------------------------------------
+bitscore         The bitscore threshold used to filter blast hits. The default value is 0.
+===============  ================================================================================================================================
+
+
+'kofamscan'
+^^^^^^^^^^^
+
+.. code-block::
+
+    kofamscan:
+      annot_suffix: .kofam.tsv
+      evalue: 1e-3
+      threshold: 1
+
+===============  ================================================================================================================================
+Name              Description
+===============  ================================================================================================================================
+annot_suffix      The file extension for the kofamscan prediction output.
+---------------  --------------------------------------------------------------------------------------------------------------------------------
+evalue            The evalue threshold used to filter the kofamscan results. Default is 0.01
+---------------  --------------------------------------------------------------------------------------------------------------------------------
+threshold         The threshold value is used to adjust the score thresholds which are used to determine if a kofamscan prediction is
+                  significant or not. Kofamscan assigns a prediction score to each protein query for each KO number. If the score is above a
+                  predetermined value for that KO, then the protein is putatively assigned to that KO. This score can be adjusted using this
+                  threshold setting, which will be used to multiply the score needed to make it more or less strict.
+                  Example:
+                  .. code-block::
+
+                    K00001  gene1  score: 10    KO_value: 12
+                    - if the threshold is set to 1, then this gene would not be assigned to K00001
+                    - if the threshold is set to 0.5, then the KO_value needed would be adjusted to 6 (12*0.5), resulting in the gene being
+                      assigned to K00001
+===============  ================================================================================================================================
+
+'interproscan'
+^^^^^^^^^^^^^^
+
+.. code-block::
+
+  interproscan:
+    annot_suffix: _InterProScan.tsv
+
+===============  ================================================================================================================================
+Name              Description
+===============  ================================================================================================================================
+annot_suffix      The name of the profile HMM file file.
+===============  ================================================================================================================================
+
+
+'emapper'
+^^^^^^^^^^^
+
+.. code-block::
+
+  emapper:
+    annot_suffix: .emapper.annotations
+    evalue: 1e-3
+
+===============  ================================================================================================================================
+Name              Description
+===============  ================================================================================================================================
+annot_suffix      The file extension for the EGGNog-mapper prediction output.
+---------------  --------------------------------------------------------------------------------------------------------------------------------
+evalue            The evalue threshold used to filter the EGGNog-mapper results. Default is 0.01
+===============  ================================================================================================================================
+
+
+function definition
+####################
+The second part of the configuration file contains the definition of the
+function of interest. Functions are defined in the YAML format in a hierarchical
+structure. An example of a function definition can be seen below:
+
+.. code-block::
+
+    ---
+    name: Equol Gene Cluster
+    components:
+    - name: Equol Production Pathway
+      presence: essential
+      components:
+      - geneID: DHDR
+        description: Dihydrodaidzein reductase
+        presence: essential
+        terms:
+        - id: GCF_000422625.1_00043
+          method: blast
+          ident_pct: 90
+          evalue: 0.00001
+      - geneID: THDR
+        description: Tetrahydrodaidzein reductase
+        presence: essential
+        terms:
+        - id: COG1053
+          method: emapper
+
+
+
+
+Functions are defined in a nested structure. Each component is
+defined with a name property, an optional description property, and
+a presence property which defines if that component is essential or
+nonessential for the overall function.
+
+======================  ========================================================
+Name                    Description
+======================  ========================================================
+name/geneID:(*str*)    The name of the components/ The gene ID
+----------------------  --------------------------------------------------------
+components:(*list*)      The list of subcomponents
+----------------------  --------------------------------------------------------
+presence:(*option*)     "essential", "nonessential"
+----------------------  --------------------------------------------------------
+analogs:(*dict*)        Followed an equivalent component
+======================  ========================================================
+
+
+Components are ultimately associated with geneIDs, which have the same
+set of properties as higher level components, but also have search terms
+associated with them. In the example below the geneID 'DHDR' is associated
+with a sequence as a search term:
+
+.. code-block::
+
+  - geneID: DHDR
+    description: Dihydrodaidzein reductase
+    presence: essential
+    terms:
+    - id: GCF_000422625.1_00043
+      method: blast
+      ident_pct: 90
+      evalue: 0.00001
+
+Search terms consist of a search term ID, the method associated with searching
+for this term, and additional filtering parameters. Any of the filtering parameters
+applicable to a given search term can be set for individual search terms in this
+way. See the configuration settings in the above sections for info on what
+filtering parameters are applicable for each approach.

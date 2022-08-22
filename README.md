@@ -13,16 +13,23 @@
 ## Installation
 
 ```
-conda create -n GutFun python=3
-conda activate GutFun
-git clone git@github.com:XiaofangJ/ProkFunFind.git
+conda create -n ProkFun python=3
+conda activate ProkFun
+git clone git@github.com:nlm-irp-jianglab/ProkFunFind.git
 cd ProkFunFind && python setup.py install
 ```
 
 ## Quick Start
 ```
-prokfunfind.py -b data.folder -f Mucic_and_Saccharic_Acid -g input.folder/MGYG-HGUT-02439 -o output.folder/prefix
+prokfunfind.py -d data.folder -f Mucic_and_Saccharic_Acid -g input.folder/MGYG-HGUT-02439 -o output.folder/prefix
 ```
+
+## Documentation and Tutorial
+The documentation for ProkFunFind can be found here: 
+- https://prokfunfind.readthedocs.io/en/latest/
+
+A tutorial describing how to run ProkFunFind searches can be found here: 
+- https://prokfunfind.readthedocs.io/en/docs-and-tests/tutorial/1-intro.html
 
 ## Updates
 

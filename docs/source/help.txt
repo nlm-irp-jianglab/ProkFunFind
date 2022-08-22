@@ -1,11 +1,10 @@
-usage: prokfunfind.py [-h] {rep,pan} ...
+usage: prokfunfind [-h] -f  -o  [-p] -g
 
-Identify genes related function of interest
-
-positional arguments:
-  {rep,pan}
-    rep       Analyze an individual genome
-    pan       Analyze genomes of the same pangenome
+Identify genes related functions of interest
 
 optional arguments:
-  -h, --help  show this help message and exit
+  -h, --help            show this help message and exit
+  -f , --function       Path to configuration file
+  -o , --outputprefix   The output file name prefix
+  -p , --processes      Number of genomes to process concurrently (default=1)
+  -g , --gtab           Table of genomes to search
