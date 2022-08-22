@@ -6,11 +6,11 @@
             "presence": "essential",
             "components": [
                 {
-                    "queryID": "g1",
+                    "geneID": "g1",
                     "presence": "essential"
                 },
                 {
-                    "queryID": "g2",
+                    "geneID": "g2",
                     "presence": "essential"
                 }
             ],
@@ -18,11 +18,11 @@
                 "name": "B2",
                 "components": [
                     {
-                        "queryID": "g3",
+                        "geneID": "g3",
                         "presence": "essential"
                     },
                     {
-                        "queryID": "g4",
+                        "geneID": "g4",
                         "presence": "nonessential"
                     }
                 ]
@@ -33,11 +33,11 @@
             "presence": "nonessential",
             "components": [
                 {
-                    "queryID": "g5",
+                    "geneID": "g5",
                     "presence": "essential"
                 },
                 {
-                    "queryID": "g6",
+                    "geneID": "g6",
                     "presence": "nonessential"
                 }
             ]

@@ -72,62 +72,36 @@ This file can be imported into programs like Geneious for subsequent visualiatio
     GUT_GENOME143137_5	ProkFunFind	CDS	36139	37639	.	-	.	ID=GUT_GENOME143137_01304;Name=gudB;Parent=Cl_0;Target=cclostridioforme_gudB 3 480;pct_identity=40.167;evalue=3.42e-120
 
 
-json
+yaml
 ====
-The json file is similar to the input ``system.json`` file with the "genes" added and the "completeness" of each subsystem added to each component.
-This file acts a a sort of overall summary of the search results.
+The yaml file is similar to the input system definition that is provided in the
+config.yaml file. file with the "genes" added and the "completeness" of each subsystem
+is added to each component. This file acts an overall summary
+of the search results.
 
 .. code-block::
 
-   {
-      "name": "Equol Gene Cluster",
-      "components": [
-          {
-              "name": "Equol Production Pathway",
-              "presence": "essential",
-              "components": [
-                  {
-                      "queryID": "DZNR",
-                      "description": "Daidzein reductase",
-                      "presence": "essential",
-                      "genes": [
-                          "GCF_000478885.1_02274"
-                      ]
-                  },
-                  {
-                      "queryID": "DHDR",
-                      "description": "Dihydrodaidzein reductase",
-                      "presence": "essential",
-                      "genes": [
-                          "GCF_000478885.1_02276"
-                      ]
-                  },
-                  {
-                      "queryID": "THDR",
-                      "description": "Tetrahydrodaidzein reductase",
-                      "presence": "essential",
-                      "genes": [
-                          "GCF_000478885.1_02277"
-                      ]
-                  },
-                  {
-                      "queryID": "DDRC",
-                      "description": "Dihydrodaidzein racemase",
-                      "presence": "nonessential",
-                      "genes": [
-                          "GCF_000478885.1_02280"
-                      ]
-                  }
-              ],
-              "completeness": {
-                  "essential": 3,
-                  "nonessential": 1,
-                  "essential_presence": 3,
-                  "nonessential_presence": 1
-              }
-        }
-      ]
-    }
+name: Equol Gene Cluster
+components:
+- name: Equol Production Pathway
+  presence: essential
+  components:
+  - geneID: DZNR
+    description: Daidzein reductase
+    presence: essential
+    terms:
+    - id: K00219
+      method: kofamscan
+    genes:
+    - GCF_000478885.1_00950
+    - GCF_000478885.1_01879
+    - GCF_000478885.1_02274
+  ...
+    completeness:
+      essential: 4
+      nonessential: 0
+      essential_presence: 4
+      nonessential_presence: 0
 
 
 

@@ -23,70 +23,80 @@ fasta files and EGGNog-mapper results available for each genome being searched.
 Queries
 ^^^^^^^^
 The two most important files for configuring a mixed search in ProkFunFind are
-the configuration file and search-terms file. The configuration file is going to
-be formatted like it has been in previous examples, but it needs to include
+the configuration file and search-terms file. The file is going to
+be formatted like it has been in previous examples, but it needs to include configuration
 sections for each of the search term types that are being used. An example can
-be seen in the `./queries/mixed-search/config.ini` file:
+be seen in the `./queries/mixed-search/config.yaml` file:
 
 .. code-block::
 
-  [main]
-  cluster.tool = DBSCAN
-  system.file = systems.json
-  search_terms = search-terms.tsv
-  faa_suffix = .faa
-  gff_suffix = .gff
-  fna_suffix = .fna
-
-  [DBSCAN]
-  cluster.eps = 4
-  cluster.min_samples = 2
-
-  [hmmer]
-  hmmer.query = query.hmm
-  hmmer.exec = hmmscan
-  hmmer.threads = 1
-  evalue = 1e-3
-
-  [blast]
-  blast.query = query.fa
-  blast.exec = blastp
-  blast.threads = 1
-  evalue = 1e-3
-
-  [kofamscan]
-  annot_suffix = .kofam.tsv
-  threshold = 0.5
-
-  [emapper]
-  annot_suffix = .emapper.annotations
-
-  [interproscan]
-  annot_suffix = _InterProScan.tsv
+  ---
+  main:
+    cluster_tool: DBSCAN
+    system_file: systems.json
+    search_terms: search-terms.tsv
+    faa_suffix: .faa
+    gff_suffix: .gff
+    fna_suffix: .fna
+  DBSCAN:
+    cluster_eps: 4
+    cluster_min_samples: 2
+  hmmer:
+    hmmer_query: query.hmm
+    hmmer_exec: hmmscan
+    hmmer_threads: 1
+    evalue: 1e-3
+  blast:
+    blast_query: query.fa
+    blast_exec: blastp
+    blast_threads: 1
+    evalue: 1e-3
+  kofamscan:
+    annot_suffix: .kofam.tsv
+    threshold: 0.5
+  emapper:
+    annot_suffix: .emapper.annotations
+  interproscan:
+    annot_suffix: _InterProScan.tsv
 
 
 The other important file is the search-terms file. In this file each query ID
 is associated with the individual search terms and the search approaches. In
 this file multiple search terms can be associated with the same query, allowing
 for queries to be identified through multiple approaches simultaneously. The
-search terms file for this tutorial search can be seen in the `./queries/mixed-search/search-terms.tsv`:
+search terms file for this tutorial search can be seen in the `config.yaml` file:
 
 .. code-block::
 
-  DZNR	DZNR	hmmer
-  DEVR	DEVR	hmmer
-  DDRC	DDRC	hmmer
-  DHDR	GCF_000422625.1_00043	blast
-  FIXX	K03855	kofamscan
-  FIXC	K00313	kofamscan
-  HYDF	PF01926	interproscan
-  HNDD	PF02256	interproscan
-  HYDE	PF04055	interproscan
-  HYDG	PTHR43583	interproscan
-  NADO	COG1894	emapper
-  THDR	COG1053	emapper
-  FIXB	COG2025	emapper
-  FIXA	COG2086	emapper
+  name: Equol Gene Cluster
+  components:
+  - name: Equol Production Pathway
+    presence: essential
+    components:
+    - geneID: DZNR
+      description: Daidzein reductase
+      presence: essential
+      terms:
+      - id: DZNR
+        method: hmmer
+    - geneID: DHDR
+      description: Dihydrodaidzein reductase
+      presence: essential
+      terms:
+      - id: GCF_000422625.1_00043
+        method: blast
+    - geneID: THDR
+      description: Tetrahydrodaidzein reductase
+      presence: essential
+      terms:
+      - id: COG1053
+        method: emapper
+    - geneID: DDRC
+      description: Dihydrodaidzein racemase
+      presence: essential
+      terms:
+      - id: DDRC
+        method: hmmer
 
 This search is going to use a mix of 3 profile HMMs, 1 protein sequence, 2 KOs,
 4 domain signatures, and 4 COGs.
@@ -98,7 +108,7 @@ run the following command:
 
 .. code-block::
 
-  prokfunfind -d queries -f mixed-search --gtab ./genome-list.tsv --outputprefix ./out/mixed-search/mixed
+  prokfunfind -f queries/mixed-search/config.yaml --gtab ./genome-list.tsv --outputprefix ./out/mixed-search/mixed
 
 This command will return an initial summary of the component presence and
 absence:
@@ -136,4 +146,4 @@ file:
   GCF_000478885.1_1	GuFunFind	CDS	288712	290358	.	-	.	ID=GCF_000478885.1_00174;Name=DEVR;ClusterID=Cl_NA;Target=DEVR;evalue=1.2e-07
 
 In this output the Target property in column 9 provides what specific search term
-ID produced the hit to that gene. 
+ID produced the hit to that gene.

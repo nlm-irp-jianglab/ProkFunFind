@@ -45,7 +45,7 @@ ProkFunFind command from the base directory of the tutorial repository.
 
 .. code-block::
 
-   prokfunfind -d queries -f blast-search -g ./genome-list.tsv --outputprefix ./out/blast-search/blast
+   prokfunfind -f queries/blast-search/config.yaml -g ./genome-list.tsv --outputprefix ./out/blast-search/blast
 
 This command will first print an overall summary of how many function
 components were detected in each genome. This output will summarize how many
@@ -96,7 +96,7 @@ The search command will produce three output files for each genome in the
 
 * A genome pkl file
 
-* A json summary file of the component presence and absence.
+* A yaml summary file of the component presence and absence.
 
 For more information on each of the output formats please see the `Outputs <outputs.rst>`
 documentation section. Each tutorial section will provide additional information
@@ -146,7 +146,8 @@ following and seeing how it affects the search results for each genome.
 
 * Change the blast filtering parameters in the config.ini file to make them more or less stringent.
 
-* Modify some of the essentiality requirements in the systems.json file and observe how that changes the search results.
+* Modify some of the essentiality requirements in the function definition component
+of the configuration.yaml file and observe how that changes the search results.
 
 
 HMMER-based searches
@@ -172,7 +173,7 @@ from the base directory of the tutorial repository:
 
 .. code-block::
 
-   prokfunfind -d queries -f hmmer-search -g ./genome-list.tsv --outputprefix ./out/hmmer-search/hmmer
+   prokfunfind -f queries/hmmer-search/config.yaml -g ./genome-list.tsv --outputprefix ./out/hmmer-search/hmmer
 
 The same summary output is printed to the screen as in the BLAST tutorial. This
 output provides a simple summary of the component presence and absence in the

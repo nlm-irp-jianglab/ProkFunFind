@@ -42,33 +42,24 @@ signature types reported by InterProScan.
 Queries
 *******
 The query files for this search are included in the `./queries/ipr-search/`
-directory. Unlike the sequence and profile based searches, an additional query
-file is not required for domain-based searches. Instead the domains of
-interest are defined directly in the search terms file. In this example the
-search terms are defined in the `./queries/ipr-search/search-terms.tsv` file.
+directory. Protein domain signatures are provided as the search terms for
+this kind of search.
 
 .. code-block::
 
-  DZNR	PTHR42917	interproscan
-  DEVR	PF00196	interproscan
-  DDRC	PF13669	interproscan
-  DHDR	PF13561	interproscan
-  FIXC	PF03486	interproscan
-  FIXX	PTHR43082	interproscan
-  HYDF	PF01926	interproscan
-  HNDD	PF02256	interproscan
-  HYDE	PF04055	interproscan
-  HYDG	PTHR43583	interproscan
-  NADO	PF07992	interproscan
-  THDR	PF00890	interproscan
-  FIXA	PF01012	interproscan
-  FIXB	PF00766	interproscan
+- name: Equol Production Pathway
+  presence: essential
+  components:
+  - geneID: DZNR
+    description: Daidzein reductase
+    presence: essential
+    terms:
+    - id: PTHR42917
+      method: interproscan
 
-In this file the query ID is provided in column 1, the specific search term ID
-(in this case a protein domain accession) is provided in column 2, and the
-search method (interproscan) is provided in column 3.
-As described in the :doc:`Queries <./3-queries>` tutorial section, multiple domains can be associated with one query ID by
-providing them on multiple lines.
+
+As described in the :doc:`Queries <./3-queries>` tutorial section, multiple domains can be associated with one gene ID by
+providing them on entries in the yaml structure.
 
 Search
 ******
@@ -77,9 +68,9 @@ directory of the tutorial repository.
 
 .. code-block::
 
-  prokfunfind -d queries -f ipr-search -g ./genome-list.tsv --outputprefix ./out/ipr-search/ipr
+  prokfunfind -f queries/ipr-search/config.yaml -g ./genome-list.tsv --outputprefix ./out/ipr-search/ipr
 
-The output printed to the screen summarizes the overall presence and abseance of
+The output printed to the screen summarizes the overall presence and absence of
 different components in the function definition:
 
 .. code-block::
@@ -205,25 +196,20 @@ see the KEGG database here: `KEGG <https://www.genome.jp/kegg/ko.html>`_.
 
 For this query KO identifiers for each of the components of the equol gene clusters
 were assigned KO identifiers. This can be seen in the
-`./queries/kofam-search/search-terms.tsv` file:
+`configuration.yaml` function definition section:
 
 .. code-block::
 
-  HYDF	K03977	kofamscan
-  HYDG	K03150	kofamscan
-  HYDE	K01012	kofamscan
-  HNDD	K18332	kofamscan
-  FIXX	K03855	kofamscan
-  FIXC	K00313	kofamscan
-  DZNR	K00219	kofamscan
-  DEVR	K07695	kofamscan
-  DDRC	K05606	kofamscan
-  DHDR	K18009	kofamscan
-  FIXB	K03522	kofamscan
-  FIXA	K03521	kofamscan
-  HYPO	K02004	kofamscan
-  NADO	K15022	kofamscan
-  THDR	K00244	kofamscan
+  - name: Equol Production Pathway
+    presence: essential
+    components:
+    - geneID: DZNR
+      description: Daidzein reductase
+      presence: essential
+      terms:
+      - id: K00219
+        method: kofamscan
+  ...
 
 Not all of the genes being used in the query for this tutorial are have great
 matches to the current KO groups defined by KEGG. Because of this you also have
@@ -232,21 +218,18 @@ property in the `./queries/kofam-search/config.ini` `[kofamscan]` section:
 
 .. code-block::
 
-  [main]
-  cluster.tool = DBSCAN
-  system.file = systems.json
-  search_terms = search-terms.tsv
-  faa_suffix = .faa
-  gff_suffix = .gff
-  fna_suffix = .fna
-
-  [DBSCAN]
-  cluster.eps = 4
-  cluster.min_samples = 2
-
-  [kofamscan]
-  annot_suffix = .kofam.tsv
-  threshold = 0.5
+    ---
+    main:
+      cluster_tool: DBSCAN
+      faa_suffix: .faa
+      gff_suffix: .gff
+      fna_suffix: .fna
+    DBSCAN:
+      cluster_eps: 4
+      cluster_min_samples: 2
+    kofamscan:
+      annot_suffix: .kofam.tsv
+      threshold: 0.5
 
 
 For the KO assignment in kofamscan, a match score is calculated for each gene
@@ -267,7 +250,7 @@ repository using the following command.
 
 .. code-block::
 
-  prokfunfind -d queries -f kofam-search -g ./genome-list.tsv --outputprefix ./out/kofam-search/kofam
+  prokfunfind -f queries/kofam-search/config.yaml -g ./genome-list.tsv --outputprefix ./out/kofam-search/kofam
 
 
 Based on this search we can detect all four components in the first genome,
@@ -317,53 +300,42 @@ and any of these IDs can be used to search through ProkFunFind.
 Query
 *****
 Similar to the KO-based search, the COG based searches define the queries based on the ortholog IDs, in
-this case COG IDs. The search term input can be found in the `./queries/emap-search/search-terms.tsv` file:
+this case COG IDs. The search term input can be found in the function definition section of the `config.yaml` file:
 
 .. code-block::
 
-  HYDF	COG1160	emapper
-  HYDG	2IKFZ	emapper
-  HYDE	2HSHP	emapper
-  HNDD	COG3383	emapper
-  FIXX	COG2440	emapper
-  FIXC	COG0644	emapper
-  DZNR	COG1902	emapper
-  DEVR	COG2197	emapper
-  DDRC	COG0346	emapper
-  DHDR	COG1028	emapper
-  FIXB	COG2025	emapper
-  FIXA	COG2086	emapper
-  HYPO	29K0U	emapper
-  NADO	COG1894	emapper
-  THDR	COG1053	emapper
+- name: Equol Production Pathway
+  presence: essential
+  components:
+  - geneID: DZNR
+    description: Daidzein reductase
+    presence: essential
+    terms:
+    - id: COG1902
+      method: emapper
+      evalue: 1e-100
 
 Similarly to the KO-based search, many of the queries in this example search do not have great COG
 matches, so a mix of COGs and ortholog groups at higher levels are used in this search.
 
 Additionally, because ortholog groups can have varying levels of specificity and our search terms are
 not perfect matches to each COG group this search will be performed using an additional search term
-specific filtering file. This kind of input file can be used to add individual filtering parameters
-to the search, for example setting different evalue thresholds for different COGs.
-
-The filtering file can be found in the `./queries/emap-search/filter.tsv` file:
+specific filtering file. This filtering can be applied through the default values in the
+configuration section of the `config.yaml` file and individual settings for each search term can be set
+directly in the function definition:
 
 .. code-block::
 
-  COG1160	evalue	<=	1e-100
-  2IKFZ	evalue	<=	1e-100
-  2HSHP	evalue	<=	1e-200
-  COG3383	evalue	<=	1e-100
-  COG2440	evalue	<=	1e-70
-  COG0644	evalue	<=	1e-100
-  COG1902	evalue	<=	1e-100
-  COG2197	evalue	<=	1e-80
-  COG0346	evalue	<=	1e-100
-  COG1028	evalue	<=	1e-200
-  COG2025	evalue	<=	1e-150
-  COG2086	evalue	<=	1e-150
-  29K0U	evalue	<=	1e-100
-  COG1894	evalue	<=	1e-250
-  COG1053	evalue	<=	1e-100
+- geneID: DZNR
+  description: Daidzein reductase
+  presence: essential
+  terms:
+  - id: COG1902
+    method: emapper
+    evalue: 1e-100
+
+In this example an evalue filter of 1e-100 is set for COG1902 meaning that only
+hits with e-values less than 1e-100 for the prediction will be considered.
 
 Search
 ******
@@ -371,7 +343,7 @@ The search can be performed using the following command:
 
 .. code-block::
 
-  prokfunfind -d queries -f emap-search -g ./genome-list.tsv --outputprefix ./out/emap-search/emap
+  prokfunfind -f queries/emap-search/config.yaml -g ./genome-list.tsv --outputprefix ./out/emap-search/emap
 
 Based on this search it can be seen that the components of the function were detected
 in both genomes:

@@ -16,16 +16,14 @@ Command-line options
 
 A typical ProkFunFind command looks like the following::
 
-   prokfunfind -d queries -f fun -g ./genome-list.tsv -o ./out/search-out.
+   prokfunfind -f queries/fun/config.yaml -g ./genome-list.tsv -o ./out/search-out.
 
 The options provide the following information:
 
 ====================  =================================================================================================================
 Option                Description
 ====================  =================================================================================================================
--d, --databasedir     This option is used to provide the base directory where the query directories are stored.
---------------------  -----------------------------------------------------------------------------------------------------------------
--f, --function        This option is used to provide the name of the query directory.
+-f, --function        This option is used to provide the path to the configuration yaml file.
 --------------------  -----------------------------------------------------------------------------------------------------------------
 -o, --outputprefix    This option is used to give the output file name prefix.
 --------------------  -----------------------------------------------------------------------------------------------------------------
@@ -95,8 +93,7 @@ run all searches on the provided genomes sequentially.
 
 Input function configuration
 ############################
-
-``-b`` should be followed by the data folder(``${data}``) that contains the configuration files for all functions.
+``-f`` should be followed by the path to the directory of the function (``${function}``).
 
 .. code-block::
 
@@ -105,14 +102,12 @@ Input function configuration
   Mucic_and_Saccharic_Acid    # Where the search files for Mucic_and_Saccharic_Acid stored
 
 
-``-f`` should be followed by the name of the function directoy (``${function}``).
+
 
 .. code-block::
 
   $ ls data/Mucic_and_Saccharic_Acid/
-  config.ini
-  search-term.tsv
-  system.json
+  config.yaml
   query.fa
   query.fa.phr
   query.fa.pin
@@ -132,39 +127,47 @@ Input function configuration
 
 Configuration File
 ##################
+The configuration file (``config.yaml``) is the main input for each query. This file is used to
+provide general settings like file extensions and filtering thresholds, and to
+provide the definition of the function being searched for. This file is split
+into two sections separated by '---' with the first section containing
+the
 
-config.ini
-**********
+configuration section
+**********************
 The configuration files ``config.ini`` is where the settings for the ProkFunFind
 search are specified. This file is made up of a main section and multiple other
-sections related to specfic search approachces and filtering.
+sections related to the specific search approaches and filtering.
 
 .. code-block::
 
-    [main]
-    cluster.tool   = DBSCAN
-    system.file    = system.json
-    faa_suffix     = .faa
-    gff_suffix     = .gff3
-    fna_suffix     = .fna
-    search_terms = search_terms.tsv
+    ---
+    main:
+      cluster_tool: DBSCAN
+      faa_suffix: .faa
+      gff_suffix: .gff
+      fna_suffix: .fna
+    DBSCAN:
+      cluster_eps: 4
+      cluster_min_samples: 2
+    hmmer:
+      hmmer_query: query.hmm
+      hmmer_exec: hmmscan
+      hmmer_threads: 1
+      evalue: 1e-3
+    blast:
+      blast_query: query.fa
+      blast_exec: blastp
+      blast_threads: 1
+      evalue: 1e-3
+    kofamscan:
+      annot_suffix: .kofam.tsv
+      threshold: 0.5
+    emapper:
+      annot_suffix: .emapper.annotations
+    interproscan:
+      annot_suffix: _InterProScan.tsv
 
-    [DBSCAN]
-    cluster.eps         = 4
-    cluster.min_samples = 1
-
-    [blast]
-    blast.query    = bait.fa
-    blast.exec     = blastp
-    blast.evalue   = 1e-4
-    blast.threads  = 1
-    evalue = 1e-3
-    ident_pct = 30
-    bitscore = 30
-    filter_file = hit_filter.tab
-
-    [kofamscan]
-    annot_suffix = .kofam.tsv
 
 
 
@@ -176,13 +179,11 @@ terms table.
 
 .. code-block::
 
-  [main]
-  cluster.tool   = DBSCAN
-  system.file    = system.json
-  faa_suffix     = .faa
-  gff_suffix     = .gff3
-  fna_suffix     = .fna
-  search_terms = search_terms.tsv
+  main:
+    cluster_tool: DBSCAN
+    faa_suffix: .faa
+    gff_suffix: .gff
+    fna_suffix: .fna
 
 ===============  ==============================================================================
 Name              Description
@@ -214,9 +215,9 @@ more information on the scikit-learn DBSCAN implementation see `DBSCAN`_.
 
 .. code-block::
 
-     [DBSCAN]
-     cluster.eps         = 4
-     cluster.min_samples = 1
+  DBSCAN:
+    cluster_eps: 4
+    cluster_min_samples: 2
 
 ====================  =================================================================================================================
 Name                  Description
@@ -241,34 +242,33 @@ below.
 ^^^^^^^
 .. code-block::
 
-   [blast]
-   blast.query    = bait.fa
-   blast.exec     = blastp
-   blast.evalue   = 1e-4
-   blast.threads  = 1
-   evalue = 1e-3
-   ident_pct = 30
-   filter_file = hit_filter.tab
+
+    blast:
+      blast_query: bait.fa
+      blast_exec: blastp
+      blast_evalue: 1e-4
+      blast_threads: 1
+      evalue: 1e-3
+      ident_pct: 30
+
 
 
 ===============  ================================================================================================================================
 Name              Description
 ===============  ================================================================================================================================
-blast.query       The name of the protein fasta file containing the query sequences. This fasta file needs to be indexed using the 'makeblastdb'
+blast_query       The name of the protein fasta file containing the query sequences. This fasta file needs to be indexed using the 'makeblastdb'
                   command.
 ---------------  --------------------------------------------------------------------------------------------------------------------------------
-blast.exec        The executable tool will be passed to the cmd to run blast. Currently blastp is the only supported blast method.
+blast_exec        The executable tool will be passed to the cmd to run blast. Currently blastp is the only supported blast method.
 ---------------  --------------------------------------------------------------------------------------------------------------------------------
-blast.evalue      The evalue will be passed to the cmd to run blast. Only hits below this will be returned from the blast program. Default is 10.
+blast_evalue      The evalue will be passed to the cmd to run blast. Only hits below this will be returned from the blast program. Default is 10.
 ---------------  --------------------------------------------------------------------------------------------------------------------------------
-blast.threads     The number of threads will be passed to the cmd to run blast. Default is 1.
+blast_threads     The number of threads will be passed to the cmd to run blast. Default is 1.
 ---------------  --------------------------------------------------------------------------------------------------------------------------------
 evalue            The evalue threshold used to filter the blast results after they are generated. This does not affect the raw BLAST output, but
                   is instead used to filter the results after they are generated. Default is 0.01
 ---------------  --------------------------------------------------------------------------------------------------------------------------------
 ident_pct         The identity threshold used to filter blast hits. The default value is 30 (30% identity).
----------------  --------------------------------------------------------------------------------------------------------------------------------
-filter_file       The file name of additional filtering settings for specific search terms (see filter file section below). Optional
 ===============  ================================================================================================================================
 
 'hmmer'
@@ -276,14 +276,13 @@ filter_file       The file name of additional filtering settings for specific se
 
 .. code-block::
 
-    ['hmmer']
-    hmmer.query    = Hdc.hmm
-    hmmer.exec     = hmmscan
-    hmmer.evalue   = 1e-4
-    hmmer.threads  = 1
-    evalue = 1e-3
-    bitscore = 0
-    filter_file = hit_filter.tab
+    hmmer:
+      hmmer_query: Hdc.hmm
+      hmmer_exec: hmmscan
+      hmmer_evalue: 1e-4
+      hmmer_threads: 1
+      evalue: 1e-3
+      bitscore: 0
 
 ===============  ================================================================================================================================
 Name              Description
@@ -301,8 +300,6 @@ evalue            The evalue threshold used to filter the hmmscan results after 
                   output, but is instead used to filter the results after they are generated. Default is 0.01
 ---------------  --------------------------------------------------------------------------------------------------------------------------------
 bitscore         The bitscore threshold used to filter blast hits. The default value is 0.
----------------  --------------------------------------------------------------------------------------------------------------------------------
-filter_file       The file name of additional filtering settings for specific search terms (see filter file section below). Optional
 ===============  ================================================================================================================================
 
 
@@ -311,11 +308,10 @@ filter_file       The file name of additional filtering settings for specific se
 
 .. code-block::
 
-    [kofamscan]
-    annot_suffix = .kofam.tsv
-    evalue = 1e-3
-    threshold = 1
-    filter_file = hit_filter.tab
+    kofamscan:
+      annot_suffix: .kofam.tsv
+      evalue: 1e-3
+      threshold: 1
 
 ===============  ================================================================================================================================
 Name              Description
@@ -335,8 +331,6 @@ threshold         The threshold value is used to adjust the score thresholds whi
                     - if the threshold is set to 1, then this gene would not be assigned to K00001
                     - if the threshold is set to 0.5, then the KO_value needed would be adjusted to 6 (12*0.5), resulting in the gene being
                       assigned to K00001
----------------  --------------------------------------------------------------------------------------------------------------------------------
-filter_file       The file name of additional filtering settings for specific search terms (see filter file section below). Optional
 ===============  ================================================================================================================================
 
 'interproscan'
@@ -344,8 +338,8 @@ filter_file       The file name of additional filtering settings for specific se
 
 .. code-block::
 
-  [interproscan]
-  annot_suffix = _InterProScan.tsv
+  interproscan:
+    annot_suffix: _InterProScan.tsv
 
 ===============  ================================================================================================================================
 Name              Description
@@ -359,10 +353,9 @@ annot_suffix      The name of the profile HMM file file.
 
 .. code-block::
 
-    [emapper]
-    annot_suffix = .emapper.annotations
-    evalue = 1e-3
-    filter_file = hit_filter.tab
+  emapper:
+    annot_suffix: .emapper.annotations
+    evalue: 1e-3
 
 ===============  ================================================================================================================================
 Name              Description
@@ -370,64 +363,50 @@ Name              Description
 annot_suffix      The file extension for the EGGNog-mapper prediction output.
 ---------------  --------------------------------------------------------------------------------------------------------------------------------
 evalue            The evalue threshold used to filter the EGGNog-mapper results. Default is 0.01
----------------  --------------------------------------------------------------------------------------------------------------------------------
-filter_file       The file name of additional filtering settings for specific search terms (see filter file section below). Optional
 ===============  ================================================================================================================================
 
 
-Filter file
-###########
-Separate search term specific filtering files can be provided as tab separated
-tables that specify specific filtering parameters for any query. These
-settings will be applied instead of the global filtering parameters that are set
-in the configuration file. Any of the filtering values that are allowed in the
-configuration file can be used in the filtering file. Filtering files can
-be provided for each search approach being used through the filter_file
-properties in the configuration sections.
-
-An example of a filtering file can be seen here:
+function definition
+####################
+The second part of the configuration file contains the definition of the
+function of interest. Functions are defined in the YAML format in a hierarchical
+structure. An example of a function definition can be seen below:
 
 .. code-block::
 
-    seq1  ident_pct  >=  50
-    PF0001  evalue  <=  1e-100
-
-The file consists of a four column, tab separated table. The first column
-contains the IDs of the query (e.g., sequence ID, PFAM ID, Profile ID).
-The second column contains the property that you want to filter by. The
-fitlering properties allowed for each feature are listed in the configuration
-file section of these docs. The fourth column contains the filtering logic
-(>, <, >=, <=). The last column contains the value that will be used for the
-filtering.
-
-search terms
-#############
-The search terms file specifies the relationship between individual queries and
-the broader search term IDs. This file is a three column table consiting of the
-search terms IDs, query IDs, and search methods.
-
-.. code-block::
-
-    gene1  seq1   blast
-    gene1  PFAM1  interproscan
-    gene2  COG1   emapper
-
-system
-#######
-
-Json formatted file that specify how the components are organized to perform a function.
-Json files have specific formatting requirements and it can sometimes be difficult to
-identify where formatting mistakes have been made in a file. It is recommended to
-use a JSON validator like the one found here: `JSON Lint <https://jsonlint.com/>`.
-
-  .. literalinclude:: example.json
+    ---
+    name: Equol Gene Cluster
+    components:
+    - name: Equol Production Pathway
+      presence: essential
+      components:
+      - geneID: DHDR
+        description: Dihydrodaidzein reductase
+        presence: essential
+        terms:
+        - id: GCF_000422625.1_00043
+          method: blast
+          ident_pct: 90
+          evalue: 0.00001
+      - geneID: THDR
+        description: Tetrahydrodaidzein reductase
+        presence: essential
+        terms:
+        - id: COG1053
+          method: emapper
 
 
+
+
+Functions are defined in a nested structure. Each component is
+defined with a name property, an optional description property, and
+a presence property which defines if that component is essential or
+nonessential for the overall function.
 
 ======================  ========================================================
 Name                    Description
 ======================  ========================================================
-name/queryID:(*str*)    The name of the components/ The orthoID
+name/geneID:(*str*)    The name of the components/ The gene ID
 ----------------------  --------------------------------------------------------
 components:(*list*)      The list of subcomponents
 ----------------------  --------------------------------------------------------
@@ -435,3 +414,26 @@ presence:(*option*)     "essential", "nonessential"
 ----------------------  --------------------------------------------------------
 analogs:(*dict*)        Followed an equivalent component
 ======================  ========================================================
+
+
+Components are ultimately associated with geneIDs, which have the same
+set of properties as higher level components, but also have search terms
+associated with them. In the example below the geneID 'DHDR' is associated
+with a sequence as a search term:
+
+.. code-block::
+
+  - geneID: DHDR
+    description: Dihydrodaidzein reductase
+    presence: essential
+    terms:
+    - id: GCF_000422625.1_00043
+      method: blast
+      ident_pct: 90
+      evalue: 0.00001
+
+Search terms consist of a search term ID, the method associated with searching
+for this term, and additional filtering parameters. Any of the filtering parameters
+applicable to a given search term can be set for individual search terms in this
+way. See the configuration settings in the above sections for info on what
+filtering parameters are applicable for each approach.

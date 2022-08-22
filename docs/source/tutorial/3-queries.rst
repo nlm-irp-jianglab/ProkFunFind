@@ -17,6 +17,61 @@ relationships between different components of the biological system.
 The tutorial materials for this section are located in the
 ./queries/ directory.
 
+Feature Model Definition
+**************************
+The feature model is defined in the second portion of the central `config.yaml`
+configuration file. The feature model definition is provided in yaml format. This
+definition is where the function organization is defined and where each gene
+in the function is associated with search terms. An example of a function
+definition can be seen in the `queries/examples/config.yaml` example file:
+
+.. code-block::
+
+  ---
+  name: Equol Gene Cluster
+  components:
+  - name: Equol Production Pathway
+    presence: essential
+    components:
+    - geneID: DZNR
+      description: Daidzein reductase
+      presence: essential
+      terms:
+      - id: DZNR
+        method: hmmer
+    - geneID: DHDR
+      description: Dihydrodaidzein reductase
+      presence: essential
+      terms:
+      - id: GCF_000422625.1_00043
+        method: blast
+        ident_pct: 90
+    - geneID: THDR
+      description: Tetrahydrodaidzein reductase
+      presence: essential
+      terms:
+      - id: COG1053
+        method: emapper
+        evalue: 0.001
+    - geneID: DDRC
+      description: Dihydrodaidzein racemase
+      presence: essential
+      terms:
+      - id: DDRC
+        method: hmmer
+
+The feature definition is organized as a series of nested components. The outermost
+component is the overall function definition. In the example above that would
+be the 'Equol Gene Cluster'. The function is then organized in a nested structure
+with subcomponents that are ultimately associated with search terms. Each of these
+portions of the feature will be explained in the subsequent sections.
+
+
+
+
+
+
+
 Types of Search Terms
 **********************
 *ProkFunFind* supports multiple types of queries and additional support for new search approaches is actively being worked on.
@@ -183,8 +238,8 @@ for more information on the DBSCAN implementation.
 The other sections defined in the configuration file are search approach
 specific. These sections are used to define the file extensions for the
 annotation or query files as well as the filtering parameters for each search
-approach. See the other search specific toturial sections for examples and the
-'inputs' section of the documentation for a complete table of all settigns
+approach. See the other search specific tutorial sections for examples and the
+'inputs' section of the documentation for a complete table of all settings
 allowed for each search approach.
 
 
