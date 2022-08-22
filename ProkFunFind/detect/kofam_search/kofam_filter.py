@@ -159,21 +159,7 @@ def kofam_filter(config: dict, qres: QueryResult, basedir: str, filter_dict: dic
         '==': operator.eq,
         '!=': operator.ne
     }
-
-    # filter_dict = defaultdict(list)
-    #
-    # # Parse local filter settings for specific KOs
-    # if config.has_option("kofamscan", "filter_file"):
-    #     hit_filter_file = check_path_existence(basedir +
-    #                                            config['kofamscan']['filter_file'])
-    #     with open(hit_filter_file) as filter_file:
-    #         for row in csv.reader(filter_file, delimiter="\t"):
-    #             filter_dict[row[0]].append(
-    #                 {'attr': row[1],
-    #                  'cpfun': ops[row[2]],
-    #                  'value': float(row[3])})
-
-    # Handle filtering by local and global thresholds
+    
     def hsp_filter_func(hsp):
         status = True
         if hsp.hit_id in filter_dict:

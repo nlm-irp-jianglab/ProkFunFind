@@ -50,18 +50,18 @@ def retrieve_function_pipeline(fun_name: str, args) -> Callable:
     # 1. Parse configuration files and search files
     # 1.1 Obtain the configuration and check the exec as well as the database
     # required
+    fun_path = fun_name.split('/')
     logging.info("Checking configuration files")
-    path_to_fun = fun_name + "/"
+    path_to_fun = '/'.join(fun_path[:-1])+'/'
 
     # 1.2 check the existance of the function
     if not os.path.exists(path_to_fun):
         sys.exit("Function {} doesn't exist in GutFun".format(fun_name))
 
     # 1.3 check the existance of function configuration
-    config_path = path_to_fun + "config.yaml"
-    config_path = check_path_existence(config_path)
+    config_path = check_path_existence(fun_name)
 
-    config, system = yaml.safe_load_all(open(config_path))
+    config, system = yaml.safe_load_all(open(fun_name))
 
     OrthScore_dict, search_approaches, filter_dict = parse_system_yaml(system)
 
@@ -266,7 +266,8 @@ def main_individual(args):
     detect_fun, search_list = retrieve_function_pipeline(
         fun_name=args.fun_name, args=args)
 
-    p = multiprocessing.Pool(2)
+    # Process args.processes number of genomes at the same time.
+    p = multiprocessing.Pool(int(args.processes))
     process_list = []
     for prefix in search_list:
         p.apply_async(detect_fun(genome_prefix=prefix,
@@ -281,7 +282,7 @@ def main():
     parser.add_argument(
         "-f",
         "--function",
-        help="Name of the function",
+        help="Path to configuration file",
         required=True,
         dest="fun_name",
         metavar="")

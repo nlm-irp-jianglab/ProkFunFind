@@ -32,21 +32,7 @@ def hmmer_filter(config: dict, qres: QueryResult, basedir: str, filter_dict: dic
         '!=': operator.ne
     }
 
-    # filter_dict = defaultdict(list)
-
     query_len = qres.seq_len
-
-    # if there is section filter.local and that section has filter_file,
-    # the info of the filter_file will be passed to
-    # filter_dict; Otherwise filter_dict remains empty
-    # if config.has_option("hmmer", "filter_file"):
-    #     hit_filter_file = check_path_existence(basedir +
-    #                                            config['hmmer']['filter_file'])
-    #     with open(hit_filter_file) as filter_file:
-    #         for row in csv.reader(filter_file, delimiter="\t"):
-    #             filter_dict[row[0]].append({'attr': row[1],
-    #                                         'cpfun': ops[row[2]],
-    #                                         'value': float(row[3])})
 
     def hit_filter_func(hit):
         status = True

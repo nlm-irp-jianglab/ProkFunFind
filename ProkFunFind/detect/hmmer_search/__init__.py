@@ -75,8 +75,8 @@ def pipeline(config: dict,
 
             max_dict = OrthScore_dict[i.hits[0].id]
             # set the QueryResult attributes
-            setattr(i, "queryID", max_dict['queryID'])
-            setattr(i, "queryID_weight", max_dict['precision'])
+            setattr(i, "geneID", max_dict['geneID'])
+            setattr(i, "geneID_weight", max_dict['precision'])
             setattr(i, "detect_tool", "hmmer")
             q_list.append(i)
     return q_list

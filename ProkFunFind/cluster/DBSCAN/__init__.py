@@ -53,7 +53,7 @@ def pipeline(config: dict, genome_object, detect_tools: set) -> Genome:
                             getattr(
                                 gene,
                                 detect_tool),
-                            "queryID_weight"))
+                            "geneID_weight"))
 
         # if there is a hit in the contig, run DBSCANCluster
         if len(poslist) >= 1:
