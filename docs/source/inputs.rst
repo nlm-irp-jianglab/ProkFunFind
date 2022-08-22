@@ -93,16 +93,7 @@ run all searches on the provided genomes sequentially.
 
 Input function configuration
 ############################
-``-f`` should be followed by the path to the directory of the function (``${function}``).
-
-.. code-block::
-
-  $ ls data/
-  Flagellar                   # Where the search files for a search
-  Mucic_and_Saccharic_Acid    # Where the search files for Mucic_and_Saccharic_Acid stored
-
-
-
+``-f`` should be followed by the path to the configuration yaml file (``${function}``).
 
 .. code-block::
 
@@ -135,7 +126,7 @@ the
 
 configuration section
 **********************
-The configuration files ``config.ini`` is where the settings for the ProkFunFind
+The configuration section of the ``config.yaml`` file is where the settings for the ProkFunFind
 search are specified. This file is made up of a main section and multiple other
 sections related to the specific search approaches and filtering.
 

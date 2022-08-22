@@ -278,7 +278,7 @@ def main_individual(args):
 
 def main():
     parser = ArgumentParser(
-        description="Identify genes related function of interest")
+        description="Identify genes related functions of interest")
     parser.add_argument(
         "-f",
         "--function",

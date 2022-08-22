@@ -47,15 +47,15 @@ this kind of search.
 
 .. code-block::
 
-- name: Equol Production Pathway
-  presence: essential
-  components:
-  - geneID: DZNR
-    description: Daidzein reductase
+  - name: Equol Production Pathway
     presence: essential
-    terms:
-    - id: PTHR42917
-      method: interproscan
+    components:
+    - geneID: DZNR
+      description: Daidzein reductase
+      presence: essential
+      terms:
+      - id: PTHR42917
+        method: interproscan
 
 
 As described in the :doc:`Queries <./3-queries>` tutorial section, multiple domains can be associated with one gene ID by
@@ -304,16 +304,16 @@ this case COG IDs. The search term input can be found in the function definition
 
 .. code-block::
 
-- name: Equol Production Pathway
-  presence: essential
-  components:
-  - geneID: DZNR
-    description: Daidzein reductase
+  - name: Equol Production Pathway
     presence: essential
-    terms:
-    - id: COG1902
-      method: emapper
-      evalue: 1e-100
+    components:
+    - geneID: DZNR
+      description: Daidzein reductase
+      presence: essential
+      terms:
+      - id: COG1902
+        method: emapper
+        evalue: 1e-100
 
 Similarly to the KO-based search, many of the queries in this example search do not have great COG
 matches, so a mix of COGs and ortholog groups at higher levels are used in this search.
@@ -326,13 +326,13 @@ directly in the function definition:
 
 .. code-block::
 
-- geneID: DZNR
-  description: Daidzein reductase
-  presence: essential
-  terms:
-  - id: COG1902
-    method: emapper
-    evalue: 1e-100
+  - geneID: DZNR
+    description: Daidzein reductase
+    presence: essential
+    terms:
+    - id: COG1902
+      method: emapper
+      evalue: 1e-100
 
 In this example an evalue filter of 1e-100 is set for COG1902 meaning that only
 hits with e-values less than 1e-100 for the prediction will be considered.

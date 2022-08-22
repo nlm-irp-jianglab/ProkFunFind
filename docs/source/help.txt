@@ -1,10 +1,10 @@
-usage: prokfunfind [-h] {rep,pan} ...
+usage: prokfunfind [-h] -f  -o  [-p] -g
 
-Identify genes related function of interest
+Identify genes related functions of interest
 
 optional arguments:
   -h, --help            show this help message and exit
-  -d , --databasedir    The base dir of function
-  -f , --function       Name of the function
+  -f , --function       Path to configuration file
   -o , --outputprefix   The output file name prefix
-  -g, --gtab            Table of genomes to search
+  -p , --processes      Number of genomes to process concurrently (default=1)
+  -g , --gtab           Table of genomes to search

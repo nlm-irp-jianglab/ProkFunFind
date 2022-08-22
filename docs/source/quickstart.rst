@@ -9,13 +9,14 @@ In order to run ProkFunFind on your genome as soon as you have installed it, you
 
 
 * Type:
-  ``prokfunfind.py -h``
+  ``prokfunfind -h``
   to see all options available. All command-line options are described below:
 
 .. literalinclude:: help.txt
 
 * On a completely assembled genome (for example the representative EBI genome) run a command like the following:
-  ``prokfunfind.py rep -b data.folder -f Function -g genome.inputs -o output.prefix``
+  ``prokfunfind -f config.yaml -g genome.inputs -o output.prefix``
+
 This command will will detect the function ``Function`` in a genome or set of genomes designated
-in a genome table (``genome.inputs``)  based on the functional configuration files placed
-in the folder ``data.folder`` and outputs the result in ``output.prefix``
+in a genome table (``genome.inputs``)  based on the function defined in the
+``config.yaml`` file and outputs the result in ``output.prefix``
