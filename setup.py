@@ -15,6 +15,7 @@ setuptools.setup(name='ProkFunFind',
                      "ProkFunFind.read",
                      "ProkFunFind.report",
                      "ProkFunFind.examine",
+                     "ProkFunFind.annotate",
                      "ProkFunFind.detect.blast_search",
                      "ProkFunFind.detect.ipr_search",
                      "ProkFunFind.detect.hmmer_search",
@@ -34,7 +35,8 @@ setuptools.setup(name='ProkFunFind',
                      'argparse',
                      'numpy',
                      'six',
-                     'bcbio-gff'
+                     'bcbio-gff',
+                     'PyYAML'
                  ],
                  zip_safe=False)
 #                     'importlib',

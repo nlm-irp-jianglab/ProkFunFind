@@ -21,14 +21,14 @@ cd ProkFunFind && python setup.py install
 
 ## Quick Start
 ```
-prokfunfind.py -d data.folder -f Mucic_and_Saccharic_Acid -g input.folder/MGYG-HGUT-02439 -o output.folder/prefix
+prokfunfind.py -f config.yaml -gtab genome.table -o output.folder/prefix
 ```
 
 ## Documentation and Tutorial
-The documentation for ProkFunFind can be found here: 
+The documentation for ProkFunFind can be found here:
 - https://prokfunfind.readthedocs.io/en/latest/
 
-A tutorial describing how to run ProkFunFind searches can be found here: 
+A tutorial describing how to run ProkFunFind searches can be found here:
 - https://prokfunfind.readthedocs.io/en/docs-and-tests/tutorial/1-intro.html
 
 ## Updates
