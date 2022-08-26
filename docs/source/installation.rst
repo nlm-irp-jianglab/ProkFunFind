@@ -83,5 +83,4 @@ We recommend installing ProkFunFind within a python virtual environment.
 
      conda create -n ProkFun python=3
      conda activate ProkFun
-     cd ProkFunFind
-     python setup.py install
+     pip install ./ProkFunFind

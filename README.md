@@ -16,7 +16,7 @@
 conda create -n ProkFun python=3
 conda activate ProkFun
 git clone git@github.com:nlm-irp-jianglab/ProkFunFind.git
-cd ProkFunFind && python setup.py install
+pip install ./ProkFunFind
 ```
 
 ## Quick Start
