@@ -81,27 +81,27 @@ of the search results.
 
 .. code-block::
 
-name: Equol Gene Cluster
-components:
-- name: Equol Production Pathway
-  presence: essential
+  name: Equol Gene Cluster
   components:
-  - geneID: DZNR
-    description: Daidzein reductase
+  - name: Equol Production Pathway
     presence: essential
-    terms:
-    - id: K00219
-      method: kofamscan
-    genes:
-    - GCF_000478885.1_00950
-    - GCF_000478885.1_01879
-    - GCF_000478885.1_02274
-  ...
-    completeness:
-      essential: 4
-      nonessential: 0
-      essential_presence: 4
-      nonessential_presence: 0
+    components:
+    - geneID: DZNR
+      description: Daidzein reductase
+      presence: essential
+      terms:
+      - id: K00219
+        method: kofamscan
+      genes:
+      - GCF_000478885.1_00950
+      - GCF_000478885.1_01879
+      - GCF_000478885.1_02274
+    ...
+      completeness:
+        essential: 4
+        nonessential: 0
+        essential_presence: 4
+        nonessential_presence: 0
 
 
 

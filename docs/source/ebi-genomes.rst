@@ -45,31 +45,31 @@ The configuration (config.ini) file would look something like this:
 
 .. code-block::
 
-   [main]
-   system.file = system.json
-   cluster.tool = DBSCAN
-   search_terms = search_terms.tsv
-   faa_suffix = .faa
-   fna_suffix = .fna
-   gff_suffix = .gff3
+    ---
+    main:
+      cluster_tool: DBSCAN
+      system_file: systems.json
+      search_terms: search-terms.tsv
+      faa_suffix: .faa
+      gff_suffix: .gff
+      fna_suffix: .fna
+    DBSCAN:
+      cluster_eps: 4
+      cluster_min_samples: 2
+    hmmer:
+      hmmer_query: query.hmm
+      hmmer_exec: hmmscan
+      hmmer_threads: 1
+    blast:
+      blast_query: query.fa
+      blast_exec: blastp
+      blast_threads: 1
+    emapper:
+      annot_suffix: _eggNOG.tsv
+    interproscan:
+      annot_suffix: _InterProScan.tsv
 
-   [DBSCAN]
-   cluster.eps = 3
-   cluster.min_samples = 1
 
-   [blast]
-   blast.threads = 1
-   blast.query = query.fa
-
-   [hmmer]
-   hmmer.threads = 1
-   hmmer.query = query.hmm
-
-   [emapper]
-   annot_suffix = _eggNOG.tsv
-
-   [interproscan]
-   annot_suffix = _InterProScan.tsv
 
 With this configuration file setup you can perform searches on any EMBL-EBI
 genome data that you download.

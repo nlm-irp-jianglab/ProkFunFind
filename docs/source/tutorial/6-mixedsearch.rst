@@ -140,10 +140,10 @@ file:
 
 .. code-block::
 
-  GCF_000478885.1_1	GuFunFind	CDS	7382	8305	.	-	.	ID=GCF_000478885.1_00007;Name=HYDE;ClusterID=Cl_NA;Target=PF04055;evalue=3.2e-19
-  GCF_000478885.1_1	GuFunFind	CDS	28201	29646	.	+	.	ID=GCF_000478885.1_00024;Name=HYDE;ClusterID=Cl_NA;Target=PF04055;evalue=2e-15
-  GCF_000478885.1_1	GuFunFind	CDS	261233	262642	.	+	.	ID=GCF_000478885.1_00150;Name=HYDE;ClusterID=Cl_NA;Target=PF04055;evalue=7.7e-22
-  GCF_000478885.1_1	GuFunFind	CDS	288712	290358	.	-	.	ID=GCF_000478885.1_00174;Name=DEVR;ClusterID=Cl_NA;Target=DEVR;evalue=1.2e-07
+  GCF_000478885.1_1	ProkFunFind	CDS	7382	8305	.	-	.	ID=GCF_000478885.1_00007;Name=HYDE;ClusterID=Cl_NA;Target=PF04055;evalue=3.2e-19
+  GCF_000478885.1_1	ProkFunFind	CDS	28201	29646	.	+	.	ID=GCF_000478885.1_00024;Name=HYDE;ClusterID=Cl_NA;Target=PF04055;evalue=2e-15
+  GCF_000478885.1_1	ProkFunFind	CDS	261233	262642	.	+	.	ID=GCF_000478885.1_00150;Name=HYDE;ClusterID=Cl_NA;Target=PF04055;evalue=7.7e-22
+  GCF_000478885.1_1	ProkFunFind	CDS	288712	290358	.	-	.	ID=GCF_000478885.1_00174;Name=DEVR;ClusterID=Cl_NA;Target=DEVR;evalue=1.2e-07
 
 In this output the Target property in column 9 provides what specific search term
 ID produced the hit to that gene.
