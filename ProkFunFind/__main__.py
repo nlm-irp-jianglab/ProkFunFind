@@ -68,9 +68,10 @@ def retrieve_function_pipeline(fun_name: str, args) -> Callable:
     # 1.4 Parse genome search table
     search_list = []
     gids = parse_gtab(args.gtab)
+    fpath = '/'.join(os.path.abspath(args.gtab).split('/')[:-1])
     for genome, p in gids.items():
         # fna_path = None
-        prefix = p+"/"+genome
+        prefix = fpath+'/'+p+"/"+genome
         search_list.append(prefix)
 
     # 2. Check for annotation file existence for all requested searches
@@ -80,14 +81,14 @@ def retrieve_function_pipeline(fun_name: str, args) -> Callable:
                 if detect_tool == "interproscan":
                     # Need to handle both tsv and xml outputs.
                     check_path_existence(
-                        p + "/" + genome +
+                        fpath + '/' + p + "/" + genome +
                         config['interproscan']['annot_suffix'])
                 elif detect_tool == "kofamscan":
                     check_path_existence(
-                        p + "/" + genome + config['kofamscan']['annot_suffix'])
+                        fpath + '/' + p + "/" + genome + config['kofamscan']['annot_suffix'])
                 elif detect_tool == "emapper":
                     check_path_existence(
-                        p + '/' + genome +
+                        fpath + '/' + p + '/' + genome +
                         config['emapper']['annot_suffix'])
 
     # 3. Set up clustering and parse system file
