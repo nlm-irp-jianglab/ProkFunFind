@@ -1,2 +1,0 @@
-PLP	hdcA	1
-antiporter	PTHR42770	1

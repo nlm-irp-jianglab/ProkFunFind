@@ -1,0 +1,114 @@
+---
+main:
+  detect_tool: blast
+  cluster_tool: DBSCAN
+  faa_suffix: .faa
+  gff_suffix: .gff
+  fna_suffix: .fna
+blast:
+  blast_query: bait.fa
+  blast_exec: blastp
+  blast_evalue: 1e-6
+  blast_threads: 1
+  evalue: 1e-110
+  ident_pct: 50
+DBSCAN:
+  cluster_eps: 4
+  cluster_min_samples: 1
+---
+name: Cysteine_Degradation
+presence: essential
+components:
+- queryID: mst
+  presence: nonessential
+  terms:
+  - id: mst_ecoli
+    method: blast
+  - id: mst_ypestis
+    method: blast
+  - id: mst_styphimurium
+    method: blast
+  - id: mst_bsuis
+    method: blast
+- queryID: cbs
+  presence: nonessential
+  terms:
+  - id: cbs_saureus
+    method: blast
+- queryID: cyd
+  presence: nonessential
+  terms:
+  - id: cyd_kpneumoniae
+    method: blast
+- queryID: metC
+  presence: essential
+  terms:
+  - id: metC_ecoli
+    method: blast
+- queryID: cysM
+  presence: essential
+  terms:
+  - id: cysM_ecoli
+    method: blast
+- queryID: cysK
+  presence: essential
+  terms:
+  - id: cysK_ecoli
+    method: blast
+- queryID: malY
+  presence: essential
+  terms:
+  - id: malY_ecoli
+    method: blast
+- queryID: yhaO
+  presence: essential
+  terms:
+  - id: yhaO_ecoli
+    method: blast
+- queryID: yhaM
+  presence: essential
+  terms:
+  - id: yhaM_ecoli
+    method: blast
+- queryID: decR
+  presence: essential
+  terms:
+  - id: decR_ecoli
+    method: blast
+- queryID: iscS
+  presence: essential
+  terms:
+  - id: iscS_ecoli
+    method: blast
+- queryID: fn1220
+  presence: nonessential
+  terms:
+  - id: fn1220_fnucleatum
+    method: blast
+- queryID: fn1419
+  presence: nonessential
+  terms:
+  - id: fn1419_fnucleatum
+    method: blast
+- queryID: fn1055
+  presence: nonessential
+  terms:
+  - id: fn1055_fnucleatum
+    method: blast
+- queryID: fn0625
+  presence: nonessential
+  terms:
+  - id: fn0625_fnucleatum
+    method: blast
+- queryID: mgl
+  presence: nonessential
+  terms:
+  - id: mgl_pgingivalis
+    method: blast
+  - id: mgl_tdenticola
+    method: blast
+- queryID: tnaA
+  presence: essential
+  terms:
+  - id: tnaA_ecoli
+    method: blast

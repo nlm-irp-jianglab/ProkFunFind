@@ -43,18 +43,18 @@ class TestFileParsing:
 
     def test_read2orthoDict_justortho(self):
         d = read2orthoDict(ortho_pair_file=test_dir_path+'/orthogenes.tsv')
-        assert d == {'gene1': {'queryID': 'ortho1', 'precision': 1},
-                     'gene2': {'queryID': 'ortho2', 'precision': 1},
-                     'gene3': {'queryID': 'ortho3', 'precision': 1}}
+        assert d == {'gene1': {'geneID': 'ortho1', 'precision': 1},
+                     'gene2': {'geneID': 'ortho2', 'precision': 1},
+                     'gene3': {'geneID': 'ortho3', 'precision': 1}}
 
     def test_read2orthoDict_prec(self):
         d = read2orthoDict(ortho_pair_file=test_dir_path+'/orthoprec.tsv')
-        assert d == {'gene1': {'queryID': 'ortho1', 'precision': 1},
-                     'gene2': {'queryID': 'ortho2', 'precision': 2},
-                     'gene3': {'queryID': 'ortho3', 'precision': 3}}
+        assert d == {'gene1': {'geneID': 'ortho1', 'precision': 1},
+                     'gene2': {'geneID': 'ortho2', 'precision': 2},
+                     'gene3': {'geneID': 'ortho3', 'precision': 3}}
 
     # def test_read2orthoDict_mix(self):
     #     d = read2orthoDict(ortho_pair_file=test_dir_path+'/orthomix.tsv')
-    #     assert d == {'gene1':{'queryID':'ortho1', 'precision':1},
-    #                 'gene2':{'queryID':'ortho2', 'precision':2},
-    #                 'gene3':{'queryID':'ortho3', 'precision':1}}
+    #     assert d == {'gene1':{'geneID':'ortho1', 'precision':1},
+    #                 'gene2':{'geneID':'ortho2', 'precision':2},
+    #                 'gene3':{'geneID':'ortho3', 'precision':1}}
