@@ -24,6 +24,12 @@ pip install ./ProkFunFind
 prokfunfind.py -f config.yaml -gtab genome.table -o output.folder/prefix
 ```
 
+## ProkFunAnnotate
+The ProkFunAnnotate pipelile has been developed to assist in the production
+of the required annotation files for ProkFunFind searches. This annotation
+pipeline can be found in the following git repository:
+- https://github.com/nlm-irp-jianglab/ProkFunAnnotate
+
 ## Documentation and Tutorial
 The documentation for ProkFunFind can be found here:
 - https://prokfunfind.readthedocs.io/en/latest/

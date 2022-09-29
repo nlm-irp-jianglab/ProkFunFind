@@ -90,6 +90,11 @@ genome directories. This table should be provided through the `--gtab` argument:
 Any number of genomes inputs can be provided in this file and ProkFunFind will
 run all searches on the provided genomes sequentially.
 
+These input data can be generated using the `MGnify FTP <https://github.com/nlm-irp-jianglab/ProkFunAnnotate>`_
+snakemake pipeline. This pipeline can be run to generate the EggNOG-mapper and KOFamScan
+data used by snakemake from a set of input genomes. The input file needed to run the
+snakemake pipeline is the same one used by the ProkFunFind --gtab argument. 
+
 
 Input function configuration
 ############################
