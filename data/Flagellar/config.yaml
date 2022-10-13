@@ -13,494 +13,173 @@ DBSCAN:
   cluster_min_samples: 1.8
 
 ---
-name: Flagellar
+name: Flagellar Core Genes
 components:
-- name: Two component system proteins
-  presence: nonessential
-  components:
-  - geneID: K03407
-    description: cheA; two-component system, chemotaxis family, sensor kinase CheA
-      [EC:2.7.13.3]
-    presence: essential
-    terms:
-    - id: K03407
-      method: kofamscan
-  - geneID: K03408
-    description: cheW; purine-binding chemotaxis protein CheW
-    presence: nonessential
-    terms:
-    - id: K03408
-      method: kofamscan
-  - geneID: K03409
-    description: cheX; chemotaxis protein CheX
-    presence: nonessential
-    terms:
-    - id: K03409
-      method: kofamscan
-  - geneID: K03410
-    description: cheC; chemotaxis protein CheC
-    presence: nonessential
-    terms:
-    - id: K03410
-      method: kofamscan
-  - geneID: K03411
-    description: cheD; chemotaxis protein CheD [EC:3.5.1.44]
-    presence: nonessential
-    terms:
-    - id: K03411
-      method: kofamscan
-  - geneID: K00575
-    description: cheR; chemotaxis protein methyltransferase CheR [EC:2.1.1.80]
-    presence: nonessential
-    terms:
-    - id: K00575
-      method: kofamscan
-  - geneID: K03412
-    description: cheB; two-component system, chemotaxis family, protein-glutamate
-      methylesterase/glutaminase [EC:3.1.1.61 3.5.1.44]
-    presence: nonessential
-    terms:
-    - id: K03412
-      method: kofamscan
-  - geneID: K13924
-    description: cheBR; two-component system, chemotaxis family, CheB/CheR fusion
-      protein [EC:2.1.1.80 3.1.1.61]
-    presence: nonessential
-    terms:
-    - id: K13924
-      method: kofamscan
-  - geneID: K03413
-    description: cheY; two-component system, chemotaxis family, chemotaxis protein
-      CheY
-    presence: nonessential
-    terms:
-    - id: K03413
-      method: kofamscan
-  - geneID: K03414
-    description: cheZ; chemotaxis protein CheZ
-    presence: nonessential
-    terms:
-    - id: K03414
-      method: kofamscan
-  - geneID: K03415
-    description: cheV; two-component system, chemotaxis family, chemotaxis protein
-      CheV
-    presence: nonessential
-    terms:
-    - id: K03415
-      method: kofamscan
-- name: MCPs
-  presence: nonessential
-  components:
-  - geneID: K03406
-    description: mcp; methyl-accepting chemotaxis protein
-    presence: essential
-    terms:
-    - id: K03406
-      method: kofamscan
-  - geneID: K05874
-    description: tsr; methyl-accepting chemotaxis protein I, serine sensor receptor
-    presence: nonessential
-    terms:
-    - id: K05874
-      method: kofamscan
-  - geneID: K05875
-    description: tar; methyl-accepting chemotaxis protein II, aspartate sensor receptor
-    presence: nonessential
-    terms:
-    - id: K05874
-      method: kofamscan
-  - geneID: K05876
-    description: trg; methyl-accepting chemotaxis protein III, ribose and galactose
-      sensor receptor
-    presence: nonessential
-    terms:
-    - id: K05876
-      method: kofamscan
-  - geneID: K05877
-    description: tap; methyl-accepting chemotaxis protein IV, peptide sensor receptor
-    presence: nonessential
-    terms:
-    - id: K05877
-      method: kofamscan
-  - geneID: K03776
-    description: aer; aerotaxis receptor
-    presence: nonessential
-    terms:
-    - id: K03776
-      method: kofamscan
-  - geneID: K06595
-    description: hemAT; heam-based aerotactic trancducer
-    presence: nonessential
-    terms:
-    - id: K06595
-      method: kofamscan
-- name: Type-III secretion
+- name: filament and hook
   presence: essential
   components:
-  - geneID: K02411
-    description: fliH; flagellar assembly protein FliH
+  - geneID: fliC
+    description: fliC; flagellin
     presence: essential
     terms:
-    - id: K02411
+    - id: K02406
       method: kofamscan
-  - geneID: K02412
-    description: fliI; flagellum-specific ATP synthase [EC:7.4.2.8]
+  - geneID: flgK
+    description: flgK; flagellar hook-associated protein 1 FlgK
     presence: essential
     terms:
-    - id: K02412
+    - id: K02396
       method: kofamscan
-  - geneID: K02418
-    description: fliOZ, fliO; flagellar protein FliO/FliZ
-    presence: nonessential
-    terms:
-    - id: K02418
-      method: kofamscan
-  - geneID: K02419
-    description: fliP; flagellar biosynthetic protein FliP
+  - geneID: flgL
+    description: flgL; flagellar hook-associated protein 3 FlgL
     presence: essential
     terms:
-    - id: K02419
+    - id: K02397
       method: kofamscan
-  - geneID: K02420
-    description: fliQ; flagellar biosynthetic protein FliQ
+  - geneID: flgE
+    description: flgE; flagellar hook protein FlgE
     presence: essential
     terms:
-    - id: K02420
+    - id: K02390
       method: kofamscan
-  - geneID: K02421
-    description: fliR; flagellar biosynthetic protein FliR
+  - geneID: flgD
+    description: flgD; flagellar basal-body rod modification protein FlgD
     presence: essential
     terms:
-    - id: K02421
+    - id: K02389
       method: kofamscan
-  - geneID: K02400
+  - geneID: fliD
+    description: fliD; flagellar hook-associated protein 2
+    presence: essential
+    terms:
+    - id: K02407
+      method: kofamscan
+  - geneID: fliE
+    description: fliE; flagellar hook-basal body complex protein FliE
+    presence: essential
+    terms:
+    - id: K02408
+      method: kofamscan
+- name: rod
+  presence: essential
+  components:
+  - geneID: flgB
+    description: flgB; flagellar basal-body rod protein FlgB
+    presence: essential
+    terms:
+    - id: K02387
+      method: kofamscan
+  - geneID: flgC
+    description: flgC; flagellar basal-body rod protein FlgC
+    presence: essential
+    terms:
+    - id: K02388
+      method: kofamscan
+  - geneID: flgG
+    description: flgG; flagellar basal-body rod protein FlgG
+    presence: essential
+    terms:
+    - id: K02392
+      method: kofamscan
+  - geneID: flgF
+    description: flgF; flagellar basal-body rod protein FlgF
+    presence: essential
+    terms:
+    - id: K02391
+      method: kofamscan
+- name: MS ring
+  presence: essential
+  components:
+  - geneID: fliF
+    description: fliF; flagellar M-ring protein FliF
+    presence: essential
+    terms:
+    - id: K02409
+      method: kofamscan
+- name: C ring
+  presence: essential
+  components:
+  - geneID: fliG
+    description: fliG; flagellar motor switch protein FliG
+    presence: essential
+    terms:
+    - id: K02410
+      method: kofamscan
+  - geneID: fliM
+    description: fliM; flagellar motor switch protein FliM
+    presence: essential
+    terms:
+    - id: K02416
+      method: kofamscan
+  - geneID: fliN
+    description: fliNY, fliN; flagellar motor switch protein FliN/FliY
+    presence: essential
+    terms:
+    - id: K02417
+      method: kofamscan
+- name: motor
+  presence: essential
+  components:
+  - geneID: motA
+    description: motA; chemotaxis protein MotA
+    presence: essential
+    terms:
+    - id: K02556
+      method: kofamscan
+  - geneID: motB
+    description: motB; chemotaxis protein MotB
+    presence: essential
+    terms:
+    - id: K02557
+      method: kofamscan
+- name: export apparatus
+  presence: essential
+  components:
+  - geneID: flhA
     description: flhA; flagellar biosynthesis protein FlhA
     presence: essential
     terms:
     - id: K02400
       method: kofamscan
-  - geneID: K02401
+  - geneID: flhB
     description: flhB; flagellar biosynthetic protein FlhB
     presence: essential
     terms:
     - id: K02401
       method: kofamscan
     analogs:
-      geneID: K13820
+      geneID: fliR-flhB
       description: fliR-flhB; flagellar biosynthetic protein FliR/FlhB
       terms:
       - id: K13820
         method: kofamscan
-  - geneID: K03516
-    description: flhE; flagellar protein FlhE
-    presence: nonessential
-    terms:
-    - id: K03516
-      method: kofamscan
-- name: Motor/switch
-  presence: essential
-  components:
-  - geneID: K02556
-    description: motA; chemotaxis protein MotA
+  - geneID: fliI
+    description: fliI; flagellum-specific ATP synthase [EC:7.4.2.8]
     presence: essential
     terms:
-    - id: K02556
+    - id: K02412
       method: kofamscan
-  - geneID: K02557
-    description: motB; chemotaxis protein MotB
+  - geneID: fliP
+    description: fliP; flagellar biosynthetic protein FliP
     presence: essential
     terms:
-    - id: K02557
+    - id: K02419
       method: kofamscan
-  - geneID: K10564
-    description: motC; chemotaxis protein MotC
-    presence: nonessential
-    terms:
-    - id: K010564
-      method: kofamscan
-  - geneID: K10565
-    description: motD; chemotaxis protein MotD
-    presence: nonessential
-    terms:
-    - id: K10565
-      method: kofamscan
-  - geneID: K21217
-    description: motX; sodium-type polar flagellar protein MotX
-    presence: nonessential
-    terms:
-    - id: K21217
-      method: kofamscan
-  - geneID: K21218
-    description: motY; sodium-type flagellar protein MotY
-    presence: nonessential
-    terms:
-    - id: K21218
-      method: kofamscan
-- name: C-ring
-  presence: essential
-  components:
-  - geneID: K02410
-    description: fliG; flagellar motor switch protein FliG
+  - geneID: fliR
+    description: fliR; flagellar biosynthetic protein FliR
     presence: essential
     terms:
-    - id: K02410
+    - id: K02421
       method: kofamscan
-  - geneID: K02416
-    description: fliM; flagellar motor switch protein FliM
+  - geneID: fliQ
+    description: fliQ; flagellar biosynthetic protein FliQ
     presence: essential
     terms:
-    - id: K02416
+    - id: K02420
       method: kofamscan
-  - geneID: K02417
-    description: fliNY, fliN; flagellar motor switch protein FliN/FliY
+  - geneID: fliH
+    description: fliH; flagellar assembly protein FliH
     presence: essential
     terms:
-    - id: K02417
-      method: kofamscan
-- name: M,S,P and L rings
-  presence: essential
-  components:
-  - geneID: K02409
-    description: fliF; flagellar M-ring protein FliF
-    presence: essential
-    terms:
-    - id: K02409
-      method: kofamscan
-  - geneID: K02394
-    description: flgI; flagellar P-ring protein precursor FlgI
-    presence: nonessential
-    terms:
-    - id: K02394
-      method: kofamscan
-  - geneID: K02386
-    description: flgA; flagella basal body P-ring formation protein FlgA
-    presence: nonessential
-    terms:
-    - id: K02386
-      method: kofamscan
-  - geneID: K02393
-    description: flgH; flagellar L-ring protein precursor FlgH
-    presence: nonessential
-    terms:
-    - id: K02393
-      method: kofamscan
-- name: Rod,hook and filament
-  presence: essential
-  components:
-  - geneID: K02387
-    description: flgB; flagellar basal-body rod protein FlgB
-    presence: essential
-    terms:
-    - id: K02387
-      method: kofamscan
-  - geneID: K02388
-    description: flgC; flagellar basal-body rod protein FlgC
-    presence: essential
-    terms:
-    - id: K02388
-      method: kofamscan
-  - geneID: K02389
-    description: flgD; flagellar basal-body rod modification protein FlgD
-    presence: essential
-    terms:
-    - id: K02389
-      method: kofamscan
-  - geneID: K02391
-    description: flgF; flagellar basal-body rod protein FlgF
-    presence: essential
-    terms:
-    - id: K02391
-      method: kofamscan
-  - geneID: K02392
-    description: flgG; flagellar basal-body rod protein FlgG
-    presence: essential
-    terms:
-    - id: K02392
-      method: kofamscan
-  - geneID: K02395
-    description: flgJ; flagellar protein FlgJ
-    presence: nonessential
-    terms:
-    - id: K02395
-      method: kofamscan
-  - geneID: K02390
-    description: flgE; flagellar hook protein FlgE
-    presence: essential
-    terms:
-    - id: K02390
-      method: kofamscan
-  - geneID: K02408
-    description: fliE; flagellar hook-basal body complex protein FliE
-    presence: essential
-    terms:
-    - id: K02408
-      method: kofamscan
-  - geneID: K02396
-    description: flgK; flagellar hook-associated protein 1 FlgK
-    presence: essential
-    terms:
-    - id: K02396
-      method: kofamscan
-  - geneID: K02397
-    description: flgL; flagellar hook-associated protein 3 FlgL
-    presence: essential
-    terms:
-    - id: K02397
-      method: kofamscan
-  - geneID: K02407
-    description: fliD; flagellar hook-associated protein 2
-    presence: essential
-    terms:
-    - id: K02407
-      method: kofamscan
-  - geneID: K02414
-    description: fliK; flagellar hook-length control protein FliK
-    presence: nonessential
-    terms:
-    - id: K02414
-      method: kofamscan
-  - geneID: K02415
-    description: fliL; flagellar FliL protein
-    presence: nonessential
-    terms:
-    - id: K02415
-      method: kofamscan
-  - geneID: K02406
-    description: fliC; flagellin
-    presence: essential
-    terms:
-    - id: K02406
-      method: kofamscan
-  - geneID: K18475
-    description: fliB; lysine-N-methylase [EC:2.1.1.-]
-    presence: nonessential
-    terms:
-    - id: K18475
-      method: kofamscan
-  - geneID: K06602
-    description: flaF; flagellar protein FlaF
-    presence: nonessential
-    terms:
-    - id: K06602
-      method: kofamscan
-  - geneID: K06603
-    description: flaG; flagellar protein FlaG
-    presence: nonessential
-    terms:
-    - id: K06603
-      method: kofamscan
-  - geneID: K02382
-    description: flbA; flagellar protein FlbA
-    presence: nonessential
-    terms:
-    - id: K02382
-      method: kofamscan
-  - geneID: K02383
-    description: flbB; flagellar protein FlbB
-    presence: nonessential
-    terms:
-    - id: K02383
-      method: kofamscan
-  - geneID: K02384
-    description: flbC; flagellar protein FlbC
-    presence: nonessential
-    terms:
-    - id: K02384
-      method: kofamscan
-  - geneID: K02385
-    description: flbD; flagellar protein FlbD
-    presence: nonessential
-    terms:
-    - id: K02385
-      method: kofamscan
-  - geneID: K06601
-    description: flbT; flagellar protein FlbT
-    presence: nonessential
-    terms:
-    - id: K06601
-      method: kofamscan
-- name: Regulation
-  presence: nonessential
-  components:
-  - geneID: K02402
-    description: flhC; flagellar transcriptional activator FlhC
-    presence: essential
-    terms:
-    - id: K02402
-      method: kofamscan
-  - geneID: K02403
-    description: flhD; flagellar transcriptional activator FlhD
-    presence: nonessential
-    terms:
-    - id: K02403
-      method: kofamscan
-  - geneID: K02405
-    description: fliA; RNA polymerase sigma factor for flagellar operon FliA
-    presence: nonessential
-    terms:
-    - id: K02405
-      method: kofamscan
-  - geneID: K02398
-    description: flgM; negative regulator of flagellin synthesis FlgM
-    presence: nonessential
-    terms:
-    - id: K02398
-      method: kofamscan
-  - geneID: K02404
-    description: flhF; flagellar biosynthesis protein FlhF
-    presence: nonessential
-    terms:
-    - id: K02404
-      method: kofamscan
-  - geneID: K04562
-    description: flhG, fleN; flagellar biosynthesis protein FlhG
-    presence: nonessential
-    terms:
-    - id: K04562
-      method: kofamscan
-- name: Chaperones
-  presence: nonessential
-  components:
-  - geneID: K02399
-    description: flgN; flagella synthesis protein FlgN
-    presence: essential
-    terms:
-    - id: K02399
-      method: kofamscan
-  - geneID: K02413
-    description: fliJ; flagellar FliJ protein
-    presence: nonessential
-    terms:
-    - id: K02413
-      method: kofamscan
-  - geneID: K02422
-    description: fliS; flagellar protein FliS
-    presence: nonessential
-    terms:
-    - id: K02422
-      method: kofamscan
-  - geneID: K02423
-    description: fliT; flagellar protein FliT
-    presence: nonessential
-    terms:
-    - id: K02423
-      method: kofamscan
-  - geneID: K13626
-    description: fliW; flagellar assembly factor FliW
-    presence: nonessential
-    terms:
-    - id: K13626
-      method: kofamscan
-  - geneID: K02424
-    description: fliY, tcyA; L-cystine transport system substrate-binding protein
-    presence: nonessential
-    terms:
-    - id: K02424
-      method: kofamscan
-  - geneID: K02425
-    description: fliZ; regulator of sigma S factor FliZ
-    presence: nonessential
-    terms:
-    - id: K02425
+    - id: K02411
       method: kofamscan
