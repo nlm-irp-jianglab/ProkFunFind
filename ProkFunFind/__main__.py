@@ -308,6 +308,12 @@ def main():
         required=True,
         dest="gtab",
         metavar="")
+    parser.add_argument(
+        "-v",
+        "--visualize",
+        help="Name of directory to output prokfunfind search results visualizations",
+        required=False,
+        metavar="")
     parser.set_defaults(func=main_individual)
 
     options = parser.parse_args()
