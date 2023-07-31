@@ -65,15 +65,6 @@ def retrieve_function_pipeline(fun_name: str, args) -> Callable:
 
     OrthScore_dict, search_approaches, filter_dict = parse_system_yaml(system)
 
-    # 1.4 Parse genome search table
-    search_list = []
-    gids = parse_gtab(args.gtab)
-    #fpath = '/'.join(args.gtab.split('/')[:-1])
-    for genome, p in gids.items():
-        # fna_path = None
-        prefix = '/'+p+"/"+genome
-        search_list.append(prefix)
-
     # 2. Check for annotation file existence for all requested searches
     for detect_tool in search_approaches:
         if detect_tool in ['interproscan', 'kofamscan', 'emapper']:
@@ -260,21 +251,25 @@ def retrieve_function_pipeline(fun_name: str, args) -> Callable:
                     ap=system_dict['completeness']['nonessential_presence'],
                     a=system_dict['completeness']['nonessential']))
 
-    return function_analysis, search_list
+    return function_analysis
+
+
+def parse_search_list(args):
+    search_list = []
+    gids = parse_gtab(args.gtab)
+    for genome, p in gids.items():
+        search_list.append(p+'/'+genome)
+    return search_list
 
 
 def main_individual(args):
-    detect_fun, search_list = retrieve_function_pipeline(
-        fun_name=args.fun_name, args=args)
+    search_list = parse_search_list(args=args)
 
-    # Process args.processes number of genomes at the same time.
-    p = multiprocessing.Pool(int(args.processes))
-    process_list = []
     for prefix in search_list:
-        p.apply_async(detect_fun(genome_prefix=prefix,
-            outprefix=args.outprefix))
-    p.close()
-    p.join()
+        detect_fun = retrieve_function_pipeline(
+            fun_name=args.fun_name, args=args)
+        detect_fun(genome_prefix=prefix,
+            outprefix=args.outprefix)
 
 
 def main():
