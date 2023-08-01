@@ -45,7 +45,7 @@ def module_name(arg: str) -> str:
 
 
 # Write a funtion pipeline for function of interest for a individual genome
-def retrieve_function_pipeline(fun_name: str, args) -> Callable:
+def retrieve_function_pipeline(fun_name: str, args, gids) -> Callable:
 
     # 1. Parse configuration files and search files
     # 1.1 Obtain the configuration and check the exec as well as the database
@@ -64,6 +64,8 @@ def retrieve_function_pipeline(fun_name: str, args) -> Callable:
     config, system = yaml.safe_load_all(open(fun_name))
 
     OrthScore_dict, search_approaches, filter_dict = parse_system_yaml(system)
+
+
 
     # 2. Check for annotation file existence for all requested searches
     for detect_tool in search_approaches:
@@ -259,15 +261,15 @@ def parse_search_list(args):
     gids = parse_gtab(args.gtab)
     for genome, p in gids.items():
         search_list.append(p+'/'+genome)
-    return search_list
+    return search_list, gids
 
 
 def main_individual(args):
-    search_list = parse_search_list(args=args)
+    search_list, gids = parse_search_list(args=args)
 
     for prefix in search_list:
         detect_fun = retrieve_function_pipeline(
-            fun_name=args.fun_name, args=args)
+            fun_name=args.fun_name, args=args, gids=gids)
         detect_fun(genome_prefix=prefix,
             outprefix=args.outprefix)
 
