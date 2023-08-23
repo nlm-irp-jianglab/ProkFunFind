@@ -46,6 +46,7 @@ def pipeline(config: dict,
             setattr(i, "geneID", max_dict['geneID'])
             setattr(i, "geneID_weight", max_dict['precision'])
             setattr(i, "detect_tool", "emapper")
+            setattr(i, 'evalue', i.hits[0].hsps[0].evalue)
             tmp_list.append(i)
 
     # 3. filter results based on evalue and thresholds

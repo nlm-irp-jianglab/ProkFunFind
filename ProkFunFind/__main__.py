@@ -139,7 +139,8 @@ def retrieve_function_pipeline(fun_name: str, args, gids) -> Callable:
                         fmt="tsv",
                         basedir=path_to_fun,
                         OrthScore_dict=OrthScore_dict['interproscan'],
-                        q_list=detect_list)
+                        q_list=detect_list, 
+                        filter_dict=filter_dict['interproscan'])
             else:
                 detect_list = detect_module.pipeline(
                     config=config,
@@ -147,7 +148,8 @@ def retrieve_function_pipeline(fun_name: str, args, gids) -> Callable:
                     fmt="xml",
                     basedir=path_to_fun,
                     OrthScore_dict=OrthScore_dict['interproscan'],
-                    q_list=detect_list)
+                    q_list=detect_list, 
+                    filter_dict=filter_dict['interproscan'])
         if "kofamscan" in search_approaches:
             detect_module = importlib.import_module(
                 "ProkFunFind.detect" + "." +

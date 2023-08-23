@@ -60,6 +60,12 @@ def export_gene_gff(
             if hasattr(gene, detect_tool):
                 qry = getattr(gene, detect_tool)
                 hsp = qry.hsps[0]
+                for hsp_t in qry.hsps:
+                    if hsp_t.evalue < hsp.evalue:
+                        hsp = hsp_t
+                    else:
+                        continue
+                hit = qry.hits[0]
                 cluster_annot = "Cl_" + \
                     str(getattr(gene, cluster_tool)) if hasattr(
                         gene, cluster_tool) else "NA"
@@ -80,7 +86,7 @@ def export_gene_gff(
                         Target=hsp.hit_id + " " +
                         str(hsp.hit_start) + " " + str(hsp.hit_end),
                         pct_identity=hsp.ident_pct,
-                        evalue=hsp.evalue
+                        evalue=hit.evalue
                         ))
 
                     if hasattr(gene, "pangenome_group"):
@@ -102,6 +108,16 @@ def export_gene_gff(
                         or detect_tool == "hmmer" \
                         or detect_tool == "kofamscan" \
                         or detect_tool == "emapper":
+                    if detect_tool == 'emapper' or detect_tool == 'interproscan':
+                        if hasattr(qry, 'evalue'):
+                            eval = ';evalue='+str(qry.evalue)
+                        else:
+                            eval = ''
+                    else:
+                        if hasattr(hsp, 'evalue'):
+                            eval = ';evalue='+str(hit.evalue)
+                        else:
+                            eval = ''
                     f.write("{ct}\tProkFunFind\t{tp}\t{start}\t{end}\t." \
                             "\t{strand}\t.\tID={id};Name={geneID};" \
                             "ClusterID={cluster_ID};" \
@@ -115,9 +131,7 @@ def export_gene_gff(
                         geneID=qry.geneID,
                         cluster_ID=cluster_annot,
                         Target=hsp.hit_id,
-                        evalue=";evalue=" + str(hsp.evalue)
-                            if hasattr(hsp, "evalue") else ""
-                            ))
+                        evalue=eval))
 
                     if hasattr(gene, "pangenome_group"):
                         gene_group = gene.pangenome_group
