@@ -36,7 +36,11 @@ def check_path_existence(path):
     abspath = os.path.abspath(path)
     if not os.path.exists(abspath):
         # logging.warning
-        raise OSError("Can not find {}! Please check!".format(abspath))
+        try:
+            os.path.exists(path)
+            abspath = path
+        except:
+            raise OSError("Can not find {} or {}! Please check!".format(abspath, path))
     return(abspath)
 
 

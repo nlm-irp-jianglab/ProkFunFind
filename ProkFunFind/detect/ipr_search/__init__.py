@@ -3,7 +3,7 @@ from typing import IO, List, Union
 from Bio import SearchIO
 from Bio.SearchIO._model.query import QueryResult
 
-from ProkFunFind.detect.ipr_search.interproscan_tab import ipr_tab_parse
+from ProkFunFind.detect.ipr_search.interproscan_tab import ipr_tab_parse, ipr_filter
 
 
 def pipeline(config: dict,
@@ -11,7 +11,8 @@ def pipeline(config: dict,
              fmt: str,
              basedir: str,
              OrthScore_dict: dict,
-             q_list: dict) -> List[QueryResult]:
+             q_list: dict,
+             filter_dict: dict) -> List[QueryResult]:
     """Main function for running IPR based search
 
        Arguments:
@@ -31,8 +32,11 @@ def pipeline(config: dict,
     elif fmt == "tsv":
         qresults = ipr_tab_parse(in_file)
 
+    filter_res = [ipr_filter(config=config, qres=i, basedir=basedir, filter_dict=filter_dict) for i in qresults]
+    filter_res = [i for i in filter_res if len(i) > 0]
+
     # 2. Process all QueryResult
-    for qres in qresults:
+    for qres in filter_res:
 
         # remove QueryResult that doest not hit any domain in
         # function-related domain list
@@ -51,6 +55,7 @@ def pipeline(config: dict,
             setattr(i, "geneID", max_dict['geneID'])
             setattr(i, "geneID_weight", max_dict['precision'])
             setattr(i, "detect_tool", "interproscan")
+            setattr(i, "evalue", i.hits[0].hsps[0].evalue)
             q_list.append(i)
 
     return q_list

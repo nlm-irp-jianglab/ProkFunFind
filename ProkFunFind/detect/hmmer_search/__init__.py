@@ -29,7 +29,7 @@ def pipeline(config: dict,
            q_list: An updated list of QueryResults
     """
     # 1. Read the query files
-    query_path = check_path_existence(basedir+config['hmmer']['hmmer_query'])
+    query_path = check_path_existence(config['hmmer']['hmmer_query'])
 
     tool_format_dict = dict({'hmmsearch': "hmmsearch3-domtab",
                              'hmmscan': "hmmscan3-domtab",
@@ -60,11 +60,9 @@ def pipeline(config: dict,
 
     # 4. read the output and apply the filtering
     qresults = SearchIO.parse(outprefix + ".domtblout", outfmt)
-
     filter_res = [hmmer_filter(
         config=config, qres=i, basedir=basedir, filter_dict=filter_dict) for i in qresults]
     tmp_list = [i for i in filter_res if len(i) > 0]
-
     # 5. Add the queries to the overall q_list
     for i in tmp_list:
         # for those without any hit match to the domain

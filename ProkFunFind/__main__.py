@@ -45,7 +45,7 @@ def module_name(arg: str) -> str:
 
 
 # Write a funtion pipeline for function of interest for a individual genome
-def retrieve_function_pipeline(fun_name: str, args) -> Callable:
+def retrieve_function_pipeline(fun_name: str, args, gids) -> Callable:
 
     # 1. Parse configuration files and search files
     # 1.1 Obtain the configuration and check the exec as well as the database
@@ -65,14 +65,7 @@ def retrieve_function_pipeline(fun_name: str, args) -> Callable:
 
     OrthScore_dict, search_approaches, filter_dict = parse_system_yaml(system)
 
-    # 1.4 Parse genome search table
-    search_list = []
-    gids = parse_gtab(args.gtab)
-    fpath = '/'.join(os.path.abspath(args.gtab).split('/')[:-1])
-    for genome, p in gids.items():
-        # fna_path = None
-        prefix = fpath+'/'+p+"/"+genome
-        search_list.append(prefix)
+
 
     # 2. Check for annotation file existence for all requested searches
     for detect_tool in search_approaches:
@@ -81,14 +74,14 @@ def retrieve_function_pipeline(fun_name: str, args) -> Callable:
                 if detect_tool == "interproscan":
                     # Need to handle both tsv and xml outputs.
                     check_path_existence(
-                        fpath + '/' + p + "/" + genome +
+                        '/' + p + "/" + genome +
                         config['interproscan']['annot_suffix'])
                 elif detect_tool == "kofamscan":
                     check_path_existence(
-                        fpath + '/' + p + "/" + genome + config['kofamscan']['annot_suffix'])
+                        '/' + p + "/" + genome + config['kofamscan']['annot_suffix'])
                 elif detect_tool == "emapper":
                     check_path_existence(
-                        fpath + '/' + p + '/' + genome +
+                        '/' + p + '/' + genome +
                         config['emapper']['annot_suffix'])
 
     # 3. Set up clustering and parse system file
@@ -146,7 +139,8 @@ def retrieve_function_pipeline(fun_name: str, args) -> Callable:
                         fmt="tsv",
                         basedir=path_to_fun,
                         OrthScore_dict=OrthScore_dict['interproscan'],
-                        q_list=detect_list)
+                        q_list=detect_list, 
+                        filter_dict=filter_dict['interproscan'])
             else:
                 detect_list = detect_module.pipeline(
                     config=config,
@@ -154,7 +148,8 @@ def retrieve_function_pipeline(fun_name: str, args) -> Callable:
                     fmt="xml",
                     basedir=path_to_fun,
                     OrthScore_dict=OrthScore_dict['interproscan'],
-                    q_list=detect_list)
+                    q_list=detect_list, 
+                    filter_dict=filter_dict['interproscan'])
         if "kofamscan" in search_approaches:
             detect_module = importlib.import_module(
                 "ProkFunFind.detect" + "." +
@@ -260,21 +255,25 @@ def retrieve_function_pipeline(fun_name: str, args) -> Callable:
                     ap=system_dict['completeness']['nonessential_presence'],
                     a=system_dict['completeness']['nonessential']))
 
-    return function_analysis, search_list
+    return function_analysis
+
+
+def parse_search_list(args):
+    search_list = []
+    gids = parse_gtab(args.gtab)
+    for genome, p in gids.items():
+        search_list.append(p+'/'+genome)
+    return search_list, gids
 
 
 def main_individual(args):
-    detect_fun, search_list = retrieve_function_pipeline(
-        fun_name=args.fun_name, args=args)
+    search_list, gids = parse_search_list(args=args)
 
-    # Process args.processes number of genomes at the same time.
-    p = multiprocessing.Pool(int(args.processes))
-    process_list = []
     for prefix in search_list:
-        p.apply_async(detect_fun(genome_prefix=prefix,
-            outprefix=args.outprefix))
-    p.close()
-    p.join()
+        detect_fun = retrieve_function_pipeline(
+            fun_name=args.fun_name, args=args, gids=gids)
+        detect_fun(genome_prefix=prefix,
+            outprefix=args.outprefix)
 
 
 def main():

@@ -12,7 +12,7 @@ from collections import defaultdict
 
 from Bio.File import as_handle
 from Bio.SearchIO._model import QueryResult, Hit, HSP, HSPFragment
-
+import operator
 
 class InterproscanTabParser:
     """Parser for the InterProScan table format.
@@ -66,6 +66,7 @@ class InterproscanTabParser:
             xrefs += cols[13].split("|") if cols[13] else []
             xrefs += cols[14].replace(" ", "").split("|") if cols[14] else []
             hit['dbxrefs'] = xrefs
+        hit['evalue'] = float(cols[8]) if cols[8] != "-" else None
 
         hsp = {}
         # evalue or score should be float but sometime not
@@ -171,3 +172,32 @@ def ipr_tab_parse(handle, **kwargs):
     with as_handle(handle) as source_file:
         generator = iterator(source_file, **kwargs)
         yield from generator
+
+
+def ipr_filter(config: dict, qres: QueryResult, basedir: str, filter_dict: dict) -> QueryResult:
+    global_evalue = config['interproscan'].get('evalue', 0.01)
+    ops = {
+        '<=': operator.le,
+        '>=': operator.ge,
+        '>': operator.gt,
+        '<': operator.lt,
+        '==': operator.eq,
+        '!=': operator.ne
+    }
+
+    def hsp_filter_func(hsp):
+        status = True
+        if hsp.hit_id in filter_dict:
+            for one in filter_dict[hsp.hit_id]:
+                if one['cpfun'](getattr(hsp, one['attr']), one['value']):
+                    pass
+                else:
+                    status = False
+                    break
+        else:
+            if hsp.evalue is None:
+                status = False
+            elif hsp.evalue > float(global_evalue):
+                status = False
+        return status
+    return qres.hsp_filter(hsp_filter_func)
