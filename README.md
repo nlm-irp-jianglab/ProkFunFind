@@ -24,6 +24,25 @@ pip install ./ProkFunFind
 prokfunfind.py -f config.yaml -gtab genome.table -o output.folder/prefix
 ```
 
+## Example Datasets
+We have included multiple search configuration files from our publications 
+that have utilized ProkFunFind to search for functions in microbial genome 
+datasets. These search configurations can be found in the data/ directory
+of this ProkFunFind git repository. 
+
+To run these searches on these example set of genomes you can run the
+commands listed in the following table from within the respective functions
+directory. 
+
+|Function Directory | Description | Publication (PMID) | Search command |
+|-------------------|-------------|--------------------|----------------|
+|Bilirubin_reductase | Bilirubin reductase enzyme BilR | 36798240 | prokfunfind -f ./config.yaml -o ./test -g ../genome-table.tsv |
+|Cysteine_degradation | Cysteine degredation pathway | 34745023 | prokfunfind -f ./config.yaml -o ./test -g ../genome-table.tsv |
+|Histidine_decarboxylase | Histidine decarboxylase | 34563136 | prokfunfind -f ./config.yaml -o ./test -g ../genome-table.tsv |
+|Equol | Equol biosynthesis operon | 35247986 | prokfunfind -f ./config.yaml -o ./test -g ../genome-table.tsv |
+|Flagella | Flagellar genes | TBD | prokfunfind -f ./config-{bac or pseudo}.yaml -o ./test -g ../genome-table.tsv |
+
+
 ## ProkFunAnnotate
 The ProkFunAnnotate pipelile has been developed to assist in the production
 of the required annotation files for ProkFunFind searches. This annotation

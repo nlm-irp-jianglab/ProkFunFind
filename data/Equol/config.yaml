@@ -1,0 +1,138 @@
+---
+main:
+  cluster_tool: DBSCAN
+  faa_suffix: .faa
+  gff_suffix: .gff
+  fna_suffix: .fna
+DBSCAN:
+  cluster_eps: 4
+  cluster_min_samples: 3
+hmmer: 
+  hmmer_query: equol.hmm
+  hmmer_exec: hmmscan
+  hmmer_threads: 1
+  evalue: 1e-20
+---
+name: Equol Operon
+components:
+- name: Equol Metabolism
+  presence: essential
+  components:
+  - geneID: DHDR
+    description: dihydrodaidzein reductase
+    presence: essential
+    terms:
+    - id: DHDR
+      method: hmmer    
+  - geneID: THDR
+    description: tetrahydrodaidzein reductase
+    presence: essential
+    terms:
+    - id: THDR
+      method: hmmer
+  - geneID: DZNR
+    description: daidzein reductase
+    presence: essential
+    terms: 
+    - id: DZNR
+      method: hmmer
+  - geneID: DDRC
+    description: dihydrodaidzein racemase
+    presence: essential
+    terms: 
+    - id: DDRC
+      method: hmmer
+- name: electron bifurcating protein complex
+  presence: nonessential
+  components: 
+  - geneID: fixA
+    description: electron bifurcating complex protein fixA
+    presence: essential
+    terms:
+    - id: FIXA
+      method: hmmer
+  - geneID: fixB
+    description: electron bifurcating complex protein fixB
+    presence: essential
+    terms: 
+    - id: FIXB
+      method: hmmer
+  - geneID: fixC
+    description: electron bifurcating complex protein fixC
+    presence: essential
+    terms: 
+    - id: FIXC
+      method: hmmer
+  - geneID: fixX
+    description: electron bifurcating complex protein fixX
+    presence: essential
+    terms: 
+    - id: FIXX
+      method: hmmer
+- name: electron transport functions
+  presence: nonessential
+  components: 
+  - geneID: nad_oxb
+    description: NADH oxidoreductase
+    presence: essential
+    terms: 
+    - id: NAD_OXB
+      method: hmmer
+  - geneID: hndD
+    description: NAD-reducing hydrogenase
+    presence: essential
+    terms: 
+    - id: HNDD
+      method: hmmer
+  - geneID: hydE
+    description: Fe-S maturase protein hydE
+    presence: essential
+    terms: 
+    - id: HYDE
+      method: hmmer
+  - geneID: hydF
+    description: Fe-S maturase protein hydF
+    presence: essential
+    terms: 
+    - id: HYDF
+      method: hmmer
+  - geneID: hydG
+    description: Fe-S maturase protein hydG
+    presence: essential
+    terms: 
+    - id: HYDG
+      method: hmmer
+- name: other genes
+  presence: nonessential
+  components:
+  - geneID: devR
+    description: DNA-binding transcriptional activator
+    presence: essential
+    terms: 
+    - id: DEVR
+      method: hmmer
+  - geneID: hypo
+    description: hypothetical protein
+    presence: essential
+    terms: 
+    - id: HYP
+      method: hmmer
+  - geneID: nadK
+    description: NAD Kinase
+    presence: essential
+    terms: 
+    - id: NADK
+      method: hmmer
+  - geneID: abcP
+    description: ATP binding cassette gene abcP
+    presence: essential
+    terms: 
+    - id: ABCP
+      method: hmmerr
+  - geneID: sdr_f
+    description: short chain dehydrogenase fragment
+    presence: essential
+    terms: 
+    - id: SDRF
+      method: hmmer
+

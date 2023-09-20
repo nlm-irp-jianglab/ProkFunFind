@@ -1,0 +1,210 @@
+---
+main:
+  cluster_tool: DBSCAN
+  faa_suffix: .faa
+  gff_suffix: .gff
+  fna_suffix: .fna
+kofamscan:
+  annot_suffix: .kofam.tsv
+  evalue: 1e-3
+  threshold: 0.75
+DBSCAN:
+  cluster_eps: 4
+  cluster_min_samples: 1.8
+hmmer:
+  hmmer_query: ./profiles/profiles-pse.hmm
+  hmmer_exec: hmmscan
+  hmmer_threads: 2
+  evalue: 1e-3
+emapper:
+  annot_suffix: .emapper.annotations
+  evalue: 1e-3
+interproscan:
+  annot_suffix: .InterProScan.tsv
+  evalue: 1e-3
+---
+name: Flagellar Core Genes
+components:
+- name: filament and hook
+  presence: essential
+  components:
+  - geneID: fliC
+    description: fliC; flagellin
+    presence: essential
+    terms:
+    - id: lat_flg_LafA_2
+      method: hmmer
+      evalue: 1e-75
+    - id: COG1344
+      method: emapper
+      evalue: 1e-3
+  - geneID: flgK
+    description: flgK; flagellar hook-associated protein 1 FlgK
+    presence: essential
+    terms:
+    - id: TIGR02492
+      method: interproscan
+      evalue: 1e-3
+  - geneID: flgL
+    description: flgL; flagellar hook-associated protein 3 FlgL
+    presence: essential
+    terms:
+    - id: PRK12717.1
+      method: hmmer
+      evalue: 1e-50
+    - id: flagell_flgL
+      method: hmmer
+      evalue: 1e-3
+  - geneID: flgD
+    description: flgD; flagellar basal-body rod modification protein FlgD
+    presence: essential
+    terms:
+    - id: PRK09619.1
+      method: hmmer
+      evalue: 1e-11
+  - geneID: fliD
+    description: fliD; flagellar hook-associated protein 2
+    presence: nonessential
+    terms:
+    - id: PRK08724.1
+      method: hmmer
+      evalue: 1e-3
+  - geneID: fliE
+    description: fliE; flagellar hook-basal body complex protein FliE
+    presence: nonessential
+    terms:
+    - id: PTHR34653
+      method: interproscan
+      evalue: 1e-3
+- name: rod
+  presence: essential
+  components:
+  - geneID: flgB
+    description: flgB; flagellar basal-body rod protein FlgB
+    presence: essential
+    terms:
+    - id: PRK12685.1
+      method: hmmer
+      evalue: 1e-3
+  - geneID: flgC
+    description: flgC; flagellar basal-body rod protein FlgC
+    presence: essential
+    terms:
+    - id: TIGR01395
+      method: interproscan
+      evalue: 1e-47
+    - id: COG1558
+      method: emapper
+      evalue: 1e-43
+  - geneID: flgEFG
+    description: flgEFG; flagellar basal-body rod proteins FlgEFG
+    presence: essential
+    terms:
+    - id: PF07559
+      method: interproscan
+      evalue: 1e-3
+    - id: TIGR03506
+      method: interproscan
+      evalue: 1e-3
+- name: MS ring
+  presence: essential
+  components:
+  - geneID: fliF
+    description: fliF; flagellar M-ring protein FliF
+    presence: essential
+    terms:
+    - id: PTHR30046
+      method: interproscan
+      evalue: 1e-82
+- name: C ring
+  presence: essential
+  components:
+  - geneID: fliG
+    description: fliG; flagellar motor switch protein FliG
+    presence: essential
+    terms:
+    - id: PF01706
+      method: interproscan
+      evalue: 1e-18
+  - geneID: fliM
+    description: fliM; flagellar motor switch protein FliM
+    presence: essential
+    terms:
+    - id: PTHR30034
+      method: interproscan
+      evalue: 1e-3
+    - id: COG1868
+      method: emapper
+      evalue: 1e-140
+  - geneID: fliN
+    description: fliNY, fliN; flagellar motor switch protein FliN/FliY
+    presence: essential
+    terms:
+    - id: PTHR43484
+      method: interproscan
+      evalue: 1e-3
+    - id: PTHR30034
+      method: interproscan
+      evalue: 1e-3
+- name: motor
+  presence: essential
+  components:
+  - geneID: motA
+    description: motA; chemotaxis protein MotA
+    presence: essential
+    terms:
+    - id: PRK08990.1
+      method: hmmer
+      evalue: 1e-9
+  - geneID: motB
+    description: motB; chemotaxis protein MotB
+    presence: essential
+    terms:
+    - id: PRK08944.1
+      method: hmmer
+      evalue: 1e-23
+- name: export apparatus
+  presence: essential
+  components:
+  - geneID: flhA
+    description: flhA; flagellar biosynthesis protein FlhA
+    presence: essential
+    terms:
+    - id: COG1298
+      method: emapper
+      evalue: 1e-100
+  - geneID: flhB-fliR
+    description: flhB, fliR, fliR-flhB fusion
+    presence: essential
+    terms:
+    - id: PRK12773.1
+      method: hmmer
+      evalue: 1e-3
+  - geneID: fliI
+    description: fliI; flagellum-specific ATP synthase [EC:7.4.2.8]
+    presence: essential
+    terms:
+    - id: PRK07196.1
+      method: hmmer
+      evalue: 1e-50
+  - geneID: fliP
+    description: fliP; flagellar biosynthetic protein FliP
+    presence: essential
+    terms:
+    - id: PTHR30587
+      method: interproscan
+      evalue: 1e-3
+  - geneID: fliQ
+    description: fliQ; flagellar biosynthetic protein FliQ
+    presence: essential
+    terms:
+    - id: PTHR34040
+      method: interproscan
+      evalue: 1e-16
+  - geneID: fliH
+    description: fliH; flagellar assembly protein FliH
+    presence: nonessential
+    terms:
+    - id: PRK13386.1
+      method: hmmer
+      evalue: 1e-3

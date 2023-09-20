@@ -1,0 +1,27 @@
+---
+main:
+  cluster_tool: DBSCAN
+  faa_suffix: .faa
+  gff_suffix: .gff
+  fna_suffix: .fna
+DBSCAN:
+  cluster_eps: 4
+  cluster_min_samples: 1.8
+hmmer: 
+  hmmer_query: confirmed-bilr.hmm
+  hmmer_exec: hmmscan
+  hmmer_threads: 1
+  evalue: 1e-3
+---
+name: Bilirubin Functions
+components:
+- name: Bilirubin Reductase Operon
+  presence: essential
+  components:
+  - geneID: BilR
+    description: Bilirubin Reductase
+    presence: essential
+    terms:
+    - id: BilR
+      method: hmmer
+      evalue: 1e-100
