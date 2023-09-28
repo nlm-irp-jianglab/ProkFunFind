@@ -8,7 +8,7 @@ DBSCAN:
   cluster_eps: 4
   cluster_min_samples: 1.8
 hmmer: 
-  hmmer_query: confirmed-bilr.hmm
+  hmmer_query: bilR_TIM.hmm
   hmmer_exec: hmmscan
   hmmer_threads: 1
   evalue: 1e-3
@@ -22,6 +22,6 @@ components:
     description: Bilirubin Reductase
     presence: essential
     terms:
-    - id: BilR
+    - id: bilR_TIM
       method: hmmer
       evalue: 1e-100
