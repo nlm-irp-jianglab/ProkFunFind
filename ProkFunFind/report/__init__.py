@@ -86,7 +86,7 @@ def export_gene_gff(
                         Target=hsp.hit_id + " " +
                         str(hsp.hit_start) + " " + str(hsp.hit_end),
                         pct_identity=hsp.ident_pct,
-                        evalue=hit.evalue
+                        evalue=hsp.evalue
                         ))
 
                     if hasattr(gene, "pangenome_group"):
