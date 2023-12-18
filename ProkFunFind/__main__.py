@@ -27,6 +27,8 @@ switcher = {
     'hmmer': 'hmmer_search',
     'kofamscan': 'kofam_search',
     'emapper': 'emap_search',
+    'bakta': 'bakta_search',
+    'prokka': 'prokka_search',
     'DBSCAN': 'DBSCAN'
 }
 
@@ -69,7 +71,7 @@ def retrieve_function_pipeline(fun_name: str, args, gids) -> Callable:
 
     # 2. Check for annotation file existence for all requested searches
     for detect_tool in search_approaches:
-        if detect_tool in ['interproscan', 'kofamscan', 'emapper']:
+        if detect_tool in ['interproscan', 'kofamscan', 'emapper', 'prokka', 'bacta']:
             for genome, p in gids.items():
                 if detect_tool == "interproscan":
                     # Need to handle both tsv and xml outputs.
@@ -83,6 +85,14 @@ def retrieve_function_pipeline(fun_name: str, args, gids) -> Callable:
                     check_path_existence(
                         '/' + p + '/' + genome +
                         config['emapper']['annot_suffix'])
+                elif detect_tool == "prokka":
+                    check_path_existence(
+                        '/' + p + '/' + genome + 
+                        config['prokka']['annot_suffix'])
+                elif detect_tool == "bakta":
+                    check_path_existence(
+                        '/' + p + '/' + genome + 
+                        config['bakta']['annot_suffix'])
 
     # 3. Set up clustering and parse system file
     cluster_tool = config['main']['cluster_tool']
@@ -176,7 +186,32 @@ def retrieve_function_pipeline(fun_name: str, args, gids) -> Callable:
                 OrthScore_dict=OrthScore_dict['emapper'],
                 q_list=detect_list,
                 filter_dict=filter_dict['emapper'])
-
+        if 'prokka' in search_approaches:
+            detect_module = importlib.import_module(
+                "ProkFunFind.detect" + "." +
+                module_name('prokka'), package=None)
+            prokka_file = genome_prefix + config['prokka']['annot_suffix']
+            prokka_file = check_path_existence(prokka_file)
+            detect_list = detect_module.pipeline(
+                config=config,
+                in_file=prokka_file,
+                basedir=path_to_fun,
+                OrthScore_dict=OrthScore_dict['prokka'],
+                q_list=detect_list,
+                filter_dict=filter_dict['prokka'])
+        if 'bakta' in search_approaches:
+            detect_module = importlib.import_module(
+                "ProkFunFind.detect" + "." +
+                module_name('bakta'), package=None)
+            bakta_file = genome_prefix + config['bakta']['annot_suffix']
+            bakta_file = check_path_existence(bakta_file)
+            detect_list = detect_module.pipeline(
+                config=config,
+                in_file=bakta_file,
+                basedir=path_to_fun,
+                OrthScore_dict=OrthScore_dict['bakta'],
+                q_list=detect_list,
+                filter_dict=filter_dict['bakta'])
         if 'blast' in search_approaches:
             detect_module = importlib.import_module(
                 "ProkFunFind.detect" + "." +

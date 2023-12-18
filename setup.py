@@ -21,6 +21,8 @@ setuptools.setup(name='ProkFunFind',
                      "ProkFunFind.detect.hmmer_search",
                      "ProkFunFind.detect.kofam_search",
                      "ProkFunFind.detect.emap_search",
+                     "ProkFunFind.detect.bakta_search",
+                     "ProkFunFind.detect.prokka_search",
                      "ProkFunFind.cluster.DBSCAN"
                  ],
                  # packages=setuptools.find_packages(),
