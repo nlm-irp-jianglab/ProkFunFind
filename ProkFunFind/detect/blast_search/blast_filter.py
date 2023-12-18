@@ -48,7 +48,6 @@ def blast_filter(config: dict, qres: QueryResult, basedir: str, filter_dict: dic
 
         if hsp.hit_id in filter_dict:
             for one in filter_dict[hsp.hit_id]:
-                print(one)
                 if one['cpfun'](getattr(hsp, one['attr']), one['value']):
                     pass
                 else:

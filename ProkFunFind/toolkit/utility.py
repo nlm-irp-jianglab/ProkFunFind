@@ -106,4 +106,23 @@ def parse_system_yaml(system_dict):
                     recursedict(w, curr_quer)
 
     recursedict(system_dict, curr_quer)
+
+    def is_key_present(dictionary, target_key):
+        for key in dictionary:
+            # If the key is equal to the target_key, return True
+            if key == target_key:
+                return True
+            # If the value associated with the key is itself a dictionary, recursively search in it
+            elif isinstance(dictionary[key], dict):
+                if is_key_present(dictionary[key], target_key):
+                    return True
+            elif isinstance(dictionary[key], list):
+                for d in dictionary[key]:
+                    if is_key_present(d, target_key):
+                        return True
+        return False
+    if not is_key_present(system_dict, 'geneID'):
+        logging.error('No property geneID present in systems dictionary')
+        quit()
+
     return OrthScore_dict, search_set, filter_dict
