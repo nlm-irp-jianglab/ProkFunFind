@@ -61,7 +61,9 @@ def export_gene_gff(
                 qry = getattr(gene, detect_tool)
                 hsp = qry.hsps[0]
                 for hsp_t in qry.hsps:
-                    if hsp_t.evalue < hsp.evalue:
+                    if hsp.evalue is None:
+                        continue
+                    elif hsp_t.evalue < hsp.evalue:
                         hsp = hsp_t
                     else:
                         continue
@@ -107,7 +109,9 @@ def export_gene_gff(
                 elif detect_tool == "interproscan" \
                         or detect_tool == "hmmer" \
                         or detect_tool == "kofamscan" \
-                        or detect_tool == "emapper":
+                        or detect_tool == "emapper" \
+                        or detect_tool == "prokka" \
+                        or detect_tool == "bakta" :
                     if detect_tool == 'emapper' or detect_tool == 'interproscan':
                         if hasattr(qry, 'evalue'):
                             eval = ';evalue='+str(qry.evalue)
@@ -115,7 +119,7 @@ def export_gene_gff(
                             eval = ''
                     else:
                         if hasattr(hsp, 'evalue'):
-                            eval = ';evalue='+str(hit.evalue)
+                            eval = ';evalue='+str(hsp.evalue)
                         else:
                             eval = ''
                     f.write("{ct}\tProkFunFind\t{tp}\t{start}\t{end}\t." \

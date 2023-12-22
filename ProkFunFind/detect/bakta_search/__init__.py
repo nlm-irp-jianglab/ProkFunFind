@@ -45,7 +45,6 @@ def pipeline(config: dict,
             setattr(i, "geneID", max_dict['geneID'])
             setattr(i, "geneID_weight", max_dict['precision'])
             setattr(i, "detect_tool", "bakta")
-            setattr(i, 'evalue', i.hits[0].hsps[0].evalue)
             results.append(i)
 
 

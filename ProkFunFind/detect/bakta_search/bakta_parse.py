@@ -47,7 +47,7 @@ class baktaTabParser:
         cols = self.line.strip("\n").split("\t")
 
         # Number of columns should be 7 in the standard bakta table
-        if len(cols) != 21:
+        if len(cols) != 9:
             raise ValueError("Less columns than expected, only %i" % len(cols))
 
         # assign parsed column data into qresult, hit, and hsp dicts
@@ -56,11 +56,14 @@ class baktaTabParser:
         qresult['program'] = "bakta"
 
         hit = {}
-        xrefs_full = cols[4].split(", ")
-        xrefs = [i.split(":")[0] for i in xrefs_full]
+        if cols[8] == '':
+            xrefs = ['']
+        else:
+            xrefs_full = cols[8].split(", ")
+            xrefs = [i.split(":")[1] for i in xrefs_full]
         hit['id'] = xrefs  # DB ID
-        hit['description'] = cols[6]  # description of target
-        hit['query_id'] = cols[0]  # query name
+        hit['description'] = cols[7]  # description of target
+        hit['query_id'] = cols[5]  # query name
         hsp = {}
         # evalue or score should be float but sometimes not
         hsp['evalue'] = None
@@ -159,7 +162,7 @@ def bakta_tab_parse(handle, **kwargs):
            yields from iterator of the source file.
     """
     # get the iterator object and do error checking
-    mod = __import__("ProkFunFind.detect.bakta_search.bakta_filter",
+    mod = __import__("ProkFunFind.detect.bakta_search.bakta_parse",
                      fromlist=[""])
     obj_name = "baktaTabParser"
     iterator = getattr(mod, obj_name)

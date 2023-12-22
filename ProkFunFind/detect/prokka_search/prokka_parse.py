@@ -47,17 +47,16 @@ class prokkaTabParser:
         cols = self.line.strip("\n").split("\t")
 
         # Number of columns should be 7 in the standard prokka table
-        if len(cols) != 21:
+        if len(cols) != 7:
             raise ValueError("Less columns than expected, only %i" % len(cols))
 
         # assign parsed column data into qresult, hit, and hsp dicts
         qresult = {}
-        qresult['id'] = cols[5]  # gene name
+        qresult['id'] = cols[0]  # gene name
         qresult['program'] = "prokka"
 
         hit = {}
-        xrefs_full = cols[4].split(", ")
-        xrefs = [i.split(":")[0] for i in xrefs_full]
+        xrefs = cols[5].split(", ")
         hit['id'] = xrefs  # DB ID
         hit['description'] = cols[6]  # description of target
         hit['query_id'] = cols[0]  # query name
@@ -159,7 +158,7 @@ def prokka_tab_parse(handle, **kwargs):
            yields from iterator of the source file.
     """
     # get the iterator object and do error checking
-    mod = __import__("ProkFunFind.detect.prokka_search.prokka_filter",
+    mod = __import__("ProkFunFind.detect.prokka_search.prokka_parse",
                      fromlist=[""])
     obj_name = "prokkaTabParser"
     iterator = getattr(mod, obj_name)
