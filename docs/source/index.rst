@@ -16,7 +16,7 @@ Criteria for function detection include presence of detected genes, and genomic 
 
 In order to identify genes using ProkFunFind, the user needs:
 
-#. Select the correct search approaches and filtering paramters to identify your genes of interest
+#. Select the correct search approaches and filtering parameters to identify your genes of interest
 
    #. Protein sequences
 
@@ -36,7 +36,7 @@ In order to identify genes using ProkFunFind, the user needs:
 
 #. Analyze the search results
 
-  #. Assess completness of function in different organisms
+  #. Assess completeness of function in different organisms
 
   #. Identify potential gene clusters
 

@@ -350,6 +350,7 @@ in both genomes:
 
 .. code-block::
 
+
   INFO:root:Checking configuration files
   INFO:root:Searching for function
   INFO:root:Identifying gene clusters
@@ -372,3 +373,111 @@ This does highlight one of the benefits of using the ProkFunFind search tool to
 perform mixed searches using combinations of different approaches. A walkthrough
 on how to set up and run those searches can be found in the :doc:`6-mixedsearch`
 tutorial section.
+
+Prokka and Bakta Annotation Based Searches
+###########################################
+Tools like Prokka and Bakta will generate preliminary annotation files for a genome
+providing a good starting point for many projects. These annotation files are generated
+as tab separated tables, providing basic infomraiton about the genes and putative COG 
+and/or KO assignments. 
+
+Some pregenerated output for the Prokka annotation files can be found in the
+`./genomes/*.prokka.tsv` files. 
+
+.. code-block:: 
+
+  locus_tag       ftype   length_bp       gene    EC_number       COG     product
+  GCF_000478885.1_00001   CDS     1629    dnaA            COG0593 Chromosomal replication initiator protein DnaA
+  GCF_000478885.1_00002   CDS     777     yidC_1                  Membrane protein insertase YidC
+  GCF_000478885.1_00003   CDS     588                             hypothetical protein
+
+The COG assignments in this output can be seen in the 6th columnn of this output and these
+are the annotations that can currently be search through with ProkFunFind. 
+
+Some example output from Bakta can be found in the `./genomes/*.bakta.tsv` files.
+
+.. code-block:: 
+
+  #Sequence Id    Type    Start   Stop    Strand  Locus Tag       Gene    Product DbXrefs
+  contig_1        cds     1       1629    +       GCF_000478885.1_00005   dnaA    Chromosomal replication initiator protein DnaA  COG:COG0593, SO:0001217, UniRef:UniRef50_A0A4T9T6V8
+  contig_1        oriC    1630    2040    ?                       origin of replication
+  contig_1        cds     2819    3595    +       GCF_000478885.1_00010   yidC    Membrane protein insertase YidC SO:0001217, UniRef:UniRef50_A0A369L7U0
+  contig_1        rRNA    1820971 1821085 -       GCF_000478885.1_07170   rrf     5S ribosomal RNA        GO:0003735, GO:0005840, KEGG:K01985, RFAM:RF00001, SO:0000652
+
+The bakta output contains COG, and KO annotations in the 9th column which can be the 
+target of searches with ProkFunFind. 
+
+Query
+******
+Similar to the other annotation based searches, searching by Prokka or Bakta annotation files 
+the search is goign to be defined using COGs for the Prokka based search and COGs and/or KOs
+the Bakta based search. 
+
+In the config.yaml file the search terms can be defined like: 
+
+.. code-block::
+
+name: Equol Gene Cluster
+components:
+- name: Equol Production Pathway
+  presence: essential
+  components:
+  - geneID: DZNR
+    description: Daidzein reductase
+    presence: essential
+    terms:
+    - id: COG1902
+      method: bakta
+  - geneID: DHDR
+    description: Dihydrodaidzein reductase
+    presence: essential
+    terms:
+    - id: COG1028
+      method: prokka
+
+
+Search
+******
+The search can be performed using the following command:
+
+.. code-block::
+
+  prokfunfind -f queries/prokbakt-search/config.yaml -g ./genome-list.tsv --outputprefix ./out/prokbakt-search/emap
+
+Based on this search it can be seen that most of the components of the function were not detected
+in either genome:
+
+.. code-block:: 
+
+  INFO:root:Checking configuration files
+  INFO:root:Searching for function
+  INFO:root:Identifying gene clusters
+  INFO:root:Summarizing function presence and genes
+  Failed to detect function: Equol Gene Cluster in genome ./genomes//GTDB18040
+  0 out of 1 essential components present
+  1 out of 3 nonessential components present
+  INFO:root:Checking configuration files
+  INFO:root:Searching for function
+  INFO:root:Identifying gene clusters
+  INFO:root:Summarizing function presence and genes
+  Failed to detect function: Equol Gene Cluster in genome ./genomes//GTDB26128
+  0 out of 1 essential components present
+  0 out of 3 nonessential components present
+
+
+This is appears to be a result of the sensitivity of the annotations provided by Prokka
+and Bakta. These approavhes have the benefit of being easy to run, fast, and broadly 
+applicable to different genomes, but this can come at the cost of soome predictive power. 
+This generally means that the annotations provided from these ppipelines can be a great 
+starting point, giving a good overview of the possible functions. In this search if you 
+look at the GFF or TSV output, you can see that many possible hits are produced to 
+groups of genes, indicating that even though some genes are missing, these clusters
+could be good places to start an analysis. 
+
+.. code-block:: 
+
+  GCF_000478885.1_02270   GCF_000478885.1_1:Cl_0  Equol Gene Cluster/hydrogenase maturase/HNDD
+  GCF_000478885.1_02272   GCF_000478885.1_1:Cl_0  Equol Gene Cluster/fix electron transport/FIXX
+  GCF_000478885.1_02273   GCF_000478885.1_1:Cl_0  Equol Gene Cluster/fix electron transport/FIXC
+  GCF_000478885.1_02277   GCF_000478885.1_1:Cl_0  Equol Gene Cluster/Equol Production Pathway/THDR
+  GCF_000478885.1_02281   GCF_000478885.1_1:Cl_0  Equol Gene Cluster/other genes/DEVR

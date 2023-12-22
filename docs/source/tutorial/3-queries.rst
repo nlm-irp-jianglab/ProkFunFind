@@ -147,6 +147,10 @@ directory.
       annot_suffix: .emapper.annotations
     interproscan:
       annot_suffix: _InterProScan.tsv
+    prokka:
+      annot_suffix: .prokka.tsv
+    bakta:
+      annot_suffix: .bakta.tsv
 
 
 The 'main' section is used to provide the file extensions for the genome
