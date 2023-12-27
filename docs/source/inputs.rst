@@ -80,7 +80,11 @@ See the example below for the general format of the genome input files:
 
 The genomes input is provided to the `ProkFunFind` program through a tab separated
 two column table that includes the genome file prefixes and the paths to the
-genome directories. This table should be provided through the `--gtab` argument:
+genome directories. The path can be given as an absolute path, the full path to 
+the genome file directory, or as a relative path from the gtab table file, specified
+as a relative path starting with either './' or '../'.
+
+This table should be provided through the `--gtab` argument:
 
 .. code-block::
 
@@ -149,12 +153,12 @@ sections related to the specific search approaches and filtering.
       cluster_eps: 4
       cluster_min_samples: 2
     hmmer:
-      hmmer_query: query.hmm
+      hmmer_query: ./query.hmm
       hmmer_exec: hmmscan
       hmmer_threads: 1
       evalue: 1e-3
     blast:
-      blast_query: query.fa
+      blast_query: ./query.fa
       blast_exec: blastp
       blast_threads: 1
       evalue: 1e-3
@@ -242,7 +246,7 @@ below.
 
 
     blast:
-      blast_query: bait.fa
+      blast_query: ./bait.fa
       blast_exec: blastp
       blast_evalue: 1e-4
       blast_threads: 1
@@ -255,7 +259,8 @@ below.
 Name              Description
 ===============  ================================================================================================================================
 blast_query       The name of the protein fasta file containing the query sequences. This fasta file needs to be indexed using the 'makeblastdb'
-                  command.
+                  command. This can be given as an absolute path to the query sequence file, or as a relative path 
+                  starting with './' or '../'
 ---------------  --------------------------------------------------------------------------------------------------------------------------------
 blast_exec        The executable tool will be passed to the cmd to run blast. Currently blastp is the only supported blast method.
 ---------------  --------------------------------------------------------------------------------------------------------------------------------
@@ -275,7 +280,7 @@ ident_pct         The identity threshold used to filter blast hits. The default 
 .. code-block::
 
     hmmer:
-      hmmer_query: Hdc.hmm
+      hmmer_query: ./Hdc.hmm
       hmmer_exec: hmmscan
       hmmer_evalue: 1e-4
       hmmer_threads: 1
@@ -285,7 +290,8 @@ ident_pct         The identity threshold used to filter blast hits. The default 
 ===============  ================================================================================================================================
 Name              Description
 ===============  ================================================================================================================================
-hmmer.query       The name of the profile HMM file file.
+hmmer.query       The name of the profile HMM file. The HMM file should be indexed with hmmpress. The path can be given as an absolute path
+                  or a relative path starting with './' or '../'. 
 ---------------  --------------------------------------------------------------------------------------------------------------------------------
 hmmer.exec        The executable tool will be passed to the cmd to run blast. Currently hmmscan is the only supported HMMER method.
 ---------------  --------------------------------------------------------------------------------------------------------------------------------
