@@ -29,7 +29,11 @@ def pipeline(config: dict,
            q_list: An updated list of QueryResults
     """
     # 1. Read the query files
-    query_path = check_path_existence(config['hmmer']['hmmer_query'])
+    p = config['hmmer']['hmmer_query']
+    if p.startswith('./'):
+        query_path = check_path_existence(basedir+'/'+p)
+    else:
+        query_path = check_path_existence(config['hmmer']['hmmer_query'])
 
     tool_format_dict = dict({'hmmsearch': "hmmsearch3-domtab",
                              'hmmscan': "hmmscan3-domtab",

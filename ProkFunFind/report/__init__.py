@@ -73,7 +73,7 @@ def export_gene_gff(
                         gene, cluster_tool) else "NA"
 
                 if detect_tool == "blast":
-                    f.write("{ct}\ProkFunFind\t{tp}\t{start}\t{end}"
+                    f.write("{ct}\tProkFunFind\t{tp}\t{start}\t{end}"
                         "\t.\t{strand}\t.\tID={id};Name={geneID};"
                         "ClusterID={cluster_ID};Target={Target};"
                         "pct_identity={pct_identity};evalue={evalue}".format(

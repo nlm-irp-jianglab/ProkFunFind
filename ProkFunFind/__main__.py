@@ -294,7 +294,11 @@ def parse_search_list(args):
     search_list = []
     gids = parse_gtab(args.gtab)
     for genome, p in gids.items():
-        search_list.append(p+'/'+genome)
+        if p.startswith('.'):
+            abp = os.path.dirname(args.gtab)
+            search_list.append(abp+'/'+p+'/'+genome)
+        else:
+            search_list.append(p+'/'+genome)
     return search_list, gids
 
 
