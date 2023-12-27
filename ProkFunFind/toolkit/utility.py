@@ -10,20 +10,21 @@ from typing import Dict, IO, List, Union, AnyStr
 def read_config(config_file: str) -> ConfigParser:
     config = ConfigParser()
     config.read(config_file)
-    return(config)
+    return config
 
 
 def find_file_in_folder(folder: AnyStr, pattern: AnyStr) -> List:
-    """ Find files with a given pattern in a given file path
+    """Find files with a given pattern in a given file path
 
-        Arguments:
-            folder: the directory to search
-            pattern: the pattern to search for
+    Arguments:
+        folder: the directory to search
+        pattern: the pattern to search for
 
-        Returns:
-            A list of path for the files with a given pattern in the file path
+    Returns:
+        A list of path for the files with a given pattern in the file path
     """
     import fnmatch
+
     fileList = []
     for dName, sdName, fList in os.walk(folder):
         for fileName in fList:
@@ -40,8 +41,9 @@ def check_path_existence(path):
             os.path.exists(path)
             abspath = path
         except:
-            raise OSError("Can not find {} or {}! Please check!".format(abspath, path))
-    return(abspath)
+            raise OSError("Can not find {} or {}!"
+                          " Please check!".format(abspath, path))
+    return abspath
 
 
 def read2orthoDict(ortho_pair_file: Union[str, IO]) -> Dict:
@@ -52,55 +54,86 @@ def read2orthoDict(ortho_pair_file: Union[str, IO]) -> Dict:
         col_num = len(header)
         if col_num == 3:
             OrthScore_dict[header[2]][header[1]] = \
-                {'geneID': header[0], 'precision': 1}
+                {"geneID": header[0], "precision": 1}
             for row in csv_reader:
                 OrthScore_dict[row[2]][row[1]] = \
-                    {'geneID': row[0], 'precision': 1}
+                    {"geneID": row[0], "precision": 1}
         else:
             OrthScore_dict[header[2]][header[1]] = {
-                'geneID': header[0], 'precision': float(header[3])}
+                "geneID": header[0],
+                "precision": float(header[3]),
+            }
             for row in csv_reader:
                 OrthScore_dict[row[2]][row[1]] = {
-                    'geneID': row[0], 'precision': float(row[3])}
+                    "geneID": row[0],
+                    "precision": float(row[3]),
+                }
     search_set = set()
     for i in OrthScore_dict.keys():
-        if i not in ['kofamscan', 'interproscan', 'emapper', 'blast', 'hmmer']:
-            logging.error('Search approach {} is not supported. \
-                           Please check ortho table file'.format(i))
+        if i not in ["kofamscan", "interproscan", "emapper", "blast", "hmmer"]:
+            logging.error(
+                "Search approach {} is not supported. \
+                           Please check ortho table file".format(
+                    i
+                )
+            )
         else:
             search_set.add(i)
     return OrthScore_dict, search_set
 
+
 def parse_system_yaml(system_dict):
     ops = {
-        '<=': operator.le,
-        '>=': operator.ge,
-        '>': operator.gt,
-        '<': operator.lt,
-        '==': operator.eq,
-        '!=': operator.ne
+        "<=": operator.le,
+        ">=": operator.ge,
+        ">": operator.gt,
+        "<": operator.lt,
+        "==": operator.eq,
+        "!=": operator.ne,
     }
     search_set = set()
-    OrthScore_dict  = defaultdict(dict)
+    OrthScore_dict = defaultdict(dict)
     filter_dict = defaultdict(lambda: defaultdict(list))
     curr_quer = ""
+
     def recursedict(d, curr_quer):
-        for k,v in d.items():
+        for k, v in d.items():
             if k == "geneID":
                 curr_quer = v
             if isinstance(v, dict):
                 recursedict(v, curr_quer)
-            elif k == 'terms':
-                    for gene in v:
-                        search_set.add(gene['method'])
-                        method = gene['method']
-                        OrthScore_dict[method][gene['id']] = {'geneID': curr_quer, 'precision': gene.get('precision', 1)}
-                        if 'ident_pct' in gene:
-                            filter_dict[method][gene['id']].append({'attr': 'ident_pct', 'cpfun': ops['>='], 'value': float(gene['ident_pct'])})
-                        if 'evalue' in gene:
-                            filter_dict[method][gene['id']].append({'attr': 'evalue', 'cpfun': ops['<='], 'value':float(gene['evalue'])})
-                        if 'threshold' in gene:
-                            filter_dict[method][gene['id']].append({'attr': 'threshold', 'cpfun': ops['=='], 'value':float(gene['threshold'])})
+            elif k == "terms":
+                for gene in v:
+                    search_set.add(gene["method"])
+                    method = gene["method"]
+                    OrthScore_dict[method][gene["id"]] = {
+                        "geneID": curr_quer,
+                        "precision": gene.get("precision", 1),
+                    }
+                    if "ident_pct" in gene:
+                        filter_dict[method][gene["id"]].append(
+                            {
+                                "attr": "ident_pct",
+                                "cpfun": ops[">="],
+                                "value": float(gene["ident_pct"]),
+                            }
+                        )
+                    if "evalue" in gene:
+                        filter_dict[method][gene["id"]].append(
+                            {
+                                "attr": "evalue",
+                                "cpfun": ops["<="],
+                                "value": float(gene["evalue"]),
+                            }
+                        )
+                    if "threshold" in gene:
+                        filter_dict[method][gene["id"]].append(
+                            {
+                                "attr": "threshold",
+                                "cpfun": ops["=="],
+                                "value": float(gene["threshold"]),
+                            }
+                        )
             elif isinstance(v, list):
                 for w in v:
                     recursedict(w, curr_quer)
@@ -112,7 +145,8 @@ def parse_system_yaml(system_dict):
             # If the key is equal to the target_key, return True
             if key == target_key:
                 return True
-            # If the value associated with the key is itself a dictionary, recursively search in it
+            # If the value associated with the key is
+            # itself a dictionary, recursively search in it
             elif isinstance(dictionary[key], dict):
                 if is_key_present(dictionary[key], target_key):
                     return True
@@ -121,8 +155,9 @@ def parse_system_yaml(system_dict):
                     if is_key_present(d, target_key):
                         return True
         return False
-    if not is_key_present(system_dict, 'geneID'):
-        logging.error('No property geneID present in systems dictionary')
+
+    if not is_key_present(system_dict, "geneID"):
+        logging.error("No property geneID present in systems dictionary")
         quit()
 
     return OrthScore_dict, search_set, filter_dict

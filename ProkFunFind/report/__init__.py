@@ -67,15 +67,15 @@ def export_gene_gff(
                         hsp = hsp_t
                     else:
                         continue
-                hit = qry.hits[0]
+                # hit = qry.hits[0]
                 cluster_annot = "Cl_" + \
                     str(getattr(gene, cluster_tool)) if hasattr(
                         gene, cluster_tool) else "NA"
 
                 if detect_tool == "blast":
-                    f.write("{ct}\ProkFunFind\t{tp}\t{start}\t{end}" \
-                        "\t.\t{strand}\t.\tID={id};Name={geneID};" \
-                        "ClusterID={cluster_ID};Target={Target};" \
+                    f.write("{ct}\ProkFunFind\t{tp}\t{start}\t{end}"
+                        "\t.\t{strand}\t.\tID={id};Name={geneID};"
+                        "ClusterID={cluster_ID};Target={Target};"
                         "pct_identity={pct_identity};evalue={evalue}".format(
                         ct=gene.contig,
                         tp=gene.type,
@@ -111,8 +111,9 @@ def export_gene_gff(
                         or detect_tool == "kofamscan" \
                         or detect_tool == "emapper" \
                         or detect_tool == "prokka" \
-                        or detect_tool == "bakta" :
-                    if detect_tool == 'emapper' or detect_tool == 'interproscan':
+                        or detect_tool == "bakta":
+                    if detect_tool == 'emapper' \
+                            or detect_tool == 'interproscan':
                         if hasattr(qry, 'evalue'):
                             eval = ';evalue='+str(qry.evalue)
                         else:
@@ -122,20 +123,18 @@ def export_gene_gff(
                             eval = ';evalue='+str(hsp.evalue)
                         else:
                             eval = ''
-                    f.write("{ct}\tProkFunFind\t{tp}\t{start}\t{end}\t." \
-                            "\t{strand}\t.\tID={id};Name={geneID};" \
-                            "ClusterID={cluster_ID};" \
+                    f.write("{ct}\tProkFunFind\t{tp}\t{start}\t{end}\t."
+                            "\t{strand}\t.\tID={id};Name={geneID};"
+                            "ClusterID={cluster_ID};"
                             "Target={Target}{evalue}".format(
-                        ct=gene.contig,
-                        tp=gene.type,
-                        start=gene.location.start+1,
-                        end=gene.location.end,
-                        strand="+" if gene.strand == 1 else "-",
-                        id=gene.id,
-                        geneID=qry.geneID,
-                        cluster_ID=cluster_annot,
-                        Target=hsp.hit_id,
-                        evalue=eval))
+                            ct=gene.contig,
+                            tp=gene.type,
+                            start=gene.location.start+1,
+                            end=gene.location.end,
+                            strand="+" if gene.strand == 1 else "-",
+                            id=gene.id, geneID=qry.geneID,
+                            cluster_ID=cluster_annot,
+                            Target=hsp.hit_id, evalue=eval))
 
                     if hasattr(gene, "pangenome_group"):
                         gene_group = gene.pangenome_group

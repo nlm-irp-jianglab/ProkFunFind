@@ -61,7 +61,8 @@ def pipeline(config: dict,
     # 4. read the output and apply the filtering
     qresults = SearchIO.parse(outprefix + ".domtblout", outfmt)
     filter_res = [hmmer_filter(
-        config=config, qres=i, basedir=basedir, filter_dict=filter_dict) for i in qresults]
+        config=config, qres=i, basedir=basedir,
+        filter_dict=filter_dict) for i in qresults]
     tmp_list = [i for i in filter_res if len(i) > 0]
     # 5. Add the queries to the overall q_list
     for i in tmp_list:

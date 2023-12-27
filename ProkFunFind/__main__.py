@@ -4,19 +4,16 @@ import os
 import sys
 import importlib
 import logging
-import multiprocessing
 import yaml
 
 from typing import Callable, Tuple, Dict
-from configparser import ConfigParser
 from argparse import ArgumentParser
 
 from ProkFunFind import examine
 from ProkFunFind import report
 from ProkFunFind.read import Genome, GetGenomeFromGFF
-from ProkFunFind.toolkit.utility import (find_file_in_folder,
-                                         check_path_existence,
-                                         read2orthoDict, parse_system_yaml)
+from ProkFunFind.toolkit.utility import (check_path_existence,
+                                         parse_system_yaml)
 from ProkFunFind.annotate.genomes import parse_gtab
 
 logging.basicConfig(level=logging.DEBUG)
@@ -46,7 +43,7 @@ def module_name(arg: str) -> str:
         return switcher.get(arg)
 
 
-# Write a funtion pipeline for function of interest for a individual genome
+# Write a function pipeline for function of interest for a individual genome
 def retrieve_function_pipeline(fun_name: str, args, gids) -> Callable:
 
     # 1. Parse configuration files and search files
@@ -67,11 +64,10 @@ def retrieve_function_pipeline(fun_name: str, args, gids) -> Callable:
 
     OrthScore_dict, search_approaches, filter_dict = parse_system_yaml(system)
 
-
-
     # 2. Check for annotation file existence for all requested searches
     for detect_tool in search_approaches:
-        if detect_tool in ['interproscan', 'kofamscan', 'emapper', 'prokka', 'bacta']:
+        if detect_tool in ['interproscan', 'kofamscan',
+                           'emapper', 'prokka', 'bacta']:
             for genome, p in gids.items():
                 if detect_tool == "interproscan":
                     # Need to handle both tsv and xml outputs.
@@ -80,18 +76,19 @@ def retrieve_function_pipeline(fun_name: str, args, gids) -> Callable:
                         config['interproscan']['annot_suffix'])
                 elif detect_tool == "kofamscan":
                     check_path_existence(
-                        '/' + p + "/" + genome + config['kofamscan']['annot_suffix'])
+                        '/' + p + "/" + genome +
+                        config['kofamscan']['annot_suffix'])
                 elif detect_tool == "emapper":
                     check_path_existence(
                         '/' + p + '/' + genome +
                         config['emapper']['annot_suffix'])
                 elif detect_tool == "prokka":
                     check_path_existence(
-                        '/' + p + '/' + genome + 
+                        '/' + p + '/' + genome +
                         config['prokka']['annot_suffix'])
                 elif detect_tool == "bakta":
                     check_path_existence(
-                        '/' + p + '/' + genome + 
+                        '/' + p + '/' + genome +
                         config['bakta']['annot_suffix'])
 
     # 3. Set up clustering and parse system file
@@ -149,7 +146,7 @@ def retrieve_function_pipeline(fun_name: str, args, gids) -> Callable:
                         fmt="tsv",
                         basedir=path_to_fun,
                         OrthScore_dict=OrthScore_dict['interproscan'],
-                        q_list=detect_list, 
+                        q_list=detect_list,
                         filter_dict=filter_dict['interproscan'])
             else:
                 detect_list = detect_module.pipeline(
@@ -158,7 +155,7 @@ def retrieve_function_pipeline(fun_name: str, args, gids) -> Callable:
                     fmt="xml",
                     basedir=path_to_fun,
                     OrthScore_dict=OrthScore_dict['interproscan'],
-                    q_list=detect_list, 
+                    q_list=detect_list,
                     filter_dict=filter_dict['interproscan'])
         if "kofamscan" in search_approaches:
             detect_module = importlib.import_module(
@@ -268,8 +265,8 @@ def retrieve_function_pipeline(fun_name: str, args, gids) -> Callable:
 
         if status:
             print(
-                "Detected function: {fun_name} in genome {genome_prefix}\n{mp}" \
-                " out of {m} essential components present\n{ap} out of {a}" \
+                "Detected function: {fun_name} in genome {genome_prefix}\n{mp}"
+                " out of {m} essential components present\n{ap} out of {a}"
                 " nonessential components present ".format(
                     genome_prefix=genome_prefix,
                     fun_name=system_dict['name'],
@@ -279,9 +276,9 @@ def retrieve_function_pipeline(fun_name: str, args, gids) -> Callable:
                     a=system_dict['completeness']['nonessential']))
         else:
             print(
-                "Failed to detect function: {fun_name} in" \
-                " genome {genome_prefix}\n{mp} out of {m} essential" \
-                " components present\n{ap} out of {a} nonessential" \
+                "Failed to detect function: {fun_name} in"
+                " genome {genome_prefix}\n{mp} out of {m} essential"
+                " components present\n{ap} out of {a} nonessential"
                 " components present".format(
                     genome_prefix=genome_prefix,
                     fun_name=system_dict['name'],
@@ -308,7 +305,7 @@ def main_individual(args):
         detect_fun = retrieve_function_pipeline(
             fun_name=args.fun_name, args=args, gids=gids)
         detect_fun(genome_prefix=prefix,
-            outprefix=args.outprefix)
+                   outprefix=args.outprefix)
 
 
 def main():

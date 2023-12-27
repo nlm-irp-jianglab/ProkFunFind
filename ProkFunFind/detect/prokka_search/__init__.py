@@ -6,6 +6,7 @@ from Bio.SearchIO._model.query import QueryResult
 from ProkFunFind.detect.prokka_search.prokka_parse import \
     prokka_tab_parse
 
+
 def pipeline(config: dict,
              in_file: Union[str, IO],
              basedir: Union[str, IO], OrthScore_dict: dict, q_list: dict,
@@ -47,7 +48,6 @@ def pipeline(config: dict,
             setattr(i, "detect_tool", "prokka")
             setattr(i, 'evalue', i.hits[0].hsps[0].evalue)
             results.append(i)
-
 
     # 3. Append hits to overall q_list
     for i in results:

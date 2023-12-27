@@ -6,6 +6,7 @@ from Bio.SearchIO._model.query import QueryResult
 from ProkFunFind.detect.bakta_search.bakta_parse import \
     bakta_tab_parse
 
+
 def pipeline(config: dict,
              in_file: Union[str, IO],
              basedir: Union[str, IO], OrthScore_dict: dict, q_list: dict,
@@ -46,7 +47,6 @@ def pipeline(config: dict,
             setattr(i, "geneID_weight", max_dict['precision'])
             setattr(i, "detect_tool", "bakta")
             results.append(i)
-
 
     # 3. Append hits to overall q_list
     for i in results:

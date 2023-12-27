@@ -71,7 +71,7 @@ def check_gene_in_subsystem(system_dict,
     elif "geneID" in system_dict:
         fun_list.append(system_dict['geneID'])
         gene_list = find_gene_with_geneID(system_dict['geneID'],
-                                           genomeObject, detect_tools)
+                                          genomeObject, detect_tools)
         if gene_list:
             status = 1
             system_dict['genes'] = gene_list

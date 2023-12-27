@@ -1,12 +1,8 @@
-import csv
-import operator
-from collections import defaultdict
-
 from Bio.SearchIO._model.query import QueryResult
-from ProkFunFind.toolkit.utility import check_path_existence
 
 
-def hmmer_filter(config: dict, qres: QueryResult, basedir: str, filter_dict: dict) -> QueryResult:
+def hmmer_filter(config: dict, qres: QueryResult,
+                 basedir: str, filter_dict: dict) -> QueryResult:
     """Function to filetr HMMER search results
 
        Arguments
@@ -19,18 +15,6 @@ def hmmer_filter(config: dict, qres: QueryResult, basedir: str, filter_dict: dic
     """
     global_evalue = config['hmmer'].get('evalue', 0.01)
     global_bitscore = config['hmmer'].get('bitscore', 0)
-
-    ##################################################################
-    #  User can customize the filter function to remove QueryResult  #
-    ##################################################################
-    ops = {
-        '<=': operator.le,
-        '>=': operator.ge,
-        '>': operator.gt,
-        '<': operator.lt,
-        '==': operator.eq,
-        '!=': operator.ne
-    }
 
     query_len = qres.seq_len
 

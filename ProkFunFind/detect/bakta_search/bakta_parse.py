@@ -1,10 +1,7 @@
-import operator
-import csv
 from collections import defaultdict
 
 from Bio.File import as_handle
 from Bio.SearchIO._model import QueryResult, Hit, HSP, HSPFragment
-from ProkFunFind.toolkit.utility import check_path_existence
 
 
 class baktaTabParser:
@@ -171,5 +168,3 @@ def bakta_tab_parse(handle, **kwargs):
     with as_handle(handle) as source_file:
         generator = iterator(source_file, **kwargs)
         yield from generator
-
-

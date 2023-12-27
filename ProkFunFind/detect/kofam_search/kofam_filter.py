@@ -1,10 +1,7 @@
-import operator
-import csv
 from collections import defaultdict
 
 from Bio.File import as_handle
 from Bio.SearchIO._model import QueryResult, Hit, HSP, HSPFragment
-from ProkFunFind.toolkit.utility import check_path_existence
 
 
 class KofamscanTabParser:
@@ -145,21 +142,13 @@ def kofam_tab_parse(handle, **kwargs):
         yield from generator
 
 
-def kofam_filter(config: dict, qres: QueryResult, basedir: str, filter_dict: dict) -> QueryResult:
+def kofam_filter(config: dict, qres: QueryResult,
+                 basedir: str, filter_dict: dict) -> QueryResult:
     """Handle filtering of kofamscan query results"""
     # Parse global evalue and threhsold values
     global_evalue = float(config['kofamscan'].get('evalue', 0.01))
     global_threshold = float(config['kofamscan'].get('threshold', 1))
 
-    ops = {
-        '<=': operator.le,
-        '>=': operator.ge,
-        '>': operator.gt,
-        '<': operator.lt,
-        '==': operator.eq,
-        '!=': operator.ne
-    }
-    
     def hsp_filter_func(hsp):
         status = True
         if hsp.hit_id in filter_dict:

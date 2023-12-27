@@ -12,7 +12,7 @@ from collections import defaultdict
 
 from Bio.File import as_handle
 from Bio.SearchIO._model import QueryResult, Hit, HSP, HSPFragment
-import operator
+
 
 class InterproscanTabParser:
     """Parser for the InterProScan table format.
@@ -47,7 +47,7 @@ class InterproscanTabParser:
     def _parse_row(self):
         """Return a dictionary of parsed row values (PRIVATE)."""
         cols = self.line.strip("\n").split("\t")
-        if len(cols) <5:
+        if len(cols) < 5:
             raise ValueError("Less columns than expected, only %i" % len(cols))
 
         # assign parsed column data into qresult, hit, and hsp dicts
@@ -174,16 +174,9 @@ def ipr_tab_parse(handle, **kwargs):
         yield from generator
 
 
-def ipr_filter(config: dict, qres: QueryResult, basedir: str, filter_dict: dict) -> QueryResult:
+def ipr_filter(config: dict, qres: QueryResult,
+               basedir: str, filter_dict: dict) -> QueryResult:
     global_evalue = config['interproscan'].get('evalue', 0.01)
-    ops = {
-        '<=': operator.le,
-        '>=': operator.ge,
-        '>': operator.gt,
-        '<': operator.lt,
-        '==': operator.eq,
-        '!=': operator.ne
-    }
 
     def hsp_filter_func(hsp):
         status = True
