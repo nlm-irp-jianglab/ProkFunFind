@@ -56,6 +56,13 @@ The documentation for ProkFunFind can be found here:
 A tutorial describing how to run ProkFunFind searches can be found here:
 - https://prokfunfind.readthedocs.io/en/docs-and-tests/tutorial/1-intro.html
 
+## Scripts
+A script, gen-function-itol.py, for generated iTol tree annotation files from 
+the TSV output of a ProkFunFind search is provided in the scripts/ directory of 
+the ProkFunFind repository: 
+- https://github.com/nlm-irp-jianglab/ProkFunFind/tree/master/scripts
+- This script takes the path to the ProkFunFind output directory, the character used to separate the gene from genome name, and a single column file with the feature IDs to plot as input. 
+
 ## Updates
 
 * v0.1.1
