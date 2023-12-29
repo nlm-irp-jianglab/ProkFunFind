@@ -51,5 +51,6 @@ In order to identify genes using ProkFunFind, the user needs:
    quickstart
    inputs
    outputs
+   designing-functions
    ebi-genomes
    tutorial/1-intro
