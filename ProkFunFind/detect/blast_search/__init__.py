@@ -32,7 +32,11 @@ def pipeline(config: dict,
     """
 
     # 1. Check for query file
-    query_path = check_path_existence(basedir+config['blast']['blast_query'])
+    p = config['blast']['blast_query']
+    if p.startswith('./'):
+        query_path = check_path_existence(basedir+'/'+p)
+    else:
+        query_path = check_path_existence(config['blast']['blast_query'])
 
     # 2. Set up blast command.
     cmd = [
@@ -62,7 +66,8 @@ def pipeline(config: dict,
 
     # 5. Apply blast filtering.
     filter_res = [blast_filter(
-        config=config, qres=i, basedir=basedir, filter_dict=filter_dict) for i in tmp_list]
+        config=config, qres=i, basedir=basedir, 
+        filter_dict=filter_dict) for i in tmp_list]
     res_list = [i for i in filter_res if len(i) > 0]
 
     for i in res_list:

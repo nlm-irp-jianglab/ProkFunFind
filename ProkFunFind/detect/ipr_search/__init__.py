@@ -32,7 +32,8 @@ def pipeline(config: dict,
     elif fmt == "tsv":
         qresults = ipr_tab_parse(in_file)
 
-    filter_res = [ipr_filter(config=config, qres=i, basedir=basedir, filter_dict=filter_dict) for i in qresults]
+    filter_res = [ipr_filter(config=config, qres=i, basedir=basedir,
+                             filter_dict=filter_dict) for i in qresults]
     filter_res = [i for i in filter_res if len(i) > 0]
 
     # 2. Process all QueryResult

@@ -1,12 +1,8 @@
-import csv
-import operator
-from collections import defaultdict
-
 from Bio.SearchIO._model.query import QueryResult
-from ProkFunFind.toolkit.utility import check_path_existence
 
 
-def blast_filter(config: dict, qres: QueryResult, basedir: str, filter_dict: dict) -> QueryResult:
+def blast_filter(config: dict, qres: QueryResult,
+                 basedir: str, filter_dict: dict) -> QueryResult:
     """Function to filter blast query results
 
        Arguments:
@@ -22,18 +18,6 @@ def blast_filter(config: dict, qres: QueryResult, basedir: str, filter_dict: dic
     global_evalue = config['blast'].get('evalue', 0.01)
     global_ident = config['blast'].get('ident_pct', 30)
 
-    ##################################################################
-    #  User can customize the filter function to remove QueryResult  #
-    ##################################################################
-    ops = {
-        '<=': operator.le,
-        '>=': operator.ge,
-        '>': operator.gt,
-        '<': operator.lt,
-        '==': operator.eq,
-        '!=': operator.ne
-    }
-
     def hsp_filter_func(hsp):
         """Helper function to filter high scoring pairs
 
@@ -48,7 +32,6 @@ def blast_filter(config: dict, qres: QueryResult, basedir: str, filter_dict: dic
 
         if hsp.hit_id in filter_dict:
             for one in filter_dict[hsp.hit_id]:
-                print(one)
                 if one['cpfun'](getattr(hsp, one['attr']), one['value']):
                     pass
                 else:

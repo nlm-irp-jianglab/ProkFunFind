@@ -1,10 +1,7 @@
-import operator
-import csv
 from collections import defaultdict
 
 from Bio.File import as_handle
 from Bio.SearchIO._model import QueryResult, Hit, HSP, HSPFragment
-from ProkFunFind.toolkit.utility import check_path_existence
 
 
 class emapperTabParser:
@@ -171,9 +168,9 @@ def emapper_tab_parse(handle, **kwargs):
 
 
 def emapper_filter(config: dict,
-                    qres: QueryResult,
-                    basedir: str,
-                    filter_dict: dict) -> QueryResult:
+                   qres: QueryResult,
+                   basedir: str,
+                   filter_dict: dict) -> QueryResult:
     """Handle filtering of emapper query results
 
        Arguments:
@@ -186,15 +183,6 @@ def emapper_filter(config: dict,
     """
     # Parse global evalue and threhsold values
     global_evalue = float(config['emapper'].get('evalue', 0.01))
-
-    ops = {
-        '<=': operator.le,
-        '>=': operator.ge,
-        '>': operator.gt,
-        '<': operator.lt,
-        '==': operator.eq,
-        '!=': operator.ne
-    }
 
     def hsp_filter_func(hsp):
         status = True

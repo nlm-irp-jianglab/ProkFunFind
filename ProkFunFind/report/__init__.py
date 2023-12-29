@@ -61,19 +61,21 @@ def export_gene_gff(
                 qry = getattr(gene, detect_tool)
                 hsp = qry.hsps[0]
                 for hsp_t in qry.hsps:
-                    if hsp_t.evalue < hsp.evalue:
+                    if hsp.evalue is None:
+                        continue
+                    elif hsp_t.evalue < hsp.evalue:
                         hsp = hsp_t
                     else:
                         continue
-                hit = qry.hits[0]
+                # hit = qry.hits[0]
                 cluster_annot = "Cl_" + \
                     str(getattr(gene, cluster_tool)) if hasattr(
                         gene, cluster_tool) else "NA"
 
                 if detect_tool == "blast":
-                    f.write("{ct}\ProkFunFind\t{tp}\t{start}\t{end}" \
-                        "\t.\t{strand}\t.\tID={id};Name={geneID};" \
-                        "ClusterID={cluster_ID};Target={Target};" \
+                    f.write("{ct}\tProkFunFind\t{tp}\t{start}\t{end}"
+                        "\t.\t{strand}\t.\tID={id};Name={geneID};"
+                        "ClusterID={cluster_ID};Target={Target};"
                         "pct_identity={pct_identity};evalue={evalue}".format(
                         ct=gene.contig,
                         tp=gene.type,
@@ -86,7 +88,7 @@ def export_gene_gff(
                         Target=hsp.hit_id + " " +
                         str(hsp.hit_start) + " " + str(hsp.hit_end),
                         pct_identity=hsp.ident_pct,
-                        evalue=hit.evalue
+                        evalue=hsp.evalue
                         ))
 
                     if hasattr(gene, "pangenome_group"):
@@ -107,31 +109,32 @@ def export_gene_gff(
                 elif detect_tool == "interproscan" \
                         or detect_tool == "hmmer" \
                         or detect_tool == "kofamscan" \
-                        or detect_tool == "emapper":
-                    if detect_tool == 'emapper' or detect_tool == 'interproscan':
+                        or detect_tool == "emapper" \
+                        or detect_tool == "prokka" \
+                        or detect_tool == "bakta":
+                    if detect_tool == 'emapper' \
+                            or detect_tool == 'interproscan':
                         if hasattr(qry, 'evalue'):
                             eval = ';evalue='+str(qry.evalue)
                         else:
                             eval = ''
                     else:
                         if hasattr(hsp, 'evalue'):
-                            eval = ';evalue='+str(hit.evalue)
+                            eval = ';evalue='+str(hsp.evalue)
                         else:
                             eval = ''
-                    f.write("{ct}\tProkFunFind\t{tp}\t{start}\t{end}\t." \
-                            "\t{strand}\t.\tID={id};Name={geneID};" \
-                            "ClusterID={cluster_ID};" \
+                    f.write("{ct}\tProkFunFind\t{tp}\t{start}\t{end}\t."
+                            "\t{strand}\t.\tID={id};Name={geneID};"
+                            "ClusterID={cluster_ID};"
                             "Target={Target}{evalue}".format(
-                        ct=gene.contig,
-                        tp=gene.type,
-                        start=gene.location.start+1,
-                        end=gene.location.end,
-                        strand="+" if gene.strand == 1 else "-",
-                        id=gene.id,
-                        geneID=qry.geneID,
-                        cluster_ID=cluster_annot,
-                        Target=hsp.hit_id,
-                        evalue=eval))
+                            ct=gene.contig,
+                            tp=gene.type,
+                            start=gene.location.start+1,
+                            end=gene.location.end,
+                            strand="+" if gene.strand == 1 else "-",
+                            id=gene.id, geneID=qry.geneID,
+                            cluster_ID=cluster_annot,
+                            Target=hsp.hit_id, evalue=eval))
 
                     if hasattr(gene, "pangenome_group"):
                         gene_group = gene.pangenome_group

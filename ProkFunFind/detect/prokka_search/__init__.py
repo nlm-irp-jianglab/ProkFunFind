@@ -3,8 +3,8 @@ import os
 
 from Bio.SearchIO._model.query import QueryResult
 
-from ProkFunFind.detect.emap_search.emap_filter import \
-    emapper_filter, emapper_tab_parse
+from ProkFunFind.detect.prokka_search.prokka_parse import \
+    prokka_tab_parse
 
 
 def pipeline(config: dict,
@@ -12,11 +12,11 @@ def pipeline(config: dict,
              basedir: Union[str, IO], OrthScore_dict: dict, q_list: dict,
              filter_dict: dict
              ) -> List[QueryResult]:
-    """Run emapper COG analysis
+    """Run prokka annotation analysis
 
        Arguments:
            config: A configuration dictionary
-           in_file: Input emapper tab file
+           in_file: Input prokka tab file
            basedir: path to directory containing config files
            OrthScore_dict: parsed ortholog table dictionary
            q_list: list of QueryResult objects or empty list
@@ -24,12 +24,12 @@ def pipeline(config: dict,
        Returns:
            q_list: An updated list of QueryResults
     """
-    # 1. Read emapperscan tsv file and parse results
+    # 1. Read prokkascan tsv file and parse results
     basedir = os.path.abspath(basedir)+"/"
-    qresults = emapper_tab_parse(in_file)
+    qresults = prokka_tab_parse(in_file)
 
     # 2. Process all QueryResult
-    tmp_list = []
+    results = []
     for qres in qresults:
         # remove and query results that do not hit to searched KOs
         i = qres.hsp_filter(lambda hsp: hsp.hit_id in OrthScore_dict.keys())
@@ -45,17 +45,12 @@ def pipeline(config: dict,
             # set the QueryResult attributes
             setattr(i, "geneID", max_dict['geneID'])
             setattr(i, "geneID_weight", max_dict['precision'])
-            setattr(i, "detect_tool", "emapper")
+            setattr(i, "detect_tool", "prokka")
             setattr(i, 'evalue', i.hits[0].hsps[0].evalue)
-            tmp_list.append(i)
+            results.append(i)
 
-    # 3. filter results based on evalue and thresholds
-    filter_res = [emapper_filter(
-        config=config, qres=i, basedir=basedir,
-        filter_dict=filter_dict) for i in tmp_list]
-
-    # 4. Append hits to overall q_list
-    for i in filter_res:
+    # 3. Append hits to overall q_list
+    for i in results:
         if len(i) > 0:
             q_list.append(i)
     return q_list

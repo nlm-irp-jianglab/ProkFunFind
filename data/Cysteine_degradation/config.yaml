@@ -19,7 +19,7 @@ DBSCAN:
 name: Cysteine_Degradation
 presence: essential
 components:
-- queryID: mst
+- geneID: mst
   presence: nonessential
   terms:
   - id: mst_ecoli
@@ -30,84 +30,84 @@ components:
     method: blast
   - id: mst_bsuis
     method: blast
-- queryID: cbs
+- geneID: cbs
   presence: nonessential
   terms:
   - id: cbs_saureus
     method: blast
-- queryID: cyd
+- geneID: cyd
   presence: nonessential
   terms:
   - id: cyd_kpneumoniae
     method: blast
-- queryID: metC
+- geneID: metC
   presence: essential
   terms:
   - id: metC_ecoli
     method: blast
-- queryID: cysM
+- geneID: cysM
   presence: essential
   terms:
   - id: cysM_ecoli
     method: blast
-- queryID: cysK
+- geneID: cysK
   presence: essential
   terms:
   - id: cysK_ecoli
     method: blast
-- queryID: malY
+- geneID: malY
   presence: essential
   terms:
   - id: malY_ecoli
     method: blast
-- queryID: yhaO
+- geneID: yhaO
   presence: essential
   terms:
   - id: yhaO_ecoli
     method: blast
-- queryID: yhaM
+- geneID: yhaM
   presence: essential
   terms:
   - id: yhaM_ecoli
     method: blast
-- queryID: decR
+- geneID: decR
   presence: essential
   terms:
   - id: decR_ecoli
     method: blast
-- queryID: iscS
+- geneID: iscS
   presence: essential
   terms:
   - id: iscS_ecoli
     method: blast
-- queryID: fn1220
+- geneID: fn1220
   presence: nonessential
   terms:
   - id: fn1220_fnucleatum
     method: blast
-- queryID: fn1419
+- geneID: fn1419
   presence: nonessential
   terms:
   - id: fn1419_fnucleatum
     method: blast
-- queryID: fn1055
+- geneID: fn1055
   presence: nonessential
   terms:
   - id: fn1055_fnucleatum
     method: blast
-- queryID: fn0625
+- geneID: fn0625
   presence: nonessential
   terms:
   - id: fn0625_fnucleatum
     method: blast
-- queryID: mgl
+- geneID: mgl
   presence: nonessential
   terms:
   - id: mgl_pgingivalis
     method: blast
   - id: mgl_tdenticola
     method: blast
-- queryID: tnaA
+- geneID: tnaA
   presence: essential
   terms:
   - id: tnaA_ecoli

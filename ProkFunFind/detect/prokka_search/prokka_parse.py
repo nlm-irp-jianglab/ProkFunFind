@@ -4,16 +4,33 @@ from Bio.File import as_handle
 from Bio.SearchIO._model import QueryResult, Hit, HSP, HSPFragment
 
 
-class KofamscanTabParser:
-    """Parser for the Kofamscan table format."""
+class prokkaTabParser:
+    """Class for a Parser of the prokka table format.
+
+       Attributes:
+          handle: str
+              open file object
+          line: str
+              next line in the file
+
+       Methods:
+          __iter__: Function to iterate over file and return QueryResults
+          _parse_row: Function to parse and split a row in the file
+          _parse_qresult: Function to take row data and make QueryResult
+
+    """
 
     def __init__(self, handle):
-        """Initialize the class."""
+        """Initialize the class.
+
+           Arguments:
+               handle: open prokka tabular output file.
+        """
         self.handle = handle
         self.line = self.handle.readline().rstrip("\n")
 
     def __iter__(self):
-        """Iterate over KofamscanTabParser, yields query results."""
+        """Iterate over prokkaTabParser, yields query results."""
         header_mark = "#"
         # read through the header if it exists
         while self.line.startswith(header_mark):
@@ -26,25 +43,23 @@ class KofamscanTabParser:
         """Return a dictionary of parsed row values (PRIVATE)."""
         cols = self.line.strip("\n").split("\t")
 
-        # Number of columns should be 7 in the standard kofamscan table
+        # Number of columns should be 7 in the standard prokka table
         if len(cols) != 7:
             raise ValueError("Less columns than expected, only %i" % len(cols))
 
         # assign parsed column data into qresult, hit, and hsp dicts
         qresult = {}
-        qresult['id'] = cols[1]  # gene name
-        qresult['program'] = "Kofamscan"
+        qresult['id'] = cols[0]  # gene name
+        qresult['program'] = "prokka"
 
         hit = {}
-        hit['id'] = cols[2]  # ko ID
+        xrefs = cols[5].split(", ")
+        hit['id'] = xrefs  # DB ID
         hit['description'] = cols[6]  # description of target
-        hit['query_id'] = cols[1]  # query name
-
+        hit['query_id'] = cols[0]  # query name
         hsp = {}
-        # evalue or score should be float but sometime not
-        hsp['evalue'] = float(cols[5]) if cols[5] != "-" else None
-        hsp['threshold'] = float(cols[3]) if cols[3] != "" else None
-        hsp['score'] = float(cols[4])
+        # evalue or score should be float but sometimes not
+        hsp['evalue'] = None
 
         frag = {}
 
@@ -88,25 +103,27 @@ class KofamscanTabParser:
                 qres_state = state_QRES_SAME
 
             if prev is not None:
-                # since domain tab formats only have 1 Hit per line
-                # we always create HSPFragment, HSP, and Hit per line
-                prev_hid = prev['hit']['id']
+                for cog in prev['hit']['id']:
+                    prev_hid = cog
 
-                frag = HSPFragment(prev_hid, prev_qid)
+                    frag = HSPFragment(prev_hid, prev_qid)
 
-                for attr, value in prev['frag'].items():
-                    setattr(frag, attr, value)
-                hsp = HSP([frag])
+                    for attr, value in prev['frag'].items():
+                        setattr(frag, attr, value)
+                    hsp = HSP([frag])
 
-                for attr, value in prev['hsp'].items():
-                    setattr(hsp, attr, value)
-                hsp_dict[prev_hid].append(hsp)
+                    for attr, value in prev['hsp'].items():
+                        setattr(hsp, attr, value)
+                    hsp_dict[prev_hid].append(hsp)
 
-                hit = Hit()
-                for attr, value in prev['hit'].items():
-                    setattr(hit, attr, value)
-                if hit.id not in [i.id for i in hit_list]:
-                    hit_list.append(hit)
+                    hit = Hit()
+                    for attr, value in prev['hit'].items():
+                        if attr == "id":
+                            setattr(hit, "id", cog)
+                        else:
+                            setattr(hit, attr, value)
+                    if hit.id not in [i.id for i in hit_list]:
+                        hit_list.append(hit)
 
                 # create qresult and yield if we're at a new qresult or at EOF
                 if qres_state == state_QRES_NEW or file_state == state_EOF:
@@ -114,7 +131,6 @@ class KofamscanTabParser:
                     for hit in hit_list:
                         for hsp in hsp_dict[hit.id]:
                             hit.hsps.append(hsp)
-
                     qresult = QueryResult(hit_list, prev_qid)
                     for attr, value in prev['qresult'].items():
                         setattr(qresult, attr, value)
@@ -128,43 +144,23 @@ class KofamscanTabParser:
             self.line = self.handle.readline()
 
 
-def kofam_tab_parse(handle, **kwargs):
-    """Parse kofamscan table and tield results"""
+def prokka_tab_parse(handle, **kwargs):
+    """Parse prokka table and yield results
+
+       Arguments:
+           handle: open prokka tabular file
+           kwargs:
+
+       Yields:
+           yields from iterator of the source file.
+    """
     # get the iterator object and do error checking
-    mod = __import__(
-        "ProkFunFind.detect.kofam_search.kofam_filter", fromlist=[""])
-    obj_name = "KofamscanTabParser"
+    mod = __import__("ProkFunFind.detect.prokka_search.prokka_parse",
+                     fromlist=[""])
+    obj_name = "prokkaTabParser"
     iterator = getattr(mod, obj_name)
 
     # and start iterating
     with as_handle(handle) as source_file:
         generator = iterator(source_file, **kwargs)
         yield from generator
-
-
-def kofam_filter(config: dict, qres: QueryResult,
-                 basedir: str, filter_dict: dict) -> QueryResult:
-    """Handle filtering of kofamscan query results"""
-    # Parse global evalue and threhsold values
-    global_evalue = float(config['kofamscan'].get('evalue', 0.01))
-    global_threshold = float(config['kofamscan'].get('threshold', 1))
-
-    def hsp_filter_func(hsp):
-        status = True
-        if hsp.hit_id in filter_dict:
-            for one in filter_dict[hsp.hit_id]:
-                if one['cpfun'](getattr(hsp, one['attr']), one['value']):
-                    pass
-                else:
-                    status = False
-                    break
-        else:
-            # Adjusted threshold = original threshold for
-            # KO * global threshold factor
-            adjusted_threshold = hsp.threshold*global_threshold
-            if hsp.evalue > float(global_evalue) or \
-                    hsp.score < adjusted_threshold:
-                status = False
-        return status
-
-    return qres.hsp_filter(hsp_filter_func)
