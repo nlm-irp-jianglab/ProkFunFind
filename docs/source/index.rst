@@ -18,29 +18,29 @@ In order to identify genes using ProkFunFind, the user needs:
 
 #. Select the correct search approaches and filtering parameters to identify your genes of interest
 
-   #. Protein sequences
+   * Protein sequences
 
-   #. Profile HMMs
+   * Profile HMMs
 
-   #. COGs
+   * COGs
 
-   #. KOs
+   * KOs
 
-   #. Protein domain signatures
+   * Protein domain signatures
 
 #. Define the gene components for the function system in JSON format
 
-   #. Define the essential and non essential components of the overall function of interest.
+   * Define the essential and non essential components of the overall function of interest.
 
 #. Perform the search for the functions in your genomes of interest using ProkFunFind
 
 #. Analyze the search results
 
-  #. Assess completeness of function in different organisms
+  * Assess completeness of function in different organisms
 
-  #. Identify potential gene clusters
+  * Identify potential gene clusters
 
-  #. Analyze species distribution
+  * Analyze species distribution
 
 .. toctree::
    :maxdepth: 2
