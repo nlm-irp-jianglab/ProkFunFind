@@ -107,7 +107,7 @@ The essentiality defined here determines how ProkFunFind reports on the overall 
 of the search (i.e., was the function detected or not), but all hits will be reported
 for each component weather it is essential or not. 
 
-.. code-bock:: 
+.. code-block:: 
 
     ---
     name: Acetate Production
@@ -120,11 +120,14 @@ for each component weather it is essential or not.
       - geneID: ACKA
         presence: essential
 
+
 With the essentility defined, we can then assign the search terms that we want to 
 use for each gene. The search terms can be any of the supoorted features for 
 ProkFunFind, in this case we are going to use a combination of KOs and COGs. 
 
-    ---
+.. code-block:: 
+
+    ---    
     name: Acetate Production
     components: 
     - name: PTA-ACKA Pathway
@@ -157,7 +160,7 @@ in the first section of the configuration file (see :ref:`Inputs<inputs>` for mo
 
 .. code-block::
 
----
+    ---
     main:
       cluster_tool: DBSCAN
       faa_suffix: .faa

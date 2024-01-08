@@ -413,7 +413,6 @@ are provided for these annotaitons, so no filtering of these results is possible
 
 .. code-block::
 
-
   IMMGDCFF_00012  CDS     876     yisK            COG0179 putative protein YisK
   IMMGDCFF_00013  CDS     1308    asnS_1  6.1.1.22        COG0017 Asparagine--tRNA ligase
 
@@ -438,6 +437,7 @@ The '.tsv' output file from bakta provides information on the called genes and t
 the annotations can be found in a comma separated list in column 7. An example bakta annotaiton file can be seen below: 
 
 .. code-block:: 
+
   contig_11       cds     18802   22275   -       KBDKFM_00100    bcsC    cellulose synthase complex outer membrane protein BcsC  COG:COG5010, COG:UW, GO:0019867, GO:0030244, KEGG:K20543, RefSeq:WP_167582918.1, SO:0001217, UniParc:UPI001430EF41, UniRef:UniRef100_A0A7D7DNT3, UniRef:UniRef50_P37650, UniRef:UniRef90_P37650
   contig_11       cds     22257   23363   -       KBDKFM_00105    bcsZ    cellulose synthase complex periplasmic endoglucanase BcsZ       COG:COG3405, COG:G, EC:3.2.1.4, GO:0005576, GO:0008810, GO:0030245, KEGG:K20542, RefSeq:WP_167582921.1, SO:0001217, UniParc:UPI00142F9A65, UniRef:UniRef100_A0A7H9QRD3, UniRef:UniRef50_P37651, UniRef:UniRef90_P37651
 
@@ -473,7 +473,7 @@ taxonomic level. An example EggNOG-mapper annotation file can be seen below:
   GCA_001563995.1_00002   694440.JOMF01000005_gene106     3.8e-27 129.4   COG2064@1|root,arCOG01808@2157|Archaea,2XT4Q@28890|Euryarchaeota,2NAP1@224756|Methanomicrobia    2157|Archaea     N       Type II secretion system (T2SS), protein F      -       -       -       ko:K07333        -       -       -       -       ko00000,ko02035,ko02044 -       -       -T2SSF
   GCA_001563995.1_00012   1343739.PAP_05820       4e-147  528.5   COG1855@1|root,arCOG04116@2157|Archaea,2XSZY@28890|Euryarchaeota,242R1@183968|Thermococci        2157|Archaea    VK homology RNA-binding domain   -       GO:0005575,GO:0005618,GO:0005623,GO:0030312,GO:0044464,GO:0071944        -       ko:K06865       -       -       -       -       ko00000 --       -       Intein_splicing,KH_1,KH_2,LAGLIDADG_3,PIN,PIN_4,T2SSE
 
-function definition
+Function definition
 ####################
 The second part of the configuration file contains the definition of the
 function of interest. Functions are defined in the YAML format in a hierarchical
@@ -513,7 +513,7 @@ nonessential for the overall function.
 ======================  ========================================================
 Name                    Description
 ======================  ========================================================
-name/geneID:(*str*)    The name of the components/ The gene ID
+name/geneID:(*str*)      The name of the components/ The gene ID
 ----------------------  --------------------------------------------------------
 components:(*list*)      The list of subcomponents
 ----------------------  --------------------------------------------------------
