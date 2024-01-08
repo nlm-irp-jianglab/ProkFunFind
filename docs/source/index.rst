@@ -34,6 +34,8 @@ In order to identify genes using ProkFunFind, the user needs:
 
 #. Perform the search for the functions in your genomes of interest using ProkFunFind
 
+  * Run the search using the chosen annotation files and search tools within ProkFunFind. 
+
 #. Analyze the search results
 
   * Assess completeness of function in different organisms

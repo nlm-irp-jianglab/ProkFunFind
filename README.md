@@ -19,6 +19,8 @@ git clone git@github.com:nlm-irp-jianglab/ProkFunFind.git
 pip install ./ProkFunFind
 ```
 
+ProkFunFind is also available as a docker image at https://hub.docker.com/repository/docker/keithdt/prokfunfind/general
+
 ## Quick Start
 ```
 prokfunfind.py -f config.yaml -gtab genome.table -o output.folder/prefix

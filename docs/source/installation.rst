@@ -84,3 +84,7 @@ We recommend installing ProkFunFind within a python virtual environment.
      conda create -n ProkFun python=3
      conda activate ProkFun
      pip install ./ProkFunFind
+
+ProkFunFind Docker Image
+""""""""""""""""""""""""
+ProkFunFind is also available through a docker image: https://hub.docker.com/repository/docker/keithdt/prokfunfind/general
