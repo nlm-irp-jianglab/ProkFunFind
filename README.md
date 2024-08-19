@@ -40,8 +40,8 @@ directory.
 |Cysteine_degradation | Cysteine degredation pathway | 34745023 | prokfunfind -f ./config.yaml -o ./test -g ../genome-table.tsv |
 |Histidine_decarboxylase | Histidine decarboxylase | 34563136 | prokfunfind -f ./config.yaml -o ./test -g ../genome-table.tsv |
 |Equol | Equol biosynthesis operon | 35247986 | prokfunfind -f ./config.yaml -o ./test -g ../genome-table.tsv |
-|Flagella | Flagellar genes | TBD | prokfunfind -f ./config-{bac or pseudo}.yaml -o ./test -g ../genome-table.tsv |
-
+|Flagella | Flagellar genes | 38364094 | prokfunfind -f ./config-{bac or pseudo}.yaml -o ./test -g ../genome-table.tsv |
+|Vibrio_rbm |Vibrio rugosity and biofilm structure modulators (rbm) cluster | TBD | prokfunfind -f ./config.yaml -o ./test -g ../genome-table.tsv |
 
 ## ProkFunAnnotate
 The ProkFunAnnotate pipelile has been developed to assist in the production
@@ -63,6 +63,10 @@ the ProkFunFind repository:
 - https://github.com/nlm-irp-jianglab/ProkFunFind/tree/master/scripts
 - This script takes the path to the ProkFunFind output directory, the character used to separate the gene from genome name, and a single column file with the feature IDs to plot as input. 
 
+## Publication
+For more information on the ProkFunFind software and implementation please see our publication in mSystems:
+
+Dufault-Thompson K, Jiang X. Annotating microbial functions with ProkFunFind. mSystems. 2024 Mar 19;9(3):e0003624. doi: 10.1128/msystems.00036-24. Epub 2024 Feb 16. PMID: 38364094; PMCID: PMC10949468.
 ## Updates
 
 * v0.1.1

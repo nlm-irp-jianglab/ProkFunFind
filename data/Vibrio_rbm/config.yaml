@@ -1,0 +1,169 @@
+---
+main:
+  cluster_tool: DBSCAN
+  faa_suffix: .faa
+  gff_suffix: .gff
+  fna_suffix: .fna
+kofamscan:
+  annot_suffix: .kofam.tsv
+  evalue: 1e-3
+  threshold: 0.6
+DBSCAN:
+  cluster_eps: 18
+  cluster_min_samples: 4
+hmmer: 
+  hmmer_query: /data/yangy34/softwares/ProkFunFind/data/VcBMC_ko/rbmABCDEF.hmm
+  hmmer_exec: hmmscan
+  hmmer_threads: 32
+  evalue: 1e-5
+---
+name: VcBMC_ko
+components:
+- name: RBM operon
+  presence: essential
+  components:
+  - geneID: rbmA
+    description: rbmA
+    presence: essential
+    terms:
+    - id: K20953
+      method: kofamscan
+  - geneID: rbmA
+    description: rbmA
+    presence: essential
+    terms:
+    - id: rbmA
+      method: hmmer
+  - geneID: rbmB
+    description: rbmB
+    presence: essential
+    terms:
+    - id: rbmB
+      method: hmmer
+  - geneID: rbmC
+    description: rbmC
+    presence: essential
+    terms: 
+    - id: rbmC
+      method: hmmer
+  - geneID: rbmD
+    description: rbmD
+    presence: nonessential
+    terms: 
+    - id: rbmD
+      method: hmmer
+  - geneID: rbmEF
+    description: rbmEF
+    presence: nonessential
+    terms: 
+    - id: rbmEF
+      method: hmmer
+- name: VPS_I operon
+  presence: essential
+  components:
+  - geneID: vpsU
+    description: vpsU
+    presence: nonessential
+    terms:
+    - id: K20945
+      method: kofamscan
+  - geneID: vpsA
+    description: vpsA
+    presence: essential
+    terms:
+    - id: K01791
+      method: kofamscan
+  - geneID: vpsB
+    description: vpsB
+    presence: essential
+    terms:
+    - id: K02472
+      method: kofamscan
+  - geneID: vpsCG
+    description: vpsCG
+    presence: nonessential
+    terms:
+    - id: K00640
+      method: kofamscan
+  - geneID: vpsD
+    description: vpsD
+    presence: essential
+    terms:
+    - id: K20921
+      method: kofamscan
+  - geneID: vpsE
+    description: vpsE
+    presence: essential
+    terms:
+    - id: K20946
+      method: kofamscan
+  - geneID: vpsF
+    description: vpsF
+    presence: essential
+    terms:
+    - id: K20947
+      method: kofamscan
+  - geneID: vpsH
+    description: vpsH
+    presence: nonessential
+    terms:
+    - id: K01912
+      method: kofamscan
+  - geneID: vpsI
+    description: vpsI
+    presence: essential
+    terms:
+    - id: K20922
+      method: kofamscan
+  - geneID: vpsJ
+    description: vpsJ
+    presence: essential
+    terms:
+    - id: K20948
+      method: kofamscan
+  - geneID: vpsK
+    description: vpsK
+    presence: essential
+    terms:
+    - id: K05946
+      method: kofamscan
+- name: VPS_II operon
+  presence: essential
+  components:
+  - geneID: vpsL
+    description: vpsL
+    presence: essential
+    terms:
+    - id: K03606
+      method: kofamscan
+  - geneID: vpsM
+    description: vpsM
+    presence: essential
+    terms:
+    - id: K20920
+      method: kofamscan
+  - geneID: vpsN
+    description: vpsN
+    presence: essential
+    terms:
+    - id: K20988
+      method: kofamscan
+  - geneID: vpsO
+    description: vpsO
+    presence: essential
+    terms:
+    - id: K16554
+      method: kofamscan
+  - geneID: vpsP
+    description: vpsP
+    presence: nonessential
+    terms:
+    - id: K20949
+      method: kofamscan
+  - geneID: vpsQ
+    description: vpsQ
+    presence: nonessential
+    terms:
+    - id: K20950
+      method: kofamscan
+  
