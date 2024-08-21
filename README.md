@@ -41,7 +41,7 @@ directory.
 |Histidine_decarboxylase | Histidine decarboxylase | 34563136 | prokfunfind -f ./config.yaml -o ./test -g ../genome-table.tsv |
 |Equol | Equol biosynthesis operon | 35247986 | prokfunfind -f ./config.yaml -o ./test -g ../genome-table.tsv |
 |Flagella | Flagellar genes | 38364094 | prokfunfind -f ./config-{bac or pseudo}.yaml -o ./test -g ../genome-table.tsv |
-|Vibrio_rbm |Vibrio rugosity and biofilm structure modulators (rbm) cluster | TBD | prokfunfind -f ./config.yaml -o ./test -g ../genome-table.tsv |
+|Vibrio_bmc | Vibrio biofilm matrix cluster (bmc) | TBD | prokfunfind -f ./config.yaml -o ./test -g ../genome-table.tsv |
 
 ## ProkFunAnnotate
 The ProkFunAnnotate pipelile has been developed to assist in the production
