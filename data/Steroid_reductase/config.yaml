@@ -8,7 +8,7 @@ DBSCAN:
   cluster_eps: 4
   cluster_min_samples: 1.8
 hmmer: 
-  hmmer_query: 5B-reductase.hmm
+  hmmer_query: steroid_reductase.hmm
   hmmer_exec: hmmscan
   hmmer_threads: 1
   evalue: 1e-3
@@ -24,5 +24,21 @@ components:
     terms:
     - id: 5BR
       method: hmmer
-      evalue: 1e-270
-      bitscore: 900
+      evalue: 1e-240
+      bitscore: 800
+  - geneID: 3BHSDHI
+    description: 3Beta-HSDH/I
+    presence: nonessential
+    terms: 
+    - id: 3BHSDHI
+      method: hmmer
+      evalue: 1e-220
+      bitscore: 730
+  - geneID: 63KR
+    description: delta6-3 ketosteroid reductase
+    presence: nonessential
+    terms: 
+    - id: 63KR
+      method: hmmer
+      evalue: 1e-260
+      bitscore: 850
