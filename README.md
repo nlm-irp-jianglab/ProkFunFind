@@ -42,6 +42,7 @@ directory.
 |Equol | Equol biosynthesis operon | 35247986 | prokfunfind -f ./config.yaml -o ./test -g ../genome-table.tsv |
 |Flagella | Flagellar genes | 38364094 | prokfunfind -f ./config-{bac or pseudo}.yaml -o ./test -g ../genome-table.tsv |
 |Vibrio_bmc | Vibrio biofilm matrix cluster (bmc) | TBD | prokfunfind -f ./config.yaml -o ./test -g ../genome-table.tsv |
+|Steroid_reductase | Steroid Hormone Reductase | TBD | prokfunfind -f ./config.yaml -o ./test -g ../genome-table.tsv |
 
 ## ProkFunAnnotate
 The ProkFunAnnotate pipelile has been developed to assist in the production

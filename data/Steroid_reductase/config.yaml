@@ -1,0 +1,28 @@
+---
+main:
+  cluster_tool: DBSCAN
+  faa_suffix: .faa
+  gff_suffix: .gff
+  fna_suffix: .fna
+DBSCAN:
+  cluster_eps: 4
+  cluster_min_samples: 1.8
+hmmer: 
+  hmmer_query: 5B-reductase.hmm
+  hmmer_exec: hmmscan
+  hmmer_threads: 1
+  evalue: 1e-3
+---
+name: Steroid Hormone Reductase
+components:
+- name: Steroid Hormone 5beta Reductase
+  presence: essential
+  components:
+  - geneID: 5BR
+    description: 5Beta Reductase
+    presence: essential
+    terms:
+    - id: 5BR
+      method: hmmer
+      evalue: 1e-270
+      bitscore: 900
